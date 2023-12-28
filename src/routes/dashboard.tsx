@@ -3,18 +3,18 @@ import { RouteObject } from "react-router-dom";
 import Category from "../pages/admin/views/Category";
 import Items from "../pages/admin/views/Items";
 import Supplier from "../pages/admin/views/Supplier";
-import Dashboard from "../pages/admin/views/Dashboard";
 import Contract from "../pages/admin/views/Contract";
+import DashboardLayout from "../pages/admin/layout/DashboardLayout";
+import Dashboard from "../pages/admin/views/Dashboard";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
-  element: (
-    <Dashboard  />
-    // <React.Suspense fallback={<Loader />}>
-    //   <Dashboard />
-    // </React.Suspense>
-  ),
+  element: <DashboardLayout />,
   children: [
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
+    },
     {
       path: "/dashboard/suppliers",
       element: <Supplier />,
@@ -38,6 +38,5 @@ export const DashboardRoutes: RouteObject = {
     },
   ],
 };
-
 
 export default DashboardRoutes;

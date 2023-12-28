@@ -8,12 +8,14 @@ export const BaseRoutes: RouteObject = {
   element: <Home />,
   children: [
     {
-      path: "/login",
+      path: "login",
       element: <Login />,
+      id:"login"
     },
     {
       path: "register",
       element: <Register />,
+      id:"register"
     },
   ],
 };
