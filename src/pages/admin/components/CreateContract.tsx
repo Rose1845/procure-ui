@@ -81,7 +81,7 @@ const CreateContract = () => {
     }
   };
   return (
-    <div>
+    <div className="py-16">
       <label htmlFor="contractTitle">Contract Title:</label>
       <input
         type="text"

@@ -1,8 +1,4 @@
 import "./App.css";
-import CreateContract from "./components/CreateContract";
-import axios from "axios";
-import CreateItem from "./components/CreateItem";
-import Dashboard from "./components/dashboard";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
 

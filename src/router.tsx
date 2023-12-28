@@ -1,12 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-import BaseLayout from "./pages/base/layout/BaseLayout";
 import BaseRoutes from "./routes/base";
-import AdminRoutes from "./routes/dashboard";
+import DashboardRoutes  from "./routes/dashboard";
 
 
 const router = createBrowserRouter([
   {
-    children: [BaseRoutes,AdminRoutes],
+    children: [BaseRoutes,DashboardRoutes],
   },
 ]);
 

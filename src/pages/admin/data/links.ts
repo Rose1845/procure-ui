@@ -40,7 +40,7 @@ export const sidebarLinks: SidebarLink[] = [
   },
   {
     label: "Products",
-    path: "/dashboard/products",
+    path: "/dashboard/items",
     LinkIcon: TfiShoppingCart,
   },
   {

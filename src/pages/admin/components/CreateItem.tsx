@@ -32,8 +32,7 @@ const CreateItem = () => {
     // Replace with your actual API endpoint for fetching items
     const response = await fetch("http://localhost:8081/api/v1/category");
     const category = await response.json();
-    console.log(category,"categories")
-    
+    console.log(category, "categories");
 
     return category;
   };
@@ -48,14 +47,13 @@ const CreateItem = () => {
   };
 
   const handleInputChange = (e: any) => {
-     const {name,value} = e.target
-      setContractData((prevData) => ({ ...prevData, [name]: value }));
-    
+    const { name, value } = e.target;
+    setContractData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const CreateItem = async () => {
-    console.log(contractData,"test data");
-    
+    console.log(contractData, "test data");
+
     try {
       const response = await fetch("http://localhost:8081/api/v1/items", {
         method: "POST",
@@ -76,7 +74,7 @@ const CreateItem = () => {
     }
   };
   return (
-    <div>
+    <div className="py-16">
       <label htmlFor="contractTitle">itemName:</label>
       <input
         type="text"
