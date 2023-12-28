@@ -1,15 +1,25 @@
-import { Dispatch, ReactNode, SetStateAction, createContext, useState } from "react";
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+} from "react";
+
 interface AuthContextType {
-  auth: any; // Adjust this type according to the structure of your authentication data
+  auth: any; // Replace with the actual type
   setAuth: Dispatch<SetStateAction<any>>;
   // persist: boolean;
   // setPersist: Dispatch<SetStateAction<boolean>>;
 }
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [auth, setAuth] = useState({});
-  // const [persist, setPersist] = useState(
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const [auth, setAuth] = useState<any>({});
+  // const [persist, setPersist] = useState<boolean>(
   //   JSON.parse(localStorage.getItem("persist")) || false
   // );
 
