@@ -1,4 +1,4 @@
-import React from "react";
+import { Bar } from "react-chartjs-2";
 
 function Dashboard() {
   return (
@@ -101,8 +101,7 @@ function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 p-4 gap-4">
         <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50  w-full shadow-lg rounded">
           <div>
-            chart
-            {/* <canvas id="canvas">{{ chart }}</canvas> */}
+            {/* <BarChart /> */}
           </div>
         </div>
 
@@ -562,3 +561,36 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+import React from "react";
+import { ChartOptions } from "chart.js";
+
+const BarChart: React.FC = () => {
+  const state = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+      {
+        label: "Average Rainfall per month",
+        backgroundColor: "rgba(75,193,193,1)",
+        borderColor: "rgba(0,0,0,1)",
+        borderWidth: 2,
+        data: [65, 59, 80, 81, 56, 55, 40],
+      },
+    ],
+  };
+
+  const options: ChartOptions<"bar"> = {
+    plugins: {
+      legend: {
+        display: true,
+        position: "center",
+      },
+      title: {
+        display: true,
+        text: "Average Rainfall per month",
+      },
+    },
+  };
+
+  return <Bar data={state} options={options} />;
+};

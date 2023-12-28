@@ -1,7 +1,3 @@
-import { useRef, useState, useEffect, ChangeEvent, FormEvent } from "react";
-import useAuth from "../../../hooks/useAuth";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import axios from "../../../api/index";
 
 const LOGIN_URL = "/auth/authenticate";
 
@@ -11,68 +7,68 @@ interface LoginResponse {
 }
 
 const Login = (): JSX.Element => {
-  const { setAuth, persist, setPersist } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  console.log(location.pathname, "location");
+//   const { setAuth, persist, setPersist } = useAuth();
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   console.log(location.pathname, "location");
 
-  const from = location.state?.from?.pathname || "/";
-  const userRef = useRef<HTMLInputElement>(null);
-  const errRef = useRef<HTMLParagraphElement>(null);
+//   const from = location.state?.from?.pathname || "/";
+//   const userRef = useRef<HTMLInputElement>(null);
+//   const errRef = useRef<HTMLParagraphElement>(null);
 
-  const [email, setEmail] = useState<string>("");
-  const [pwd, setPwd] = useState<string>("");
-  const [errMsg, setErrMsg] = useState<string>("");
+//   const [email, setEmail] = useState<string>("");
+//   const [pwd, setPwd] = useState<string>("");
+//   const [errMsg, setErrMsg] = useState<string>("");
 
-  useEffect(() => {
-    if (userRef.current) userRef.current.focus();
-  }, []);
+//   useEffect(() => {
+//     if (userRef.current) userRef.current.focus();
+//   }, []);
 
-  useEffect(() => {
-    setErrMsg("");
-  }, [email, pwd]);
+//   useEffect(() => {
+//     setErrMsg("");
+//   }, [email, pwd]);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+//   const handleSubmit = async (e: FormEvent) => {
+//     e.preventDefault();
 
-    try {
-      const response = await axios.post<LoginResponse>(
-        LOGIN_URL,
-        JSON.stringify({ email, pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+//     try {
+//       const response = await axios.post<LoginResponse>(
+//         LOGIN_URL,
+//         JSON.stringify({ email, pwd }),
+//         {
+//           headers: { "Content-Type": "application/json" },
+//           withCredentials: true,
+//         }
+//       );
 
-      const accessToken = response.data.access_token;
-      const refreshToken = response.data.refresh_token;
+//       const accessToken = response.data.access_token;
+//       const refreshToken = response.data.refresh_token;
 
-      setAuth({ email, pwd, refreshToken, accessToken });
-      setEmail("");
-      setPwd("");
-      navigate(from, { replace: true });
-    } catch (err: any) {
-      if (!err.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response.status === 400) {
-        setErrMsg("Missing Username or Password");
-      } else if (err.response.status === 401) {
-        setErrMsg("Unauthorized");
-      } else {
-        setErrMsg("Login Failed");
-      }
-      if (errRef.current) errRef.current.focus();
-    }
-  };
+//       setAuth({ email, pwd, refreshToken, accessToken });
+//       setEmail("");
+//       setPwd("");
+//       navigate(from, { replace: true });
+//     } catch (err: any) {
+//       if (!err.response) {
+//         setErrMsg("No Server Response");
+//       } else if (err.response.status === 400) {
+//         setErrMsg("Missing Username or Password");
+//       } else if (err.response.status === 401) {
+//         setErrMsg("Unauthorized");
+//       } else {
+//         setErrMsg("Login Failed");
+//       }
+//       if (errRef.current) errRef.current.focus();
+//     }
+//   };
 
-  const togglePersist = () => {
-    setPersist((prev: boolean) => !prev);
-  };
+//   const togglePersist = () => {
+//     setPersist((prev: boolean) => !prev);
+//   };
 
-  useEffect(() => {
-    localStorage.setItem("persist", JSON.stringify(persist));
-  }, [persist]);
+//   useEffect(() => {
+//     localStorage.setItem("persist", JSON.stringify(persist));
+//   }, [persist]);
 
   return (
     <section>

@@ -6,6 +6,7 @@ import Supplier from "../pages/admin/views/Supplier";
 import Contract from "../pages/admin/views/Contract";
 import DashboardLayout from "../pages/admin/layout/DashboardLayout";
 import Dashboard from "../pages/admin/views/Dashboard";
+import Settings from "../pages/admin/views/Settings";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -25,7 +26,7 @@ export const DashboardRoutes: RouteObject = {
       // loader: dashboardPaymentsLoader,
     },
     {
-      path: "/dashboard/orders",
+      path: "/dashboard/category",
       element: <Category />,
     },
     {
@@ -35,6 +36,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/contract",
       element: <Contract />,
+    },
+    {
+      path: "/dashboard/settings",
+      element: <Settings />,
     },
   ],
 };
