@@ -38,7 +38,6 @@ const CreateContract = () => {
   };
 
   const fetchSuppliers = async () => {
-    // Replace with your actual API endpoint for fetching suppliers
     const response = await fetch("http://localhost:8081/api/v1/suppliers");
     const suppliers = await response.json();
     console.log(suppliers);
@@ -65,25 +64,33 @@ const CreateContract = () => {
   const createContract = async () => {
     console.log(contractData, "test co");
 
+    const itemsArray = contractData.items.map((itemId) => ({ itemId }));
+
+    const dataToSend = {
+      ...contractData,
+      items: itemsArray,
+    };
+
     try {
       const response = await fetch("http://localhost:8081/api/v1/contract", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(contractData),
+        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {
         throw new Error(`Failed to create contract: ${response.statusText}`);
       }
 
-      const createdContract = await response.json();
-      console.log("Contract created successfully:", createdContract);
+      const responseData = await response.json();
+      console.log("Response from backend:", responseData);
     } catch (error) {
       console.error("Error creating contract:", error);
     }
   };
+
   return (
     <div className="py-16">
       <label htmlFor="contractTitle">Contract Title:</label>
@@ -139,8 +146,8 @@ const CreateContract = () => {
         value={contractData.items}
         multiple
       >
-        {items.map((item: any) => (
-          <option key={item.itemId} value={item.itemId}>
+        {items.map((item: any,i) => (
+          <option key={i} value={item.itemId}>
             {item.itemName}
           </option>
         ))}

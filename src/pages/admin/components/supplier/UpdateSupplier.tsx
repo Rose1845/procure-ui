@@ -42,7 +42,7 @@ function UpdateSupplier() {
     UpdateSupplier();
   };
 
-  const updateSupplier = async (id:number) => {
+  const updateSupplier = async (id: number) => {
     try {
       const response = await fetch(
         `http://localhost:8081/api/v1/supplier/${id}`,
@@ -80,7 +80,7 @@ function UpdateSupplier() {
             htmlFor="name"
             className="block text-sm font-medium text-gray-600"
           >
-            Company Name
+            Supplier Name
           </label>
           <input
             type="text"

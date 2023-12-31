@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
