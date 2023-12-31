@@ -1,6 +1,7 @@
 import "./App.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
+import setupAxiosInterceptor from "./api/axiosInterceptor";
 
 function App() {
   //  const fetchAllItems = async () => {
@@ -8,6 +9,8 @@ function App() {
   //    const data = itemddata.data;
   //    console.log(data, "data");
   //  };
+  setupAxiosInterceptor();
+
   return (
     <>
       <RouterProvider router={router} />

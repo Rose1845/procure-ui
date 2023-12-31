@@ -1,8 +1,10 @@
 import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 // import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { TbMathXMinusX, TbBell } from "react-icons/tb";
-import { BsBack, BsBell } from "react-icons/bs";
+import { FaBars } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
+
 const navigation = [
   { name: "Features", href: "#feature", current: true },
   { name: "FAQS", href: "#faq", current: false },
@@ -27,12 +29,9 @@ export default function Header() {
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    <TbMathXMinusX
-                      className="block h-6 w-6"
-                      aria-hidden="true"
-                    />
+                    <IoClose className="block h-6 w-6" aria-hidden="true" />
                   ) : (
-                    <BsBack className="block h-6 w-6" aria-hidden="true" />
+                    <FaBars className="block h-6 w-6" aria-hidden="true" />
                   )}
                 </Disclosure.Button>
               </div>

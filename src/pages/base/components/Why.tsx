@@ -14,8 +14,8 @@ function Why() {
         </div>
         <div className="flex flex-col mb-10 justify-center text-center items-center">
           <div className="flex flex-col mx-auto bg-white">
-            <div className="w-full draggable">
-              <div className="container flex flex-col items-center gap-16 mx-auto my-32">
+            <div className="w-full">
+              <div className="container flex flex-col items-center gap-16 mx-auto my-16">
                 <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                   <div className="flex flex-col items-center gap-3 px-8 py-10 bg-white rounded-3xl shadow-main">
                     <span>

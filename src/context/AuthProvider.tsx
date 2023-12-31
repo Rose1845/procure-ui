@@ -6,7 +6,7 @@ import React, {
   SetStateAction,
 } from "react";
 
-interface AuthContextType {
+export interface AuthContextType {
   auth: any; // Replace with the actual type
   setAuth: Dispatch<SetStateAction<any>>;
   // persist: boolean;
