@@ -50,3 +50,13 @@ export interface Item {
   createdAt: Date;
   updatedAt: Date;
 }
+export interface ContractData {
+  contractTitle: string;
+  contractType: string;
+  contractStartDate: string;
+  contractEndDate: string;
+  termsAndConditions: string;
+  items: string[]; // Assuming item IDs are strings, adjust as needed
+  vendorId: number;
+}
+

@@ -1,14 +1,15 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { ContractData } from "../../types";
 
 const CreateContract = () => {
-  const [contractData, setContractData] = useState({
+  const [contractData, setContractData] = useState<ContractData>({
     contractTitle: "",
     contractType: "",
     contractStartDate: "",
     contractEndDate: "",
     termsAndConditions: "",
-    items: [{ itemId: "" }],
+    items: [],
     vendorId: 0,
   });
 
@@ -45,14 +46,17 @@ const CreateContract = () => {
     return suppliers;
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
 
     if (name === "items") {
-      const items = contractData.items.map((item, index) =>
-        index.toString() === value ? { ...item, itemId: value } : item
-      );
-      setContractData((prevData) => ({ ...prevData, items }));
+      // For multi-select, directly access the value property
+      const selectedItems = Array.isArray(value) ? value : [value];
+      setContractData((prevData) => ({ ...prevData, items: selectedItems }));
     } else {
       setContractData((prevData) => ({ ...prevData, [name]: value }));
     }
@@ -132,12 +136,12 @@ const CreateContract = () => {
         id="items"
         name="items"
         onChange={handleInputChange}
-        value={contractData.items[0].itemId}
+        value={contractData.items}
+        multiple
       >
-        <option value="">Select an item</option>
         {items.map((item: any) => (
           <option key={item.itemId} value={item.itemId}>
-            {item.itemName} {/* Adjust property based on your item structure */}
+            {item.itemName}
           </option>
         ))}
       </select>
