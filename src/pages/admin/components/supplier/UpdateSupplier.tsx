@@ -1,6 +1,6 @@
 import React from "react";
 
-function CreateSupplier() {
+function UpdateSupplier() {
   const [supplierData, setSupplierData] = React.useState({
     name: "",
     contactPerson: "",
@@ -39,29 +39,30 @@ function CreateSupplier() {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    createSupplier();
+    UpdateSupplier();
   };
 
-  const createSupplier = async () => {
-    console.log(supplierData, "test data");
-
+  const updateSupplier = async (id:number) => {
     try {
-      const response = await fetch("http://localhost:8081/api/v1/suppliers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(supplierData),
-      });
+      const response = await fetch(
+        `http://localhost:8081/api/v1/supplier/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(supplierData),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error(`Failed to create contract: ${response.statusText}`);
+        throw new Error(`Failed to update supplier: ${response.statusText}`);
       }
 
-      const createdContract = await response.json();
-      console.log("Supplier created successfully:", createdContract);
+      const updatedSupplier = await response.json();
+      console.log("Supplier updated successfully:", updatedSupplier);
     } catch (error) {
-      console.error("Error creating contract:", error);
+      console.error("Error updating supplier:", error);
     }
   };
 
@@ -275,4 +276,4 @@ function CreateSupplier() {
   );
 }
 
-export default CreateSupplier;
+export default UpdateSupplier;

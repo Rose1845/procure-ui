@@ -19,6 +19,8 @@ export interface Supplier {
   phoneNumber: string;
   paymentType: string;
   termsAndConditions: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface PurchaseOrder {
@@ -33,6 +35,8 @@ export interface PurchaseOrder {
   supplier: {
     vendorId: number;
   };
+  createdAt: Date;
+  updatedAt: Date;
 }
 export interface Item {
   itemName: string;
@@ -43,6 +47,6 @@ export interface Item {
   categoryId: string;
   totalPrice: number;
   vendorId: number;
-  updatedAt:  string
+  createdAt: Date;
+  updatedAt: Date;
 }
-

@@ -44,7 +44,7 @@ function Items() {
                     <td className="px-4 py-3 text-sm">{item.itemNumber}</td>
 
                     <td className="px-4 py-3 text-sm">{item.unitPrice}</td>
-                    <td className="px-4 py-3 text-sm">{item.updatedAt}</td>
+                    {new Date(item.updatedAt).toLocaleDateString()}
                   </tr>
                 ))}
               </tbody>
