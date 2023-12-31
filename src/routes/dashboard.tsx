@@ -8,6 +8,7 @@ import DashboardLayout from "../pages/admin/layout/DashboardLayout";
 import Dashboard from "../pages/admin/views/Dashboard";
 import Settings from "../pages/admin/views/Settings";
 import useAuth from "../hooks/useAuth";
+import Order from "../pages/admin/views/Order";
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({
   element,
 }) => {
@@ -34,6 +35,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/category",
       element: <Category />,
+    },
+    {
+      path: "/dashboard/order",
+      element: <Order />,
     },
     {
       path: "/dashboard/items",

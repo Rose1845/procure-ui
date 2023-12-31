@@ -19,6 +19,11 @@ export const sidebarLinks: SidebarLink[] = [
     path: "/dashboard",
   },
   {
+    label: "Purchase Order",
+    path: "/dashboard/order",
+    LinkIcon: TfiShoppingCart,
+  },
+  {
     label: "Category",
     path: "/dashboard/category",
     LinkIcon: TfiShoppingCart,

@@ -54,7 +54,7 @@ function Supplier() {
                       {supplier.address.city}
                     </td>
                     <td className="px-4 py-3 text-sm">
-                      {new Date(supplier.updatedAt).toLocaleDateString()}
+                      {new Date(supplier.updatedAt).toLocaleString()}
                     </td>
                   </tr>
                 ))}
