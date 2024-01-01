@@ -44,17 +44,19 @@ const CreateContract = () => {
 
     return suppliers;
   };
-
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
     const { name, value } = e.target;
-
     if (name === "items") {
-      // For multi-select, directly access the value property
-      const selectedItems = Array.isArray(value) ? value : [value];
+      const selectElement = e.target as HTMLSelectElement;
+      const selectedItems = Array.from(
+        selectElement.selectedOptions,
+        (option) => option.value
+      );
+
       setContractData((prevData) => ({ ...prevData, items: selectedItems }));
     } else {
       setContractData((prevData) => ({ ...prevData, [name]: value }));
@@ -146,7 +148,7 @@ const CreateContract = () => {
         value={contractData.items}
         multiple
       >
-        {items.map((item: any,i) => (
+        {items.map((item: any, i) => (
           <option key={i} value={item.itemId}>
             {item.itemName}
           </option>
