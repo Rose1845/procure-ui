@@ -6,7 +6,7 @@ export interface Category {
   updatedAt: string;
 }
 export interface Supplier {
-  vendorId:number;
+  vendorId: number;
   name: string;
   contactPerson: string;
   contactInformation: string;
@@ -34,6 +34,19 @@ export interface PurchaseOrder {
   vendorId: number;
   createdAt: Date;
   updatedAt: Date;
+}
+export interface PurchaseRequestData {
+  purchaseRequestTitle: string;
+  dueDate: string;
+  termsAndConditions: string;
+  items: string[];
+  vendorId: number;
+}
+export interface PurchaseRequisitiontData {
+  requisitionTitle: string;
+  dateNeeded: string;
+  description: string;
+  items: string[];
 }
 export interface PurchaseOrderData {
   purchaseOrderTitle: string;
@@ -63,7 +76,6 @@ export interface ItemData {
   unitPrice: number;
   categoryId: number;
   vendorId: number;
-  
 }
 export interface ContractData {
   contractTitle: string;

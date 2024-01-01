@@ -13,6 +13,10 @@ import CreateItem from "../pages/admin/components/items/CreateItem";
 import CreateCategory from "../pages/admin/components/category/CreateCategory";
 import CreateContract from "../pages/admin/components/contract/CreateContract";
 import CreateOrder from "../pages/admin/components/order/CreateOrder";
+import PurchaseRequest from "../pages/admin/views/PurchaseRequest";
+import CreateRequest from "../pages/admin/components/request/CreateRequest";
+import CreateRequisition from "../pages/admin/components/requisition/CreateRequisition";
+import PurchaseRequisition from "../pages/admin/views/PurchaseRequisition";
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({
   element,
 }) => {
@@ -47,6 +51,22 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/order",
       element: <Order />,
+    },
+    {
+      path: "/dashboard/purchase-request",
+      element: <PurchaseRequest />,
+    },
+    {
+      path: "/dashboard/purchase-requisition",
+      element: <PurchaseRequisition />,
+    },
+    {
+      path: "/dashboard/purchase-request/add-request",
+      element: <CreateRequest />,
+    },
+    {
+      path: "/dashboard/purchase-requisition/add_requisition",
+      element: <CreateRequisition />,
     },
     {
       path: "/dashboard/items",
