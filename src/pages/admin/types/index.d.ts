@@ -6,6 +6,7 @@ export interface Category {
   updatedAt: string;
 }
 export interface Supplier {
+  vendorId:number;
   name: string;
   contactPerson: string;
   contactInformation: string;
@@ -29,14 +30,18 @@ export interface PurchaseOrder {
   termsAndConditions: string;
   paymentType: string;
   approvalStatus: string;
-  items: {
-    itemId: string;
-  }[];
-  supplier: {
-    vendorId: number;
-  };
+  items: string[];
+  vendorId: number;
   createdAt: Date;
   updatedAt: Date;
+}
+export interface PurchaseOrderData {
+  purchaseOrderTitle: string;
+  deliveryDate: string;
+  termsAndConditions: string;
+  paymentType: "MPESA" | "PAYPAL";
+  items: string[];
+  vendorId: number;
 }
 export interface Item {
   itemName: string;
@@ -50,13 +55,22 @@ export interface Item {
   createdAt: Date;
   updatedAt: Date;
 }
+export interface ItemData {
+  itemName: string;
+  itemNumber: string;
+  itemDescription: string;
+  quantity: number;
+  unitPrice: number;
+  categoryId: number;
+  vendorId: number;
+  
+}
 export interface ContractData {
   contractTitle: string;
   contractType: string;
   contractStartDate: string;
   contractEndDate: string;
   termsAndConditions: string;
-  items: string[]; // Assuming item IDs are strings, adjust as needed
+  items: string[];
   vendorId: number;
 }
-

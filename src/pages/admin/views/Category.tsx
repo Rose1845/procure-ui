@@ -30,11 +30,7 @@ function Category() {
           {categories.map((category) => (
             <li key={category.categoryId}>
               {category.categoryName}
-              {/* {category.items.map((item) => (
-                <div key={item.itemId}>
-                  <p>{item.itemName}</p>
-                </div>
-              ))} */}
+              
             </li>
           ))}
         </ul>

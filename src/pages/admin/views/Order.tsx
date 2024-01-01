@@ -1,6 +1,7 @@
 import React from "react";
 import { PurchaseOrder } from "../types";
 import axios from "axios";
+import CreateOrder from "../components/order/CreateOrder";
 
 function Order() {
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
@@ -134,8 +135,8 @@ function Order() {
                       >
                         <path
                           d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clip-rule="evenodd"
-                          fill-rule="evenodd"
+                          clipRule="evenodd"
+                          fillRule="evenodd"
                         ></path>
                       </svg>
                     </button>
@@ -145,6 +146,7 @@ function Order() {
             </span>
           </div>
         </div>
+        <CreateOrder />
       </div>
     </div>
   );

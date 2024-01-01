@@ -1,158 +1,199 @@
+import React from "react";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import { Category, ItemData, Supplier } from "../../types";
 
 const CreateItem = () => {
-  const [contractData, setContractData] = useState({
+  const [contractData, setContractData] = React.useState<ItemData>({
     itemName: "",
     itemNumber: "",
-    contractStartDate: "",
     itemDescription: "",
-    quantity: 0,
+    quantity: 1,
     unitPrice: 0,
     categoryId: 0,
     vendorId: 0,
   });
 
-  const [categories, setCategories] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
+  const [categories, setCategories] = React.useState<Category[]>([]);
+  const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
 
-  useEffect(() => {
-    // Fetch items from the API
+  React.useEffect(() => {
     fetchItems()
       .then((data) => setCategories(data))
-      .catch((error) => console.error("Error fetching cate:", error));
+      .catch((error) => console.error("Error fetching categories:", error));
 
-    // Fetch suppliers from the API
     fetchSuppliers()
       .then((data) => setSuppliers(data))
       .catch((error) => console.error("Error fetching suppliers:", error));
   }, []);
 
   const fetchItems = async () => {
-    // Replace with your actual API endpoint for fetching items
-    const response = await fetch("http://localhost:8081/api/v1/category");
-    const category = await response.json();
-    console.log(category, "categories");
-
-    return category;
+    const response = await axios.get("http://localhost:8081/api/v1/category");
+    return response.data;
   };
 
   const fetchSuppliers = async () => {
-    // Replace with your actual API endpoint for fetching suppliers
-    const response = await fetch("http://localhost:8081/api/v1/suppliers");
-    const suppliers = await response.json();
-    console.log(suppliers);
-
-    return suppliers;
+    const response = await axios.get("http://localhost:8081/api/v1/suppliers");
+    return response.data;
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
     setContractData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const CreateItem = async () => {
-    console.log(contractData, "test data");
-
+  const createItem = async () => {
     try {
-      const response = await fetch("http://localhost:8081/api/v1/items", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(contractData),
-      });
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/items",
+        contractData
+      );
 
-      if (!response.ok) {
-        throw new Error(`Failed to create contract: ${response.statusText}`);
-      }
-
-      const createdContract = await response.json();
-      console.log("Contract created successfully:", createdContract);
+      console.log("Item created successfully:", response.data);
     } catch (error) {
-      console.error("Error creating contract:", error);
+      console.error("Error creating item:", error);
     }
   };
+
   return (
-    <div className="py-16">
-      <label htmlFor="contractTitle">itemName:</label>
-      <input
-        type="text"
-        id="itemName"
-        name="itemName"
-        value={contractData.itemName}
-        onChange={handleInputChange}
-      />
+    <div className="py-16 max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold mb-8">Create Item</h1>
 
-      <label htmlFor="contractType">itemDescription:</label>
-      <input
-        type="text"
-        id="itemDescription"
-        name="itemDescription"
-        value={contractData.itemDescription}
-        onChange={handleInputChange}
-      />
+      <div className="mb-4">
+        <label
+          htmlFor="itemName"
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Item Name:
+        </label>
+        <input
+          type="text"
+          id="itemName"
+          name="itemName"
+          value={contractData.itemName}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+      </div>
 
-      <label htmlFor="contractStartDate">quantity</label>
-      <input
-        type="number"
-        id="quantity"
-        name="quantity"
-        value={contractData.quantity}
-        onChange={handleInputChange}
-      />
+      <div className="mb-4">
+        <label
+          htmlFor="itemDescription"
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Item Description:
+        </label>
+        <textarea
+          id="itemDescription"
+          name="itemDescription"
+          value={contractData.itemDescription}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+      </div>
 
-      <label htmlFor="contractEndDate">unitPrice</label>
-      <input
-        type="number"
-        id="unitPrice"
-        name="unitPrice"
-        value={contractData.unitPrice}
-        onChange={handleInputChange}
-      />
+      <div className="mb-4">
+        <label
+          htmlFor="quantity"
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Quantity:
+        </label>
+        <input
+          type="number"
+          id="quantity"
+          name="quantity"
+          value={contractData.quantity}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+      </div>
 
-      <label htmlFor="itemNumber">itemNumber:</label>
-      <textarea
-        id="itemNumber"
-        name="itemNumber"
-        value={contractData.itemNumber}
-        onChange={handleInputChange}
-      />
+      <div className="mb-4">
+        <label
+          htmlFor="unitPrice"
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Unit Price:
+        </label>
+        <input
+          type="number"
+          id="unitPrice"
+          name="unitPrice"
+          value={contractData.unitPrice}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+      </div>
 
-      {/* Items dropdown */}
+      <div className="mb-4">
+        <label
+          htmlFor="itemNumber"
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Item Number:
+        </label>
+        <input
+          type="text"
+          id="itemNumber"
+          name="itemNumber"
+          value={contractData.itemNumber}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+      </div>
 
-      {/* Suppliers dropdown */}
-      <label htmlFor="vendorId">Select Supplier:</label>
-      <select
-        id="vendorId"
-        name="vendorId"
-        onChange={handleInputChange}
-        value={contractData.vendorId}
+      <div className="mb-4">
+        <label
+          htmlFor="vendorId"
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Select Supplier:
+        </label>
+        <select
+          id="vendorId"
+          name="vendorId"
+          onChange={handleInputChange}
+          value={contractData.vendorId}
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        >
+          <option value="">Select a supplier</option>
+          {suppliers.map((supplier) => (
+            <option key={supplier.vendorId} value={supplier.vendorId}>
+              {supplier.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mb-4">
+        <label
+          htmlFor="categoryId"
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Select Category:
+        </label>
+        <select
+          id="categoryId"
+          name="categoryId"
+          onChange={handleInputChange}
+          value={contractData.categoryId}
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        >
+          <option value="">Select a category</option>
+          {categories.map((category,i) => (
+            <option key={i} value={category.categoryId}>
+              {category.categoryName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <button
+        onClick={createItem}
+        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
       >
-        <option value="">Select a supplier</option>
-        {suppliers.map((supplier: any) => (
-          <option key={supplier.vendorId} value={supplier.vendorId}>
-            {supplier.name}{" "}
-            {/* Adjust property based on your supplier structure */}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="categoryId">Select Category:</label>
-      <select
-        id="categoryId"
-        name="categoryId"
-        onChange={handleInputChange}
-        value={contractData.categoryId}
-      >
-        <option value="">Select a category</option>
-        {categories.map((category: any) => (
-          <option key={category.categoryId} value={category.categoryId}>
-            {category.categoryName}{" "}
-          </option>
-        ))}
-      </select>
-
-      <button onClick={CreateItem}>Create Contract</button>
+        Create Item
+      </button>
     </div>
   );
 };

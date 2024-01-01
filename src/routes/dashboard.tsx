@@ -9,6 +9,10 @@ import Dashboard from "../pages/admin/views/Dashboard";
 import Settings from "../pages/admin/views/Settings";
 import useAuth from "../hooks/useAuth";
 import Order from "../pages/admin/views/Order";
+import CreateItem from "../pages/admin/components/items/CreateItem";
+import CreateCategory from "../pages/admin/components/category/CreateCategory";
+import CreateContract from "../pages/admin/components/contract/CreateContract";
+import CreateOrder from "../pages/admin/components/order/CreateOrder";
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({
   element,
 }) => {
@@ -37,12 +41,28 @@ export const DashboardRoutes: RouteObject = {
       element: <Category />,
     },
     {
+      path: "/dashboard/items/add_order",
+      element: <CreateOrder />,
+    },
+    {
       path: "/dashboard/order",
       element: <Order />,
     },
     {
       path: "/dashboard/items",
       element: <Items />,
+    },
+    {
+      path: "/dashboard/items/add_item",
+      element: <CreateItem />,
+    },
+    {
+      path: "/dashboard/items/add_category",
+      element: <CreateCategory />,
+    },
+    {
+      path: "/dashboard/items/add_contract",
+      element: <CreateContract />,
     },
     {
       path: "/dashboard/contract",
