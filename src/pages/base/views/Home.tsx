@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Why from "../components/Why";
 import Faq from "../components/Faq";
 import Hero from "../components/Hero";
+import Footer from "../components/Footer";
 
 function Home() {
   return (
@@ -12,7 +13,7 @@ function Home() {
       <Why />
       <Faq />
       <Contact />
-      <Link to="/login">Login</Link>
+      <Footer />
     </div>
   );
 }
