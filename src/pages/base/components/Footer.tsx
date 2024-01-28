@@ -3,20 +3,26 @@ import React from "react";
 
 function Footer() {
   const [email, setEmail] = React.useState<string>("");
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    subscribe();
-  };
-  const subscribe = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8081/api/newsletter/subscribe?email=${email}`
+        `http://localhost:8081/api/newsletter/subscribe?email=${email}`,
+        { email },
+        // {
+        //   headers: {
+        //     Authorization:
+        //       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb3NlQGdtYWlsLmNvbSIsImlhdCI6MTcwNTg1MzA2OCwiZXhwIjoxNzA1OTM5NDY4fQ.THdR2xBG3fzOS5KuyYDOIVo_KqngBPlIatkq55mE5xo",
+        //   },
+        // }
       );
+      console.log(response.data, "dta");
       setEmail("");
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <footer className="p-4 bg-white sm:p-6 dark:bg-gray-800">
       <div className="mx-auto max-w-screen-xl">

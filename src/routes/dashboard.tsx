@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Profiler } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 import Category from "../pages/admin/views/Category";
 import Items from "../pages/admin/views/Items";
@@ -17,15 +17,23 @@ import PurchaseRequest from "../pages/admin/views/PurchaseRequest";
 import CreateRequest from "../pages/admin/components/request/CreateRequest";
 import CreateRequisition from "../pages/admin/components/requisition/CreateRequisition";
 import PurchaseRequisition from "../pages/admin/views/PurchaseRequisition";
+import ProtectedRoute from "./ProtectedRoute";
+import InvoiceDetails from "../pages/admin/views/Invoice";
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({
   element,
 }) => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? element : <Navigate to="/login" />;
 };
+
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
-  element: <DashboardLayout />,
+  element: (
+    <ProtectedRoute>
+      <DashboardLayout />
+    </ProtectedRoute>
+  ),
+
   children: [
     {
       path: "/dashboard",
@@ -83,6 +91,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/items/add_contract",
       element: <CreateContract />,
+    },
+    {
+      path: "/dashboard/invoice/view",
+      element: <InvoiceDetails />,
     },
     {
       path: "/dashboard/contract",

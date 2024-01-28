@@ -1,33 +1,25 @@
 import axios from "axios";
 import React from "react";
+import { axiosApi } from "../../../../api";
 
 function CreateCategory() {
-  const [categoryData, setCategoryData] = React.useState({
-    categoryName: "",
-  });
+  // const [categoryData, setCategoryData] = React.useState({
+  //   categoryName: "",
+  // });
+  const [categoryName, setCategoryName] = React.useState<string>("");
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setCategoryData((prevData) => ({ ...prevData, [name]: value }));
+    setCategoryName(value);
   };
-  const createCategory = async () => {
-    console.log(categoryData, "categ");
+  const createCategory = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     try {
-      const response = await fetch("http://localhost:8081/api/v1/category", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(categoryData),
-      });
+      const response = await axiosApi.post("/category", { categoryName });
 
-      if (!response.ok) {
-        throw new Error(`Failed to create contract: ${response.statusText}`);
-      }
+      const createdCategory = response.data;
+      console.log(createdCategory, "categor");
 
-      const createdContract = await response;
-      console.log(categoryData.categoryName);
-
-      console.log("Category created successfully:", createdContract);
+      console.log("Category created successfully:", createdCategory);
     } catch (error) {
       console.error("Error creating contract:", error);
     }
@@ -35,7 +27,7 @@ function CreateCategory() {
   return (
     <div className="flex items-center justify-center p-16">
       <div className="mx-auto w-full max-w-[550px]">
-        <form >
+        <form>
           <div className="mb-5">
             <label
               htmlFor="categoryName"
@@ -48,13 +40,16 @@ function CreateCategory() {
               name="categoryName"
               id="categoryName"
               onChange={handleInputChange}
-              value={categoryData.categoryName}
+              value={categoryName}
               placeholder="Full Name"
               className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
           </div>
           <div>
-            <button onClick={createCategory} className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
+            <button
+              onClick={createCategory}
+              className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none"
+            >
               Submit
             </button>
           </div>

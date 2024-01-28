@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { ContractData } from "../../types";
+import { axiosApi } from "../../../../api";
 
 const CreateContract = () => {
   const [contractData, setContractData] = React.useState<ContractData>({
@@ -29,12 +30,14 @@ const CreateContract = () => {
   }, []);
 
   const fetchItems = async () => {
-    const response = await axios.get("http://localhost:8081/api/v1/items");
+    const response = await axiosApi.get("http://localhost:8081/api/v1/items");
     return response.data;
   };
 
   const fetchSuppliers = async () => {
-    const response = await axios.get("http://localhost:8081/api/v1/suppliers");
+    const response = await axiosApi.get(
+      "http://localhost:8081/api/v1/suppliers"
+    );
     return response.data;
   };
 
@@ -68,7 +71,7 @@ const CreateContract = () => {
     };
 
     try {
-      const response = await axios.post(
+      const response = await axiosApi.post(
         "http://localhost:8081/api/v1/contract",
         dataToSend
       );

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import CreateCategory from "../components/category/CreateCategory";
 import axios from "axios";
+import { axiosApi } from "../../../api";
 interface Category {
   categoryId: number;
   categoryName: string | null;
@@ -17,7 +18,7 @@ function Category() {
   }, []);
   const fetchCategories = async () => {
     // Replace with your actual API endpoint for fetching items
-    const response = await axios.get("http://localhost:8081/api/v1/category");
+    const response = await axiosApi.get("/category");
     const category = await response.data;
     console.log(category, "categories");
 

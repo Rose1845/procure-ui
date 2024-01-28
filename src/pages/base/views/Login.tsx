@@ -1,71 +1,120 @@
+// import { useState } from "react";
+// import { useAuth } from "../../../utils/auth";
+// import { endpoints, fetchWrapper } from "../../../utils/api";
+
+// function Login() {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+
+//   const { onLogin } = useAuth();
+
+//   const handleLogin = async (e: any) => {
+//     e.preventDefault();
+//     const response = await fetchWrapper(endpoints.login, {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: {
+//         email,
+//         password,
+//       },
+//     });
+//     if (response.ok) {
+//       const userData = await response.json();
+//       onLogin(userData);
+//       console.log("data",userData);
+
+//     } else {
+
+//       console.error("Username or Password is incorrect");
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <form onSubmit={handleLogin}>
+//         <h3>Login Form</h3>
+//         <br />
+//         <input
+//           type="email"
+//           placeholder="email"
+//           required
+//           value={email}
+//           onChange={(e) => setEmail(e.target.value)}
+//         />
+//         <br />
+//         <input
+//           type="password"
+//           placeholder="password"
+//           value={password}
+//           onChange={(e) => setPassword(e.target.value)}
+//         />
+//         <br />
+//         <br />
+//         <button type="submit">Login</button>
+//       </form>
+//     </div>
+//   );
+// }
+
+// export default Login;
+
 import React, { useState } from "react";
-import axios from "axios";
+import { publicApi } from "../../../api/index";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../../hooks/useAuth";
-
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
   const navigate = useNavigate();
-  const auth = useAuth();
-  console.log(auth, "auth");
 
-  const handleLogin = async () => {
+  const handleChange = (e: any) => {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
     try {
-      const response = await axios.post(
-        "http://localhost:8081/api/v1/auth/authenticate",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await publicApi.post("/auth/authenticate", credentials);
+      const { access_token, refresh_token } = response.data;
 
-      console.log(response.data, "reponse dta");
-      localStorage.setItem("access_token", response.data.access_token);
-      const decodedToken = parseJwt(response.data.access_token);
-      console.log("Decoded Token:", decodedToken);
-      console.log("Login successful!");
-      auth.login();
+      // Store the tokens in localStorage or secure cookie for later use
+      localStorage.setItem("token", access_token);
+      localStorage.setItem("refreshToken", refresh_token);
       navigate("/dashboard");
+      // Redirect or perform other actions upon successful login
     } catch (error) {
-      console.error("Login failed:", error);
+      console.log(error);
+
+      // Handle login error
     }
   };
 
   return (
-    <div>
-      <label>Email:</label>
+    <form onSubmit={handleSubmit}>
       <input
-        type="text"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        type="email"
+        name="email"
+        placeholder="procure@gmail.com"
+        value={credentials.email}
+        className="mt-1 p-2 border rounded-md w-full"
+        onChange={handleChange}
       />
-      <label>Password:</label>
       <input
         type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        name="password"
+        placeholder="password"
+        className="mt-1 p-2 border rounded-md w-full"
+        value={credentials.password}
+        onChange={handleChange}
       />
-
-      <button onClick={handleLogin}>Login</button>
-    </div>
+      <button type="submit">Login</button>
+    </form>
   );
 };
 
 export default Login;
-const parseJwt = (access_token: string) => {
-  try {
-    const base64Url = access_token.split(".")[1];
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split("")
-        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-        .join("")
-    );
-    return JSON.parse(jsonPayload);
-  } catch (error) {
-    console.error("Error parsing JWT:", error);
-    return null;
-  }
-};

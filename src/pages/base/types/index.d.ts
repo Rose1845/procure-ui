@@ -1,6 +1,6 @@
-export interface Contact {
-    name:string;
-    email:string;
-    title:string;
-    message:string
-}
+export type ContactData = {
+  name: string;
+  email: string;
+  title: string;
+  message: string;
+};
