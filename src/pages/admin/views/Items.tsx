@@ -2,6 +2,7 @@ import React from "react";
 import CreateItem from "../components/items/CreateItem";
 import axios from "axios";
 import { Item } from "../types";
+import { axiosApi } from "../../../api";
 
 function Items() {
   const [items, setitems] = React.useState<Item[]>([]);
@@ -11,7 +12,7 @@ function Items() {
       .catch((error) => console.error("Error fetching categries:", error));
   }, []);
   const fetchItems = async () => {
-    const response = await axios.get("http://localhost:8081/api/v1/items");
+    const response = await axiosApi.get("/items");
     const category = await response.data;
     console.log(category, "items");
 

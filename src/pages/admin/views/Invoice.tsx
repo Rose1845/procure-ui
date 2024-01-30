@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {axiosApi} from "../../../api";
+import { axiosApi } from "../../../api";
 import axios from "axios";
 
 interface Address {
@@ -69,8 +69,8 @@ const Invoice: React.FC = () => {
 
     const fetchInvoiceDetails = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8081/api/v1/invoices/invoice-details/${invoiceId}`
+        const response = await axiosApi.get(
+          `/invoices/invoice-details/${invoiceId}`
         );
         const data = await response.data;
         setInvoiceDetailsList(data);

@@ -1,23 +1,40 @@
 import React from "react";
 import { PurchaseOrder } from "../types";
-import axios from "axios";
 import CreateOrder from "../components/order/CreateOrder";
+import { axiosApi } from "../../../api";
+import { useNavigate } from "react-router-dom";
 
 function Order() {
+  const navigate = useNavigate();
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
   React.useEffect(() => {
     fetchOrders()
       .then((data) => setOrders(data))
-      .catch((error) => console.error("Error fetching categries:", error));
+      .catch((error) => console.error("Error fetching orders:", error));
   }, []);
-  const fetchOrders = async () => {
-    const response = await axios.get(
-      "http://localhost:8081/api/v1/purchase-order"
-    );
-    const order = await response.data;
-    console.log(order, "orders");
 
+  const fetchOrders = async () => {
+    const response = await axiosApi.get("/purchase-order");
+    const order = response.data;
+    console.log(order, "orders");
     return order;
+  };
+  const handleEdit = (id: number) => {
+    // Redirect or open a modal for editing based on the id
+    navigate(`/dashboard/order/edit/${id}`);
+    console.log(`Editing Order with ID: ${id}`);
+  };
+  const handleDelete = async (id: number) => {
+    try {
+      // Send a DELETE request to delete the supplier with the given ID
+      await axiosApi.delete(`/purchase-order/${id}`);
+      console.log(`Order with ID ${id} deleted successfully`);
+
+      // Refresh the list of suppliers after deletion
+      fetchOrders();
+    } catch (error) {
+      console.error(`Error deleting supplier with ID ${id}:`, error);
+    }
   };
   return (
     <div>
@@ -56,6 +73,21 @@ function Order() {
                     </td>
                     <td className="px-4 py-3 text-sm">
                       {new Date(order.createdAt).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3 text-sm">
+                      <button
+                        className="text-blue-600 hover:underline"
+                        onClick={() => handleEdit(order.purchaseOrderId)}
+                      >
+                        Edit
+                      </button>
+                      {" | "}
+                      <button
+                        className="text-red-600 hover:underline"
+                        onClick={() => handleDelete(order.purchaseOrderId)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}

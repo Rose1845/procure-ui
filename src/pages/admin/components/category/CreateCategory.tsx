@@ -1,4 +1,3 @@
-import axios from "axios";
 import React from "react";
 import { axiosApi } from "../../../../api";
 
@@ -8,7 +7,7 @@ function CreateCategory() {
   // });
   const [categoryName, setCategoryName] = React.useState<string>("");
   const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     setCategoryName(value);
   };
   const createCategory = async (event: React.MouseEvent<HTMLButtonElement>) => {

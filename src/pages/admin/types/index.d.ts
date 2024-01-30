@@ -23,8 +23,24 @@ export interface Supplier {
   createdAt: Date;
   updatedAt: Date;
 }
+export type SupplierData = {
+  name: string;
+  contactPerson: string;
+  contactInformation: string;
+  address: {
+    box: string;
+    country: string;
+    city: string;
+    location: string;
+  };
+  email: string;
+  phoneNumber: string;
+  paymentType: string;
+  termsAndConditions: string;
+}
 
 export interface PurchaseOrder {
+  purchaseOrderId: number;
   purchaseOrderTitle: string;
   deliveryDate: string;
   termsAndConditions: string;

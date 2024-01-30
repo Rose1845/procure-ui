@@ -1,6 +1,6 @@
 import React from "react";
-import axios from "axios";
 import { Category, ItemData, Supplier } from "../../types";
+import { axiosApi } from "../../../../api";
 
 const CreateItem = () => {
   const [contractData, setContractData] = React.useState<ItemData>({
@@ -27,26 +27,23 @@ const CreateItem = () => {
   }, []);
 
   const fetchItems = async () => {
-    const response = await axios.get("http://localhost:8081/api/v1/category");
+    const response = await axiosApi.get("/category");
     return response.data;
   };
 
   const fetchSuppliers = async () => {
-    const response = await axios.get("http://localhost:8081/api/v1/suppliers");
+    const response = await axiosApi.get("/suppliers");
     return response.data;
   };
 
-  const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
+  const handleInputChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setContractData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const createItem = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:8081/api/v1/items",
-        contractData
-      );
+      const response = await axiosApi.post("/items", contractData);
 
       console.log("Item created successfully:", response.data);
     } catch (error) {
@@ -180,7 +177,7 @@ const CreateItem = () => {
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
         >
           <option value="">Select a category</option>
-          {categories.map((category,i) => (
+          {categories.map((category, i) => (
             <option key={i} value={category.categoryId}>
               {category.categoryName}
             </option>

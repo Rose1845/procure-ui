@@ -1,6 +1,10 @@
 import React from "react";
+import { axiosApi } from "../../../../api";
+import { useParams } from "react-router-dom";
 
-function UpdateSupplier() {
+const UpdateSupplier= () => {
+    const { id } = useParams();
+
   const [supplierData, setSupplierData] = React.useState({
     name: "",
     contactPerson: "",
@@ -16,6 +20,25 @@ function UpdateSupplier() {
     paymentType: "",
     termsAndConditions: "",
   });
+
+  React.useEffect(() => {
+    const fetchSupplierData = async () => {
+      try {
+        const response = await axiosApi.get(`/suppliers/supplier/${id}`);
+        const existingSupplierData = response.data;
+        console.log(existingSupplierData, "id supllier");
+
+        setSupplierData(existingSupplierData);
+      } catch (error) {
+        console.error(
+          `Error fetching supplier with ID ${id} for editing:`,
+          error
+        );
+      }
+    };
+
+    fetchSupplierData();
+  }, []);
 
   const handleInputChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -39,30 +62,18 @@ function UpdateSupplier() {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    UpdateSupplier();
+    updateSupplier();
   };
 
-  const updateSupplier = async (id: number) => {
+  const updateSupplier = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8081/api/v1/supplier/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(supplierData),
-        }
-      );
+      const response = await axiosApi.put(`/suppliers/${id}`, supplierData);
+      const updatedSupplierData = response.data;
+      console.log(updatedSupplierData, "edit supplier");
 
-      if (!response.ok) {
-        throw new Error(`Failed to update supplier: ${response.statusText}`);
-      }
-
-      const updatedSupplier = await response.json();
-      console.log("Supplier updated successfully:", updatedSupplier);
+      console.log(`Supplier with ID ${id} updated successfully`);
     } catch (error) {
-      console.error("Error updating supplier:", error);
+      console.error(`Error updating supplier with ID ${id}:`, error);
     }
   };
 
@@ -72,7 +83,7 @@ function UpdateSupplier() {
         onSubmit={handleSubmit}
         className="max-w-md mx-auto bg-white p-8 shadow-md rounded-md"
       >
-        <h2 className="text-2xl font-semibold mb-6">Create Supplier</h2>
+        <h2 className="text-2xl font-semibold mb-6">Update Supplier</h2>
 
         {/* Company Information */}
         <div className="mb-4">
@@ -274,6 +285,6 @@ function UpdateSupplier() {
       </form>
     </div>
   );
-}
+};
 
 export default UpdateSupplier;

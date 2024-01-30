@@ -7,7 +7,6 @@ import Contract from "../pages/admin/views/Contract";
 import DashboardLayout from "../pages/admin/layout/DashboardLayout";
 import Dashboard from "../pages/admin/views/Dashboard";
 import Settings from "../pages/admin/views/Settings";
-import useAuth from "../hooks/useAuth";
 import Order from "../pages/admin/views/Order";
 import CreateItem from "../pages/admin/components/items/CreateItem";
 import CreateCategory from "../pages/admin/components/category/CreateCategory";
@@ -19,12 +18,9 @@ import CreateRequisition from "../pages/admin/components/requisition/CreateRequi
 import PurchaseRequisition from "../pages/admin/views/PurchaseRequisition";
 import ProtectedRoute from "./ProtectedRoute";
 import InvoiceDetails from "../pages/admin/views/Invoice";
-const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({
-  element,
-}) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? element : <Navigate to="/login" />;
-};
+import UpdateSupplier from "../pages/admin/components/supplier/UpdateSupplier";
+import EditCategory from "../pages/admin/components/category/UpdateCategories";
+import UpdateOrder from "../pages/admin/components/order/UpdateOrder";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -44,6 +40,10 @@ export const DashboardRoutes: RouteObject = {
       element: <Supplier />,
     },
     {
+      path: "/dashboard/update_supplier/:id",
+      element: <UpdateSupplier />,
+    },
+    {
       path: "/dashboard/payments",
       element: <Items />,
       // loader: dashboardPaymentsLoader,
@@ -51,6 +51,14 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/category",
       element: <Category />,
+    },
+    {
+      path: "/dashboard/category/edit/:id",
+      element: <EditCategory />,
+    },
+    {
+      path: "/dashboard/order/edit/:id",
+      element: <UpdateOrder />,
     },
     {
       path: "/dashboard/items/add_order",

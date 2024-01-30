@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { ContractData } from "../../types";
 import { axiosApi } from "../../../../api";
 
@@ -30,14 +29,12 @@ const CreateContract = () => {
   }, []);
 
   const fetchItems = async () => {
-    const response = await axiosApi.get("http://localhost:8081/api/v1/items");
+    const response = await axiosApi.get("/items");
     return response.data;
   };
 
   const fetchSuppliers = async () => {
-    const response = await axiosApi.get(
-      "http://localhost:8081/api/v1/suppliers"
-    );
+    const response = await axiosApi.get("/suppliers");
     return response.data;
   };
 
@@ -71,10 +68,7 @@ const CreateContract = () => {
     };
 
     try {
-      const response = await axiosApi.post(
-        "http://localhost:8081/api/v1/contract",
-        dataToSend
-      );
+      const response = await axiosApi.post("/contract", dataToSend);
 
       if (!response.data) {
         throw new Error(`Failed to create contract: ${response.statusText}`);

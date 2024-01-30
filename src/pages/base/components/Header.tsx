@@ -4,6 +4,7 @@ import { Disclosure } from "@headlessui/react";
 import { TbMathXMinusX, TbBell } from "react-icons/tb";
 import { FaBars } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const navigation = [
   { name: "Features", href: "#feature", current: true },
@@ -69,7 +70,7 @@ export default function Header() {
                     type="button"
                     className="relative rounded-md bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                   >
-                    LOGIN
+                    <Link to={"/login"}>LOGIN</Link>
                   </button>
                 </div>
 

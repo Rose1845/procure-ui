@@ -1,7 +1,9 @@
 import React from "react";
+import { axiosApi } from "../../../../api";
+import { SupplierData } from "../../types";
 
 function CreateSupplier() {
-  const [supplierData, setSupplierData] = React.useState({
+  const [supplierData, setSupplierData] = React.useState<SupplierData>({
     name: "",
     contactPerson: "",
     contactInformation: "",
@@ -17,18 +19,18 @@ function CreateSupplier() {
     termsAndConditions: "",
   });
 
-  const handleInputChange = (e: { target: { name: any; value: any } }) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if (name.includes(".")) {
-      const [parent, child] = name.split(".");
-      setSupplierData({
-        ...supplierData,
-        [parent]: {
-          ...supplierData[parent],
-          [child]: value,
-        },
-      });
+       const [parent, child] = name.split(".");
+       setSupplierData({
+         ...supplierData,
+         [parent]: {
+           ...supplierData[parent],
+           [child]: value,
+         },
+       });
       
     } else {
       setSupplierData({
@@ -37,8 +39,7 @@ function CreateSupplier() {
       });
     }
   };
-
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createSupplier();
   };
@@ -47,19 +48,12 @@ function CreateSupplier() {
     console.log(supplierData, "test data");
 
     try {
-      const response = await fetch("http://localhost:8081/api/v1/suppliers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(supplierData),
-      });
+      const response = await axiosApi.post(
+        "/suppliers",
+        supplierData
+      );
 
-      if (!response.ok) {
-        throw new Error(`Failed to create contract: ${response.statusText}`);
-      }
-
-      const createdContract = await response.json();
+      const createdContract = response.data;
       console.log("Supplier created successfully:", createdContract);
     } catch (error) {
       console.error("Error creating contract:", error);

@@ -1,10 +1,11 @@
 import React from "react";
-import Contact from "../../base/components/Contact";
 import CreateSupplier from "../components/supplier/CreateSupplier";
-import axios from "axios";
 import { Supplier } from "../types";
+import { axiosApi } from "../../../api";
+import { useNavigate } from "react-router-dom";
 
 function Supplier() {
+  const navigate = useNavigate();
   const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
   React.useEffect(() => {
     fetchsuppliers()
@@ -12,11 +13,28 @@ function Supplier() {
       .catch((error) => console.error("Error fetching categries:", error));
   }, []);
   const fetchsuppliers = async () => {
-    const response = await axios.get("http://localhost:8081/api/v1/suppliers");
-    const supplier = await response.data;
+    const response = await axiosApi.get("/suppliers");
+    const supplier = response.data;
     console.log(supplier, "suppliers");
 
     return supplier;
+  };
+  const handleEdit = (id: number) => {
+    // Redirect or open a modal for editing based on the id
+    navigate(`/dashboard/update_supplier/${id}`);
+    console.log(`Editing supplier with ID: ${id}`);
+  };
+  const handleDelete = async (id: number) => {
+    try {
+      // Send a DELETE request to delete the supplier with the given ID
+      await axiosApi.delete(`/suppliers/${id}`);
+      console.log(`Supplier with ID ${id} deleted successfully`);
+
+      // Refresh the list of suppliers after deletion
+      fetchsuppliers();
+    } catch (error) {
+      console.error(`Error deleting supplier with ID ${id}:`, error);
+    }
   };
   return (
     <div className="pt-11">
@@ -55,6 +73,21 @@ function Supplier() {
                     </td>
                     <td className="px-4 py-3 text-sm">
                       {new Date(supplier.updatedAt).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3 text-sm">
+                      <button
+                        className="text-blue-600 hover:underline"
+                        onClick={() => handleEdit(supplier.vendorId)}
+                      >
+                        Edit
+                      </button>
+                      {" | "}
+                      <button
+                        className="text-red-600 hover:underline"
+                        onClick={() => handleDelete(supplier.vendorId)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}

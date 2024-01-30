@@ -1,5 +1,6 @@
 import React from "react";
-import {  PurchaseRequestData } from "../../types";
+import { PurchaseRequestData } from "../../types";
+import { axiosApi } from "../../../../api";
 
 const CreateRequest = () => {
   const [orderData, setOrderData] = React.useState<PurchaseRequestData>({
@@ -14,6 +15,7 @@ const CreateRequest = () => {
   const [suppliers, setSuppliers] = React.useState([]);
 
   React.useEffect(() => {
+    
     fetchItems()
       .then((data) => setItems(data))
       .catch((error) => console.error("Error fetching items:", error));
@@ -24,14 +26,14 @@ const CreateRequest = () => {
   }, []);
 
   const fetchItems = async () => {
-    const response = await fetch("http://localhost:8081/api/v1/items");
-    const items = await response.json();
+    const response = await axiosApi.get("/items");
+    const items = response.data;
     return items;
   };
 
   const fetchSuppliers = async () => {
-    const response = await fetch("http://localhost:8081/api/v1/suppliers");
-    const suppliers = await response.json();
+    const response = await axiosApi.get("/suppliers");
+    const suppliers = response.data;
     return suppliers;
   };
 
@@ -61,22 +63,8 @@ const CreateRequest = () => {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:8081/api/v1/purchase-request",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataToSend),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to create order: ${response.statusText}`);
-      }
-
-      const responseData = await response.json();
+      const response = await axiosApi.post("/purchase-request", dataToSend);
+      const responseData = await response.data;
       console.log("Response from backend:", responseData);
     } catch (error) {
       console.error("Error creating order:", error);

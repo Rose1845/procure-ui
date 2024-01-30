@@ -1,5 +1,6 @@
 import React from "react";
 import { PurchaseRequisitiontData } from "../../types";
+import { axiosApi } from "../../../../api";
 
 const CreateRequisition = () => {
   const [orderData, setOrderData] = React.useState<PurchaseRequisitiontData>({
@@ -18,8 +19,8 @@ const CreateRequisition = () => {
   }, []);
 
   const fetchItems = async () => {
-    const response = await fetch("http://localhost:8081/api/v1/items");
-    const items = await response.json();
+    const response = await axiosApi.get("/items");
+    const items = await response.data;
     return items;
   };
 
@@ -49,22 +50,9 @@ const CreateRequisition = () => {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:8081/api/v1/purchase-requisition",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataToSend),
-        }
-      );
+      const response = await axiosApi.post("/purchase-requisition", dataToSend);
 
-      if (!response.ok) {
-        throw new Error(`Failed to create order: ${response.statusText}`);
-      }
-
-      const responseData = await response.json();
+      const responseData = response.data;
       console.log("Response from backend:", responseData);
     } catch (error) {
       console.error("Error creating order:", error);
@@ -125,10 +113,6 @@ const CreateRequisition = () => {
           </option>
         ))}
       </select>
-      <label className="block mb-2" htmlFor="vendorId">
-        Select Supplier:
-      </label>
-
       <button
         className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
         onClick={createRequisition}
