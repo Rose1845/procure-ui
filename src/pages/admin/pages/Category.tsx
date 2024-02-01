@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import CreateCategory from "../components/category/CreateCategory";
-import axios from "axios";
 import { axiosApi } from "../../../api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 interface Category {
   categoryId: number;
   categoryName: string | null;
@@ -19,8 +18,10 @@ function Category() {
       .catch((error) => console.error("Error fetching categries:", error));
   }, []);
 
+
+
    const handleEdit = (id: number) => {
-     navigate(`/dashboard/category/edit/${id}`);
+     navigate(`/dashboard/category/view/${id}`);
      console.log(`Editing Category with ID: ${id}`);
    };
   const handleDelete = async (id: number) => {
@@ -40,7 +41,6 @@ function Category() {
     const response = await axiosApi.get("/category");
     const category = await response.data;
     console.log(category, "categories");
-
     return category;
   };
   return (
@@ -64,9 +64,12 @@ function Category() {
                       <td className="px-4 py-3">
                         <div className="flex suppliers-center text-sm">
                           <div>
-                            <p className="font-semibold">
-                              {category.categoryName}
-                            </p>
+                            <Link to={`/view/${i}`}>
+                              {" "}
+                              <p className="font-semibold">
+                                {category.categoryName}
+                              </p>
+                            </Link>
                           </div>
                         </div>
                       </td>

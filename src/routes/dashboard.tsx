@@ -1,26 +1,28 @@
 import React, { Profiler } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
-import Category from "../pages/admin/views/Category";
-import Items from "../pages/admin/views/Items";
-import Supplier from "../pages/admin/views/Supplier";
-import Contract from "../pages/admin/views/Contract";
+import Category from "../pages/admin/pages/Category";
+
+import Items from "../pages/admin/pages/Items";
+import Supplier from "../pages/admin/pages/Supplier";
+import Contract from "../pages/admin/pages/Contract";
 import DashboardLayout from "../pages/admin/layout/DashboardLayout";
-import Dashboard from "../pages/admin/views/Dashboard";
-import Settings from "../pages/admin/views/Settings";
-import Order from "../pages/admin/views/Order";
+import Dashboard from "../pages/admin/pages/Dashboard";
+import Settings from "../pages/admin/pages/Settings";
+import Order from "../pages/admin/pages/Order";
 import CreateItem from "../pages/admin/components/items/CreateItem";
 import CreateCategory from "../pages/admin/components/category/CreateCategory";
 import CreateContract from "../pages/admin/components/contract/CreateContract";
 import CreateOrder from "../pages/admin/components/order/CreateOrder";
-import PurchaseRequest from "../pages/admin/views/PurchaseRequest";
+import PurchaseRequest from "../pages/admin/pages/PurchaseRequest";
 import CreateRequest from "../pages/admin/components/request/CreateRequest";
 import CreateRequisition from "../pages/admin/components/requisition/CreateRequisition";
-import PurchaseRequisition from "../pages/admin/views/PurchaseRequisition";
+import PurchaseRequisition from "../pages/admin/pages/PurchaseRequisition";
 import ProtectedRoute from "./ProtectedRoute";
-import InvoiceDetails from "../pages/admin/views/Invoice";
+import InvoiceDetails from "../pages/admin/pages/Invoice";
 import UpdateSupplier from "../pages/admin/components/supplier/UpdateSupplier";
 import EditCategory from "../pages/admin/components/category/UpdateCategories";
 import UpdateOrder from "../pages/admin/components/order/UpdateOrder";
+import CategoryView from "../pages/admin/views/CategoryView";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -55,6 +57,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/category/edit/:id",
       element: <EditCategory />,
+    },
+    {
+      path: "/dashboard/category/view/:id",
+      element: <CategoryView />,
     },
     {
       path: "/dashboard/order/edit/:id",

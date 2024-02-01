@@ -1,7 +1,7 @@
 export interface Category {
   categoryId: number;
   categoryName: string | null;
-  items: any[]; // Adjust the type based on the actual type of 'items'
+  items: Item[]; // Adjust the type based on the actual type of 'items'
   createdAt: string;
   updatedAt: string;
 }
@@ -37,7 +37,7 @@ export type SupplierData = {
   phoneNumber: string;
   paymentType: string;
   termsAndConditions: string;
-}
+};
 
 export interface PurchaseOrder {
   purchaseOrderId: number;
@@ -46,7 +46,7 @@ export interface PurchaseOrder {
   termsAndConditions: string;
   paymentType: string;
   approvalStatus: string;
-  items: string[];
+  items: Item[];
   vendorId: number;
   createdAt: Date;
   updatedAt: Date;
@@ -73,6 +73,7 @@ export interface PurchaseOrderData {
   vendorId: number;
 }
 export interface Item {
+  itemId: string;
   itemName: string;
   itemNumber: string;
   itemDescription: string;
@@ -93,6 +94,18 @@ export interface ItemData {
   categoryId: number;
   vendorId: number;
 }
+export interface Contract {
+  contractId: string;
+  contractTitle: string;
+  contractType: string;
+  contractStartDate: string;
+  contractEndDate: string;
+  termsAndConditions: string;
+  items: Item[];
+  vendorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
 export interface ContractData {
   contractTitle: string;
   contractType: string;
@@ -102,3 +115,11 @@ export interface ContractData {
   items: string[];
   vendorId: number;
 }
+export type Invoice = {
+  invoiceId: string;
+  invoiceNumber: string;
+  dueDate: string;
+  purchaseOrder:PurchaseOrder;
+  
+};
+

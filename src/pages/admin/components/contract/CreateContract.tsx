@@ -186,11 +186,11 @@ const CreateContract = () => {
         Select Supplier:
       </label>
       <select
+        className="w-full border p-2 mb-4"
         id="vendorId"
         name="vendorId"
         onChange={handleInputChange}
         value={contractData.vendorId}
-        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
       >
         <option value="">Select a supplier</option>
         {suppliers.map((supplier: any) => (
@@ -202,7 +202,7 @@ const CreateContract = () => {
 
       <button
         onClick={createContract}
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
+        className="bg-blue-500 mt-5 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
       >
         Create Contract
       </button>
