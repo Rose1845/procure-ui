@@ -23,6 +23,7 @@ import UpdateSupplier from "../pages/admin/components/supplier/UpdateSupplier";
 import EditCategory from "../pages/admin/components/category/UpdateCategories";
 import UpdateOrder from "../pages/admin/components/order/UpdateOrder";
 import CategoryView from "../pages/admin/views/CategoryView";
+import CreateSupplier from "../pages/admin/components/supplier/CreateSupplier";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -40,6 +41,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/suppliers",
       element: <Supplier />,
+    },
+    {
+      path: "/dashboard/suppliers/add_supplier",
+      element: <CreateSupplier />,
     },
     {
       path: "/dashboard/update_supplier/:id",
@@ -99,11 +104,11 @@ export const DashboardRoutes: RouteObject = {
       element: <CreateItem />,
     },
     {
-      path: "/dashboard/items/add_category",
+      path: "/dashboard/category/add_category",
       element: <CreateCategory />,
     },
     {
-      path: "/dashboard/items/add_contract",
+      path: "/dashboard/contract/add_contract",
       element: <CreateContract />,
     },
     {

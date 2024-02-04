@@ -2,7 +2,7 @@ import React from "react";
 import { PurchaseOrder } from "../types";
 import CreateOrder from "../components/order/CreateOrder";
 import { axiosApi } from "../../../api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Order() {
   const navigate = useNavigate();
@@ -37,7 +37,13 @@ function Order() {
     }
   };
   return (
-    <div>
+    <div className="max-w-7xl mx-auto pt-16 ">
+      <div className="flex justify-end">
+        <button className="px-4 py-2 bg-blue-600 text-white">
+          <Link to={"/dashboard/items/add_order"}> Add Order</Link>
+        </button>
+      </div>
+
       <div className="max-w-7xl mx-auto pt-16 ">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
@@ -178,7 +184,6 @@ function Order() {
             </span>
           </div>
         </div>
-        <CreateOrder />
       </div>
     </div>
   );

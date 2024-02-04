@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import CreateCategory from "../components/category/CreateCategory";
 import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
 interface Category {
@@ -10,7 +9,7 @@ interface Category {
   updatedAt: string;
 }
 function Category() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [categories, setCategories] = React.useState<Category[]>([]);
   useEffect(() => {
     fetchCategories()
@@ -18,12 +17,10 @@ function Category() {
       .catch((error) => console.error("Error fetching categries:", error));
   }, []);
 
-
-
-   const handleEdit = (id: number) => {
-     navigate(`/dashboard/category/view/${id}`);
-     console.log(`Editing Category with ID: ${id}`);
-   };
+  const handleEdit = (id: number) => {
+    navigate(`/dashboard/category/view/${id}`);
+    console.log(`Editing Category with ID: ${id}`);
+  };
   const handleDelete = async (id: number) => {
     try {
       // Send a DELETE request to delete the supplier with the given ID
@@ -44,7 +41,12 @@ function Category() {
     return category;
   };
   return (
-    <div className="max-w-7xl mx-auto flex flex-col">
+    <div className="max-w-7xl mx-auto pt-16 flex flex-col">
+      <div className="flex justify-end">
+        <button className="px-4 py-2 bg-blue-600 text-white">
+          <Link to={"/dashboard/category/add_category"}> Add Category</Link>
+        </button>
+      </div>
       <div className="pt-11">
         <div className="mt-4 mx-4">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
@@ -53,7 +55,6 @@ function Category() {
                 <thead>
                   <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
                     <th className="px-4 py-3">Item Category</th>
-                    {/* <th className="px-4 py-3">Supplier Category</th> */}
                     <th></th>
                     <th></th>
                   </tr>
@@ -183,7 +184,6 @@ function Category() {
           </div>
         </div>
       </div>
-      <CreateCategory />
     </div>
   );
 }

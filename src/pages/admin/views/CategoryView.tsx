@@ -13,7 +13,6 @@ const CategoryView = () => {
         const response = await axiosApi.get(`/category/${id}`);
         const categoryData = response.data;
         console.log(categoryData, "categpry data");
-
         setCategory(categoryData);
         console.log("Category retrived successfully");
       } catch (error) {
@@ -34,7 +33,6 @@ const CategoryView = () => {
           </div>
         </div>
       ))}
-      <h1>test</h1>
     </div>
   );
 };

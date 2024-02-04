@@ -3,6 +3,7 @@ import CreateItem from "../components/items/CreateItem";
 import axios from "axios";
 import { Item } from "../types";
 import { axiosApi } from "../../../api";
+import { Link } from "react-router-dom";
 
 function Items() {
   const [items, setitems] = React.useState<Item[]>([]);
@@ -20,6 +21,11 @@ function Items() {
   };
   return (
     <div className="max-w-7xl mx-auto pt-16 flex-row gap-8">
+      <div className="flex justify-end">
+        <button className="px-4 py-2 bg-blue-600 text-white">
+          <Link to={"/dashboard/items/add_item"}> Add Item</Link>
+        </button>
+      </div>
       <div className="mt-4 mx-4">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
@@ -135,8 +141,6 @@ function Items() {
           </div>
         </div>
       </div>
-
-      <CreateItem />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import CreateSupplier from "../components/supplier/CreateSupplier";
 import { Supplier } from "../types";
 import { axiosApi } from "../../../api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Supplier() {
   const navigate = useNavigate();
@@ -37,7 +37,12 @@ function Supplier() {
     }
   };
   return (
-    <div className="pt-11">
+    <div className="pt-16">
+      <div className="flex justify-end">
+        <button className="px-4 py-2 bg-blue-600 text-white">
+          <Link to={"/dashboard/suppliers/add_supplier"}> Add Supllier</Link>
+        </button>
+      </div>
       <div className="mt-4 mx-4">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
@@ -178,7 +183,6 @@ function Supplier() {
           </div>
         </div>
       </div>
-      <CreateSupplier />
     </div>
   );
 }

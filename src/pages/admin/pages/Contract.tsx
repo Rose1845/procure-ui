@@ -1,10 +1,10 @@
 import React from "react";
 import CreateContract from "../components/contract/CreateContract";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { axiosApi } from "../../../api";
 
 function Contract() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleEdit = (id: number) => {
     // Redirect or open a modal for editing based on the id
     navigate(`/dashboard/contract/edit/${id}`);
@@ -24,8 +24,12 @@ function Contract() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <CreateContract />
+    <div className="max-w-7xl pt-16 mx-auto">
+      <div className="flex justify-end">
+        <button className="px-4 py-2 bg-blue-600 text-white">
+          <Link to={"/dashboard/contract/add_contract"}> Add Contract</Link>
+        </button>
+      </div>
     </div>
   );
 }

@@ -49,8 +49,8 @@ export const sidebarLinks: SidebarLink[] = [
     LinkIcon: TfiSettings,
   },
   {
-    label: "Payments",
-    path: "/dashboard/payments",
+    label: "Deliveries",
+    path: "/dashboard/deliveries",
     LinkIcon: TbCurrencyDollar,
   },
   {
@@ -62,10 +62,5 @@ export const sidebarLinks: SidebarLink[] = [
     label: "Contract",
     path: "/dashboard/contract",
     LinkIcon: TbBook,
-  },
-  {
-    label: "Roles",
-    path: "/dashboard/roles",
-    LinkIcon: TbLock,
   },
 ];
