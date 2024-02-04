@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 interface Category {
   categoryId: number;
   categoryName: string | null;
@@ -85,6 +86,7 @@ function Category() {
                           onClick={() => handleEdit(category.categoryId)}
                         >
                           Edit
+                          <FaEdit className="text-xl text-gray-900"/>
                         </button>
                         {" | "}
                         <button
@@ -92,6 +94,7 @@ function Category() {
                           onClick={() => handleDelete(category.categoryId)}
                         >
                           Delete
+                          <FaTrashAlt/>
                         </button>
                       </td>
                     </tr>

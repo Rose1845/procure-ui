@@ -3,6 +3,7 @@ import { PurchaseOrder } from "../types";
 import CreateOrder from "../components/order/CreateOrder";
 import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 function Order() {
   const navigate = useNavigate();
@@ -86,6 +87,7 @@ function Order() {
                         onClick={() => handleEdit(order.purchaseOrderId)}
                       >
                         Edit
+                        <FaEdit className="text-xl text-gray-900" />
                       </button>
                       {" | "}
                       <button
@@ -93,6 +95,7 @@ function Order() {
                         onClick={() => handleDelete(order.purchaseOrderId)}
                       >
                         Delete
+                        <FaTrashAlt />
                       </button>
                     </td>
                   </tr>

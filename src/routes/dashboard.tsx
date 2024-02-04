@@ -24,6 +24,8 @@ import EditCategory from "../pages/admin/components/category/UpdateCategories";
 import UpdateOrder from "../pages/admin/components/order/UpdateOrder";
 import CategoryView from "../pages/admin/views/CategoryView";
 import CreateSupplier from "../pages/admin/components/supplier/CreateSupplier";
+import Delivery from "../pages/admin/pages/Delivery";
+import CsvUploader from "../pages/admin/components/supplier/CsvUploader";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -45,6 +47,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/suppliers/add_supplier",
       element: <CreateSupplier />,
+    },
+    {
+      path: "/dashboard/suppliers/import",
+      element: <CsvUploader />,
     },
     {
       path: "/dashboard/update_supplier/:id",
@@ -110,6 +116,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/contract/add_contract",
       element: <CreateContract />,
+    },
+    {
+      path: "/dashboard/deliveries",
+      element: <Delivery />,
     },
     {
       path: "/dashboard/invoice/view",

@@ -3,6 +3,8 @@ import CreateSupplier from "../components/supplier/CreateSupplier";
 import { Supplier } from "../types";
 import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import SupplierImport from "../components/supplier/SupplierImport";
 
 function Supplier() {
   const navigate = useNavigate();
@@ -85,6 +87,7 @@ function Supplier() {
                         onClick={() => handleEdit(supplier.vendorId)}
                       >
                         Edit
+                        <FaEdit className="text-xl text-gray-900" />
                       </button>
                       {" | "}
                       <button
@@ -92,6 +95,7 @@ function Supplier() {
                         onClick={() => handleDelete(supplier.vendorId)}
                       >
                         Delete
+                        <FaTrashAlt />
                       </button>
                     </td>
                   </tr>
@@ -181,6 +185,15 @@ function Supplier() {
               </nav>
             </span>
           </div>
+          <div className="flex justify-end items-center space-x-3">
+            <button className="px-4 py-2 text-white font-bold bg-blue-600">
+              <Link to={"/dashboard/suppliers/import"}> Import from Excel</Link>
+            </button>
+            <button className="px-4 py-2 text-white font-bold bg-blue-600">
+              Export to CSV
+            </button>
+          </div>
+          <SupplierImport />
         </div>
       </div>
     </div>
