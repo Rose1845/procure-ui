@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { axiosApi } from "../../../../api";
-import CsvTemplateGenerator from "./CsvTemplateGenerator";
 
 const CsvUploader: React.FC = () => {
   const [template, setTemplate] = useState<string | null>(null);
@@ -58,29 +57,33 @@ const CsvUploader: React.FC = () => {
     }
   };
   return (
-    <div className="flex pt-16 flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex pt-16 flex-col items-center justify-start  bg-gray-100">
       <div className="mb-4 pt-16">
         <input
           type="file"
           accept=".csv"
           onChange={onFileChange}
-          className="mb-2"
+          className="mt-1 p-2 border rounded-md w-full"
         />
-        <button
-          onClick={onUpload}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Upload CSV
-        </button>
+        <div className="flex flex-row-reverse  space-x-11">
+          <div className="mb-4">
+            <button
+              onClick={onUpload}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Upload CSV
+            </button>
+          </div>
+          <div className="mb-4">
+            <button
+              onClick={downloadTemplate}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Download CSV Template
+            </button>
+          </div>{" "}
+        </div>
       </div>
-      <div className="mb-4">
-        <button
-          onClick={downloadTemplate}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Download CSV Template
-        </button>
-      </div>{" "}
     </div>
   );
 };

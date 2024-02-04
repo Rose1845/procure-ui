@@ -1,10 +1,8 @@
 import React from "react";
-import CreateSupplier from "../components/supplier/CreateSupplier";
 import { Supplier } from "../types";
 import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import SupplierImport from "../components/supplier/SupplierImport";
+import { FaEdit, FaPlus, FaTrashAlt } from "react-icons/fa";
 
 function Supplier() {
   const navigate = useNavigate();
@@ -18,7 +16,6 @@ function Supplier() {
     const response = await axiosApi.get("/suppliers");
     const supplier = response.data;
     console.log(supplier, "suppliers");
-
     return supplier;
   };
   const handleEdit = (id: number) => {
@@ -42,7 +39,16 @@ function Supplier() {
     <div className="pt-16">
       <div className="flex justify-end">
         <button className="px-4 py-2 bg-blue-600 text-white">
-          <Link to={"/dashboard/suppliers/add_supplier"}> Add Supllier</Link>
+          <Link
+            className="flex space-x-3"
+            to={"/dashboard/suppliers/add_supplier"}
+          >
+            <span className="flex justify-center items-centers space-x-3">
+              {" "}
+              <FaPlus />
+              Add Supllier
+            </span>
+          </Link>
         </button>
       </div>
       <div className="mt-4 mx-4">
@@ -193,7 +199,6 @@ function Supplier() {
               Export to CSV
             </button>
           </div>
-          <SupplierImport />
         </div>
       </div>
     </div>

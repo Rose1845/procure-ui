@@ -1,5 +1,5 @@
 import React from "react";
-import { PurchaseOrderData } from "../../types";
+import { Item, PurchaseOrderData } from "../../types";
 import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
 
@@ -79,7 +79,7 @@ const UpdateOrder = () => {
     };
 
     try {
-      const response = await axiosApi.put(`/purchase-order/${id}`,dataToSend);
+      const response = await axiosApi.put(`/purchase-order/${id}`, dataToSend);
       const responseData = response.data;
       console.log("Response from backend:", responseData);
     } catch (error) {
@@ -89,7 +89,7 @@ const UpdateOrder = () => {
 
   return (
     <div className="py-16 max-w-2xl mx-auto">
-      <h1>UPdated Order</h1>
+      <h1>Updated Order</h1>
       <form onSubmit={UpdateOrder}>
         <label className="block mb-2" htmlFor="purchaseOrderTitle">
           Purchase Order Title:
@@ -136,7 +136,7 @@ const UpdateOrder = () => {
           value={orderData.items}
           multiple
         >
-          {items.map((item: any, i) => (
+          {items.map((item: Item, i) => (
             <option key={i} value={item.itemId}>
               {item.itemName}
             </option>

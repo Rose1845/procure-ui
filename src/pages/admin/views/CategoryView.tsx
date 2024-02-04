@@ -23,16 +23,32 @@ const CategoryView = () => {
   }, [id]);
 
   return (
-    <div className="container flex justify-center items-center mx-auto mt-8 py-16">
-      {category?.categoryName}
-      {"/"}
-      {category?.items.map((it) => (
-        <div key={it.itemId}>
-          <div>
-            <h3>{it.itemName}</h3>
-          </div>
-        </div>
-      ))}
+    <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
+      <h2> {category?.categoryName?.toLocaleUpperCase()}</h2>
+      <div className="flex justify-start">
+        <table className="w-full">
+          <thead>
+            <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
+              <th className="px-4 py-3">Item Name</th>
+              <th className="px-4 py-3">Created On</th>
+            </tr>
+          </thead>
+          <tbody>
+            {category?.items.map((it) => (
+              <tr key={it.itemId}>
+                <td className="px-4 py-3">
+                  <div key={it.itemId}>{it.itemName}</div>
+                </td>
+                <td className="px-4 py-3">
+                  {" "}
+                  {new Date(it.createdAt).toLocaleString()}
+                </td>
+              </tr>
+            ))}
+            <tr></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

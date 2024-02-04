@@ -64,6 +64,15 @@ export interface PurchaseRequisitiontData {
   description: string;
   items: string[];
 }
+export type PurchaseRequisition ={
+  requisitionTitle: string;
+  dateNeeded: string;
+  description: string;
+  approvalStatus: string;
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: number;
+}
 export interface PurchaseOrderData {
   purchaseOrderTitle: string;
   deliveryDate: string;
@@ -119,7 +128,5 @@ export type Invoice = {
   invoiceId: string;
   invoiceNumber: string;
   dueDate: string;
-  purchaseOrder:PurchaseOrder;
-  
+  purchaseOrder: PurchaseOrder;
 };
-

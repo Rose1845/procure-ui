@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 interface Category {
   categoryId: number;
   categoryName: string | null;
@@ -19,7 +19,7 @@ function Category() {
   }, []);
 
   const handleEdit = (id: number) => {
-    navigate(`/dashboard/category/view/${id}`);
+    navigate(`/dashboard/category/edit/${id}`);
     console.log(`Editing Category with ID: ${id}`);
   };
   const handleDelete = async (id: number) => {
@@ -63,15 +63,19 @@ function Category() {
                 <tbody className="bg-white divide-y dark:divide-gray-500">
                   {categories.map((category, i) => (
                     <tr key={i}>
+                      {/* <Link
+                        to={`/dashboard/category/view/${category.categoryId}`}
+                      > */}
                       <td className="px-4 py-3">
                         <div className="flex suppliers-center text-sm">
                           <div>
-                            <Link to={`/view/${i}`}>
-                              {" "}
-                              <p className="font-semibold">
-                                {category.categoryName}
-                              </p>
-                            </Link>
+                            {/* <Link
+                                to={`/dashboard/category/view/${category.categoryId}`}
+                              > */}{" "}
+                            <p className="font-semibold">
+                              {category.categoryName}
+                            </p>
+                            {/* </Link> */}
                           </div>
                         </div>
                       </td>
@@ -86,7 +90,7 @@ function Category() {
                           onClick={() => handleEdit(category.categoryId)}
                         >
                           Edit
-                          <FaEdit className="text-xl text-gray-900"/>
+                          <FaEdit className="text-xl text-gray-900" />
                         </button>
                         {" | "}
                         <button
@@ -94,9 +98,17 @@ function Category() {
                           onClick={() => handleDelete(category.categoryId)}
                         >
                           Delete
-                          <FaTrashAlt/>
+                          <FaTrashAlt />
+                        </button>
+                        <button>
+                          <Link
+                            to={`/dashboard/category/view/${category.categoryId}`}
+                          >
+                            <FaEye className="text-xl text-gray-900" />
+                          </Link>
                         </button>
                       </td>
+                      {/* </Link> */}
                     </tr>
                   ))}
                 </tbody>

@@ -3,14 +3,16 @@ import CreateItem from "../components/items/CreateItem";
 import axios from "axios";
 import { Item } from "../types";
 import { axiosApi } from "../../../api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 
 function Items() {
+  const navigate = useNavigate()
   const [items, setitems] = React.useState<Item[]>([]);
   React.useEffect(() => {
     fetchItems()
       .then((data) => setitems(data))
-      .catch((error) => console.error("Error fetching categries:", error));
+      .catch((error) => console.error("Error fetching items:", error));
   }, []);
   const fetchItems = async () => {
     const response = await axiosApi.get("/items");
@@ -19,6 +21,23 @@ function Items() {
 
     return category;
   };
+   const handleEdit = (id: string) => {
+     // Redirect or open a modal for editing based on the id
+     navigate(`/dashboard/items/update_item/${id}`);
+     console.log(`Editing item with ID: ${id}`);
+   };
+   const handleDelete = async (id: string) => {
+     try {
+       // Send a DELETE request to delete the supplier with the given ID
+       await axiosApi.delete(`/items/${id}`);
+       console.log(`item with ID ${id} deleted successfully`);
+
+       // Refresh the list of suppliers after deletion
+       fetchItems();
+     } catch (error) {
+       console.error(`Error deleting item with ID ${id}:`, error);
+     }
+   };
   return (
     <div className="max-w-7xl mx-auto pt-16 flex-row gap-8">
       <div className="flex justify-end">
@@ -51,7 +70,31 @@ function Items() {
                     <td className="px-4 py-3 text-sm">{item.itemNumber}</td>
 
                     <td className="px-4 py-3 text-sm">{item.unitPrice}</td>
-                    {new Date(item.updatedAt).toLocaleDateString()}
+                    <td className="px-4 py-3 text-sm"> {new Date(item.updatedAt).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-sm">
+                      <button
+                        className="text-blue-600 hover:underline"
+                        onClick={() => handleEdit(item.itemId)}
+                      >
+                        Edit
+                        <FaEdit className="text-xl text-gray-900" />
+                      </button>
+                      {" | "}
+                      <button
+                        className="text-red-600 hover:underline"
+                        onClick={() => handleDelete(item.itemId)}
+                      >
+                        Delete
+                        <FaTrashAlt />
+                      </button>
+                      <button>
+                        <Link
+                          to={`/dashboard/item/view/${item.itemId}`}
+                        >
+                          <FaEye className="text-xl text-gray-900" />
+                        </Link>
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
