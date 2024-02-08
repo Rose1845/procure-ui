@@ -58,13 +58,27 @@ export interface PurchaseRequestData {
   items: string[];
   vendorId: number;
 }
+export interface PurchaseRequest {
+  requestId: number;
+  purchaseRequestTitle: string;
+  dueDate: string;
+  approvalStatus: string;
+
+  termsAndConditions: string;
+  items: string[];
+  vendorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: number;
+}
 export interface PurchaseRequisitiontData {
   requisitionTitle: string;
   dateNeeded: string;
   description: string;
   items: string[];
 }
-export type PurchaseRequisition ={
+export type PurchaseRequisition = {
+  requisitionId: number;
   requisitionTitle: string;
   dateNeeded: string;
   description: string;
@@ -72,7 +86,7 @@ export type PurchaseRequisition ={
   createdAt: Date;
   updatedAt: Date;
   createdBy: number;
-}
+};
 export interface PurchaseOrderData {
   purchaseOrderTitle: string;
   deliveryDate: string;
@@ -110,8 +124,9 @@ export interface Contract {
   contractStartDate: string;
   contractEndDate: string;
   termsAndConditions: string;
+  approvalStatus: string;
   items: Item[];
-  vendorId: number;
+  vendorId: Supplier;
   createdAt: Date;
   updatedAt: Date;
 }

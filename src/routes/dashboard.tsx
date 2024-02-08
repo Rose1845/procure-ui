@@ -27,6 +27,7 @@ import CreateSupplier from "../pages/admin/components/supplier/CreateSupplier";
 import Delivery from "../pages/admin/pages/Delivery";
 import CsvUploader from "../pages/admin/components/supplier/CsvUploader";
 import UpdateItem from "../pages/admin/components/items/UpdateItem";
+import ContractView from "../pages/admin/views/ContractView";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -121,6 +122,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/contract/add_contract",
       element: <CreateContract />,
+    },
+    {
+      path:"/dashboard/contract/view/:id",
+      element: <ContractView/>
     },
     {
       path: "/dashboard/deliveries",

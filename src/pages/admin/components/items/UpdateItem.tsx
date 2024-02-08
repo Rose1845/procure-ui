@@ -56,7 +56,7 @@ const UpdateItem = () => {
 
   const UpdateItem = async () => {
     try {
-      const response = await axiosApi.put("/items", contractData);
+      const response = await axiosApi.put(`/items/${id}`, contractData);
 
       console.log("Item created successfully:", response.data);
     } catch (error) {
