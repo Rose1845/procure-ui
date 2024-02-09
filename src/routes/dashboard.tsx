@@ -24,10 +24,12 @@ import EditCategory from "../pages/admin/components/category/UpdateCategories";
 import UpdateOrder from "../pages/admin/components/order/UpdateOrder";
 import CategoryView from "../pages/admin/views/CategoryView";
 import CreateSupplier from "../pages/admin/components/supplier/CreateSupplier";
-import Delivery from "../pages/admin/pages/Delivery";
 import CsvUploader from "../pages/admin/components/supplier/CsvUploader";
 import UpdateItem from "../pages/admin/components/items/UpdateItem";
 import ContractView from "../pages/admin/views/ContractView";
+import Deliveries from "../pages/admin/pages/Deliveries";
+import OrderView from "../pages/admin/views/Order";
+import CreateDelivery from "../pages/admin/components/delivery/CreateDelivery";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -88,6 +90,10 @@ export const DashboardRoutes: RouteObject = {
       element: <Order />,
     },
     {
+      path: "/dashboard/order/view/:id",
+      element: <OrderView />,
+    },
+    {
       path: "/dashboard/purchase-request",
       element: <PurchaseRequest />,
     },
@@ -124,12 +130,16 @@ export const DashboardRoutes: RouteObject = {
       element: <CreateContract />,
     },
     {
-      path:"/dashboard/contract/view/:id",
-      element: <ContractView/>
+      path: "/dashboard/contract/view/:id",
+      element: <ContractView />,
     },
     {
       path: "/dashboard/deliveries",
-      element: <Delivery />,
+      element: <Deliveries />,
+    },
+    {
+      path: "/dashboard/deliveries/add/:id",
+      element: <CreateDelivery />,
     },
     {
       path: "/dashboard/invoice/view",

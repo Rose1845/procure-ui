@@ -1,11 +1,10 @@
 import React from "react";
-import { PurchaseOrder } from "../types";
-import CreateOrder from "../components/order/CreateOrder";
-import { axiosApi } from "../../../api";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { axiosApi } from "../../../api";
+import { PurchaseOrder } from "../types";
 
-function Order() {
+function Deliveries() {
   const navigate = useNavigate();
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
   React.useEffect(() => {
@@ -21,8 +20,7 @@ function Order() {
     return order;
   };
   const handleEdit = (id: number) => {
-    // Redirect or open a modal for editing based on the id
-    navigate(`/dashboard/order/edit/${id}`);
+    navigate(`/dashboard/deliveries/add/${id}`);
     console.log(`Editing Order with ID: ${id}`);
   };
   const handleDelete = async (id: number) => {
@@ -30,7 +28,6 @@ function Order() {
       // Send a DELETE request to delete the supplier with the given ID
       await axiosApi.delete(`/purchase-order/${id}`);
       console.log(`Order with ID ${id} deleted successfully`);
-
       // Refresh the list of suppliers after deletion
       fetchOrders();
     } catch (error) {
@@ -82,25 +79,13 @@ function Order() {
                       {new Date(order.createdAt).toLocaleString()}
                     </td>
                     <td className="px-4 py-3 text-sm">
-                      <button
+                      <Link
+                        to={`/dashboard/deliveries/add/${order.purchaseOrderId}`}
                         className="text-blue-600 hover:underline"
                         onClick={() => handleEdit(order.purchaseOrderId)}
                       >
-                        Edit
+                        Add Delivery
                         <FaEdit className="text-xl text-gray-900" />
-                      </button>
-                      {" | "}
-                      <button
-                        className="text-red-600 hover:underline"
-                        onClick={() => handleDelete(order.purchaseOrderId)}
-                      >
-                        Delete
-                        <FaTrashAlt />
-                      </button>
-                      <Link
-                        to={`/dashboard/order/view/${order.purchaseOrderId}`}
-                      >
-                        <FaEye />
                       </Link>
                     </td>
                   </tr>
@@ -108,7 +93,7 @@ function Order() {
               </tbody>
             </table>
           </div>
-          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 ">
+          {/* <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 ">
             <span className="flex items-center col-span-3">
               {" "}
               Showing 21-30 of 100{" "}
@@ -190,11 +175,11 @@ function Order() {
                 </ul>
               </nav>
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
   );
 }
 
-export default Order;
+export default Deliveries;

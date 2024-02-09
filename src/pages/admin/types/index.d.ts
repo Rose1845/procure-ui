@@ -145,3 +145,16 @@ export type Invoice = {
   dueDate: string;
   purchaseOrder: PurchaseOrder;
 };
+type DeliveryDTo = {
+  deliveryDate: string;
+  receivedBy: string;
+  itemDToSet: Array<{
+    itemId: string;
+    quantityDelivered: number;
+    quantityReceived: number;
+  }>;
+  deliveredOn: string;
+  expectedOn: string;
+  receivedOn: string;
+};
+
