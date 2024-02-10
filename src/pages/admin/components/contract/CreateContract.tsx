@@ -1,6 +1,7 @@
 import React from "react";
 import { ContractData } from "../../types";
 import { axiosApi } from "../../../../api";
+import { toast } from "react-toastify";
 
 const CreateContract = () => {
   const [contractData, setContractData] = React.useState<ContractData>({
@@ -70,12 +71,13 @@ const CreateContract = () => {
     try {
       const response = await axiosApi.post("/contract", dataToSend);
 
-      if (!response.data) {
+      if (!response.data) { 
         throw new Error(`Failed to create contract: ${response.statusText}`);
       }
-
+      toast.success("contract created successfully");
       console.log("Response from backend:", response.data);
     } catch (error) {
+      toast.error("An error occured!Please try again later  ")
       console.error("Error creating contract:", error);
     }
   };

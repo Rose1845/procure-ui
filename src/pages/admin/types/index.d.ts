@@ -56,7 +56,7 @@ export interface PurchaseRequestData {
   dueDate: string;
   termsAndConditions: string;
   items: string[];
-  vendorId: number;
+  suppliers: number[];
 }
 export interface PurchaseRequest {
   requestId: number;
@@ -65,12 +65,13 @@ export interface PurchaseRequest {
   approvalStatus: string;
 
   termsAndConditions: string;
-  items: string[];
-  vendorId: number;
+  items: Item[];
+  suppliers: Supplier[];
   createdAt: Date;
   updatedAt: Date;
   createdBy: number;
 }
+
 export interface PurchaseRequisitiontData {
   requisitionTitle: string;
   dateNeeded: string;
@@ -157,4 +158,3 @@ type DeliveryDTo = {
   expectedOn: string;
   receivedOn: string;
 };
-

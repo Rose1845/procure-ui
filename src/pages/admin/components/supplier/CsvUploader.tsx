@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { axiosApi } from "../../../../api";
+import { toast } from "react-toastify";
 
 const CsvUploader: React.FC = () => {
   const [template, setTemplate] = useState<string | null>(null);
@@ -29,7 +30,9 @@ const CsvUploader: React.FC = () => {
       });
 
       setTemplate(`Successfully uploaded ${response.data} suppliers.`);
+      toast.success(`Successfully uploaded ${response.data} suppliers.`);
     } catch (error) {
+      toast.error("Error uploading file");
       console.error("Error uploading file:", error);
     }
   };
@@ -52,7 +55,10 @@ const CsvUploader: React.FC = () => {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+
+      toast.success("Template downloaded succesfully");
     } catch (error) {
+      toast.error("an error occured");
       console.error("Error generating or downloading template:", error);
     }
   };

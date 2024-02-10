@@ -1,6 +1,7 @@
 import React from "react";
 import { Category, ItemData, Supplier } from "../../types";
 import { axiosApi } from "../../../../api";
+import { toast } from "react-toastify";
 
 const CreateItem = () => {
   const [contractData, setContractData] = React.useState<ItemData>({
@@ -44,9 +45,13 @@ const CreateItem = () => {
   const createItem = async () => {
     try {
       const response = await axiosApi.post("/items", contractData);
-
+      if(!response.data){
+        toast.error("please try again later")
+      }
+      toast.success("item creasted successfuly")
       console.log("Item created successfully:", response.data);
     } catch (error) {
+      toast.error("an error occureds")
       console.error("Error creating item:", error);
     }
   };

@@ -1,6 +1,7 @@
 import React from "react";
 import { axiosApi } from "../../../../api";
 import { SupplierData } from "../../types";
+import { toast } from "react-toastify";
 
 function CreateSupplier() {
   const [supplierData, setSupplierData] = React.useState<SupplierData>({
@@ -23,15 +24,14 @@ function CreateSupplier() {
     const { name, value } = e.target;
 
     if (name.includes(".")) {
-       const [parent, child] = name.split(".");
-       setSupplierData({
-         ...supplierData,
-         [parent]: {
-           ...supplierData[parent],
-           [child]: value,
-         },
-       });
-      
+      const [parent, child] = name.split(".");
+      setSupplierData({
+        ...supplierData,
+        [parent]: {
+          ...supplierData[parent],
+          [child]: value,
+        },
+      });
     } else {
       setSupplierData({
         ...supplierData,
@@ -48,14 +48,13 @@ function CreateSupplier() {
     console.log(supplierData, "test data");
 
     try {
-      const response = await axiosApi.post(
-        "/suppliers",
-        supplierData
-      );
+      const response = await axiosApi.post("/suppliers", supplierData);
 
       const createdContract = response.data;
+      toast.success("supplier added succesfuly!");
       console.log("Supplier created successfully:", createdContract);
     } catch (error) {
+      toast.error("error occured!");
       console.error("Error creating contract:", error);
     }
   };

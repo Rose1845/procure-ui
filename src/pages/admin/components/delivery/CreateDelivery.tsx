@@ -2,6 +2,7 @@ import React from "react";
 import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
 import { DeliveryDTo, PurchaseOrder, PurchaseOrderData } from "../../types";
+import { toast } from "react-toastify";
 
 function CreateDelivery() {
   const { id } = useParams();
@@ -22,89 +23,94 @@ function CreateDelivery() {
     fetchCategory();
   }, [id]);
 
-   const [formData, setFormData] = React.useState<DeliveryDTo>({
-     deliveryDate: "",
-     receivedBy: "",
-     itemDToSet: [],
-     deliveredOn: "",
-     expectedOn: "",
-     receivedOn: "",
-   });
+  const [formData, setFormData] = React.useState<DeliveryDTo>({
+    deliveryDate: "",
+    receivedBy: "",
+    itemDToSet: [],
+    deliveredOn: "",
+    expectedOn: "",
+    receivedOn: "",
+  });
 
-   React.useEffect(() => {
-     if (order?.items) {
-       setFormData((prevData) => ({
-         ...prevData,
-         itemDToSet: order.items.map((item) => ({
-           itemId: item.itemId,
-           quantityDelivered: 0,
-           quantityReceived: 0,
-         })),
-       }));
-     }
-   }, [order?.items]);
+  React.useEffect(() => {
+    if (order?.items) {
+      setFormData((prevData) => ({
+        ...prevData,
+        itemDToSet: order.items.map((item) => ({
+          itemId: item.itemId,
+          quantityDelivered: 0,
+          quantityReceived: 0,
+        })),
+      }));
+    }
+  }, [order?.items]);
 
-   const handleInputChange = (
-     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-   ) => {
-     const { name, value } = e.target;
-     setFormData((prevData) => ({
-       ...prevData,
-       [name]: value,
-     }));
-   };
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-   const handleItemChange = (
-     e: React.ChangeEvent<HTMLInputElement>,
-     index: number
-   ) => {
-     const { name, value } = e.target;
+  const handleItemChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const { name, value } = e.target;
 
-     const [property, itemIndex] = name.split("-");
+    const [property, itemIndex] = name.split("-");
 
-     setFormData((prevData) => ({
-       ...prevData,
-       itemDToSet: prevData.itemDToSet.map((item, i) =>
-         i === index ? { ...item, [property]: value } : item
-       ),
-     }));
-   };
+    setFormData((prevData) => ({
+      ...prevData,
+      itemDToSet: prevData.itemDToSet.map((item, i) =>
+        i === index ? { ...item, [property]: value } : item
+      ),
+    }));
+  };
 
-   const addItem = () => {
-     setFormData((prevData) => ({
-       ...prevData,
-       itemDToSet: [
-         ...prevData.itemDToSet,
-         {
-           itemId: "",
-           quantityDelivered: 0,
-           quantityReceived: 0,
-         },
-       ],
-     }));
-   };
+  const addItem = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      itemDToSet: [
+        ...prevData.itemDToSet,
+        {
+          itemId: "",
+          quantityDelivered: 0,
+          quantityReceived: 0,
+        },
+      ],
+    }));
+  };
 
-   const removeItem = (index: number) => {
-     setFormData((prevData) => ({
-       ...prevData,
-       itemDToSet: prevData.itemDToSet.filter((_, i) => i !== index),
-     }));
-   };
+  const removeItem = (index: number) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      itemDToSet: prevData.itemDToSet.filter((_, i) => i !== index),
+    }));
+  };
 
-   const handleSubmit = async (e: React.FormEvent) => {
-     e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-     try {
-       const response = await axiosApi.post(
-         `/deliveries/${id}/deliveries`,
-         formData
-       );
-       console.log(response);
-     } catch (error) {
-       console.log(error);
-     }
-     console.log("Form data submitted:", formData);
-   };
+    try {
+      const response = await axiosApi.post(
+        `/deliveries/${id}/deliveries`,
+        formData
+      );
+      if (!response.data) {
+        toast.error("error coocured");
+      }
+      toast.success("contract created succesfully")
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      toast.error("an error occured")
+    }
+    console.log("Form data submitted:", formData);
+  };
 
   return (
     <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">

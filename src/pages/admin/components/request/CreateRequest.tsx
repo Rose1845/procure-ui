@@ -8,14 +8,13 @@ const CreateRequest = () => {
     dueDate: "",
     termsAndConditions: "",
     items: [],
-    vendorId: 0,
+    suppliers: [], // Change vendorId to suppliers as an array
   });
 
   const [items, setItems] = React.useState([]);
   const [suppliers, setSuppliers] = React.useState([]);
 
   React.useEffect(() => {
-    
     fetchItems()
       .then((data) => setItems(data))
       .catch((error) => console.error("Error fetching items:", error));
@@ -43,6 +42,7 @@ const CreateRequest = () => {
     >
   ) => {
     const { name, value } = e.target;
+
     if (name === "items") {
       const selectElement = e.target as HTMLSelectElement;
       const selectedItems = Array.from(
@@ -50,6 +50,16 @@ const CreateRequest = () => {
         (option) => option.value
       );
       setOrderData((prevData) => ({ ...prevData, items: selectedItems }));
+    } else if (name === "suppliers") {
+      const selectElement = e.target as HTMLSelectElement;
+      const selectedSuppliers = Array.from(
+        selectElement.selectedOptions,
+        (option) => option.value
+      );
+      setOrderData((prevData) => ({
+        ...prevData,
+        suppliers: selectedSuppliers,
+      }));
     } else {
       setOrderData((prevData) => ({ ...prevData, [name]: value }));
     }
@@ -73,7 +83,7 @@ const CreateRequest = () => {
 
   return (
     <div className="py-16 max-w-2xl mx-auto">
-      <label className="block mb-2" htmlFor="purchaseOrderTitle">
+      <label className="block mb-2" htmlFor="purchaseRequestTitle">
         Purchase Request Title:
       </label>
       <input
@@ -85,7 +95,7 @@ const CreateRequest = () => {
         onChange={handleInputChange}
       />
 
-      <label className="block mb-2" htmlFor="deliveryDate">
+      <label className="block mb-2" htmlFor="dueDate">
         Due Date:
       </label>
       <input
@@ -125,17 +135,18 @@ const CreateRequest = () => {
           </option>
         ))}
       </select>
-      <label className="block mb-2" htmlFor="vendorId">
-        Select Supplier:
+
+      <label className="block mb-2" htmlFor="suppliers">
+        Select Suppliers:
       </label>
       <select
         className="w-full border p-2 mb-4"
-        id="vendorId"
-        name="vendorId"
+        id="suppliers"
+        name="suppliers"
         onChange={handleInputChange}
-        value={orderData.vendorId}
+        // value={orderData.suppliers}
+        multiple
       >
-        <option value="">Select a supplier</option>
         {suppliers.map((supplier: any) => (
           <option key={supplier.vendorId} value={supplier.vendorId}>
             {supplier.name}

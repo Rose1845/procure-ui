@@ -1,6 +1,7 @@
 import React from "react";
 import { PurchaseOrderData } from "../../types";
 import { axiosApi } from "../../../../api";
+import { toast } from "react-toastify";
 
 const CreateOrder = () => {
   const [orderData, setOrderData] = React.useState<PurchaseOrderData>({
@@ -66,8 +67,10 @@ const CreateOrder = () => {
       const response = await axiosApi.post("/purchase-order", dataToSend);
 
       const responseData = response.data;
+      toast.success("order created successfully");
       console.log("Response from backend:", responseData);
     } catch (error) {
+      toast.error("An error occured!");
       console.error("Error creating order:", error);
     }
   };

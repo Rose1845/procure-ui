@@ -1,6 +1,7 @@
 import React from "react";
 import { PurchaseRequisitiontData } from "../../types";
 import { axiosApi } from "../../../../api";
+import { toast } from "react-toastify";
 
 const CreateRequisition = () => {
   const [orderData, setOrderData] = React.useState<PurchaseRequisitiontData>({
@@ -53,8 +54,10 @@ const CreateRequisition = () => {
       const response = await axiosApi.post("/purchase-requisition", dataToSend);
 
       const responseData = response.data;
+      toast.success("Requisition created successfully")
       console.log("Response from backend:", responseData);
     } catch (error) {
+      toast.error("An error occured!")
       console.error("Error creating order:", error);
     }
   };
