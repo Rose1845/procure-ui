@@ -24,8 +24,8 @@ function Hero() {
 
             <div className="flex w-40 flex-col items-center gap-4 lg:flex-row">
               <div>
-                <button className="flex items-center py-4 text-sm font-bold text-white px-7 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 transition duration-300 rounded-full">
-                  Request Ac Demo{" "}
+                <button className="flex items-center py-3 text-sm font-bold text-white px-7 bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-100 transition duration-300 rounded-full">
+                  Request A Demo{" "}
                 </button>
               </div>
             </div>

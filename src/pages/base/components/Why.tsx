@@ -1,15 +1,18 @@
 import React from "react";
-import { BsArrowDown } from "react-icons/bs";
+import { FaArrowTurnDown } from "react-icons/fa6";
+import { FaSatellite, FaUserFriends } from "react-icons/fa";
+import { MdOutlineSecurity } from "react-icons/md";
+
 function Why() {
   return (
     <div className="max-w-7xl mx-auto mb-10">
       <div className="container">
-        <div className="flex flex-col -tracking-normal text-2xl font-bold text-center">
+        <div className="flex flex-row space-x-3 justify-center items-center -tracking-normal text-2xl font-bold text-center">
           <span className="text-2xl uppercase text-orange font-medium">
             Why choose us
           </span>
           <div className="text-4xl text-dark font-bold">
-            <BsArrowDown />
+            <FaArrowTurnDown />
           </div>
         </div>
         <div className="flex flex-col mb-10 justify-center text-center items-center">
@@ -19,7 +22,7 @@ function Why() {
                 <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                   <div className="flex flex-col items-center gap-3 px-8 py-10 bg-white rounded-3xl shadow-main">
                     <span>
-                      <BsArrowDown />
+                      <FaUserFriends className="text-orange-500 text-3xl" />
                     </span>
                     <p className="text-2xl font-extrabold text-dark-grey-900">
                       User-Friendly Interface
@@ -30,7 +33,7 @@ function Why() {
                     </p>
                   </div>
                   <div className="flex flex-col items-center gap-3 px-8 py-10 bg-white rounded-3xl shadow-main">
-                    <BsArrowDown />
+                    <FaSatellite className="text-orange-500 text-3xl" />
                     <p className="text-2xl font-extrabold text-dark-grey-900">
                       Scalability
                     </p>
@@ -41,7 +44,7 @@ function Why() {
                   </div>
                   <div className="flex flex-col items-center gap-3 px-8 py-10 bg-white rounded-3xl shadow-main">
                     <span>
-                      <BsArrowDown />
+                      <MdOutlineSecurity className="text-orange-500 text-3xl" />
                     </span>
                     <p className="text-2xl font-extrabold text-dark-grey-900">
                       Compliance

@@ -36,9 +36,8 @@ const UpdateOrder = () => {
         console.error("Error fetching order data:", error);
       }
     };
-
     fetchOrderData();
-  }, [id]);
+  }, []);
 
   const fetchItems = async () => {
     const response = await axiosApi.get("/items");

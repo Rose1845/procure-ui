@@ -1,6 +1,4 @@
 import React from "react";
-import CreateItem from "../components/items/CreateItem";
-import axios from "axios";
 import { Item } from "../types";
 import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,7 +20,6 @@ function Items() {
     return category;
   };
    const handleEdit = (id: string) => {
-     // Redirect or open a modal for editing based on the id
      navigate(`/dashboard/items/update_item/${id}`);
      console.log(`Editing item with ID: ${id}`);
    };

@@ -7,10 +7,9 @@ const Invoice = () => {
   const { id } = useParams();
   const [invoice, setInvoice] = React.useState<Invoice>();
   useEffect(() => {
-    // Fetch Invoice data based on InvoiceId
     const fetchInvoice = async () => {
       try {
-        const response = await axiosApi.get(`/invoices/byInvoiceId/${id}`);
+        const response = await axiosApi.get(`/invoices/${id}`);
         setInvoice(response.data);
         console.log("Invoice retrived successfully");
       } catch (error) {
@@ -25,7 +24,7 @@ const Invoice = () => {
       <div key={invoice?.invoiceId}>
         <div>
           <h2>{invoice?.invoiceNumber}</h2>
-          <div>{invoice?.purchaseOrder.purchaseOrderTitle}</div>
+          <div>{invoice?.dueDate}</div>
         </div>
       </div>
     </div>

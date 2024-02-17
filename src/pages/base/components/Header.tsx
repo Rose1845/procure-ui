@@ -64,7 +64,7 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <div className="absolute inset-y-0 right-0 flex flex-row space-x-3 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div>
                   <button
                     type="button"
@@ -75,7 +75,7 @@ export default function Header() {
                 </div>
 
                 <div>
-                  <button className="relative px-3 py-2 bg-orange-400 p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <button className="relative px-3 py-2 bg-orange-600 p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     REQUEST DEMO
                   </button>
                 </div>

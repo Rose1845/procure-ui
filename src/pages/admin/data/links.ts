@@ -63,4 +63,9 @@ export const sidebarLinks: SidebarLink[] = [
     path: "/dashboard/contract",
     LinkIcon: TbBook,
   },
+  {
+    label: "Invoice",
+    path: "/dashboard/invoice",
+    LinkIcon: TbCurrencyDollar,
+  },
 ];

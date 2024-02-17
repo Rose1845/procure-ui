@@ -1,31 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { axiosApi } from "../../../api";
-import { Contract } from "../types";
+import { PurchaseOrder } from "../../types";
+import { axiosApi, publicApi } from "../../../../api";
 import { toast } from "react-toastify";
 
-const ContractView = () => {
+const ApproveOrder = () => {
   const { id } = useParams();
-  const [contract, setContract] = React.useState<Contract>();
+  const [order, setOrder] = React.useState<PurchaseOrder>();
+  const [approvalAction, setApprovalAction] = React.useState<string>("");
+
   useEffect(() => {
-    const fetchContract = async () => {
+    const fetchCategory = async () => {
       try {
-        const response = await axiosApi.get(`/contract/contract-items/${id}`);
-        setContract(response.data);
-        console.log("Contract retrived successfully");
+        const response = await axiosApi.get(
+          `/purchase-order/get/order-items/${id}`
+        );
+        const categoryData = response.data;
+        setOrder(categoryData);
+        console.log("order retrived successfully");
       } catch (error) {
-        console.error("Error fetching Contract:", error);
+        console.error("Error updating order:", error);
       }
     };
-    fetchContract();
-    // sendToSupplier();
+    fetchCategory();
   }, [id]);
+  const handleApprovalAction = (action: string) => {
+    setApprovalAction(action);
+    ApproveContract()
+  };
 
-  const sendToSupplier = async () => {
+  const ApproveContract = async () => {
     try {
-      const response = await axiosApi.post(
-        `/contract/send-to-supplier/${id}`
+      const response = await axiosApi.patch(
+        `/purchase-order/approve/${id}?approvalStatus=${approvalAction}`
       );
+
       if (!response.data) {
         throw new Error(
           `Failed to send contract to supplier: ${response.statusText}`
@@ -40,30 +49,40 @@ const ContractView = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto mt-8 py-16">
-      <div>
-        <button
-          type="submit"
-          onClick={() => sendToSupplier()} // Pass the 'id' to the function
-          className="bg-green-500 mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
-        >
-          Send Contract to Supplier
-        </button>
+    <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
+      {/* <div>
         <div>
           <td className="px-4 py-3 text-xs">
             <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
-              {contract?.contractStatus}
+              {order?.approvalStatus}
             </span>
           </td>
-          <h2>Contract Name: {contract?.contractTitle}</h2>
-          {/* <h2>CreatedOn: {new Date(contract?.createdAt).toLocaleString()}</h2> */}
-          <h2>Contract Type: {contract?.contractType}</h2>
-          <h2>Expires On: {contract?.contractEndDate}</h2>
+          <h2>Order Name: {order?.purchaseOrderTitle}</h2>
+          <h2>CreatedOn:</h2>
+          <h2>Order PaymentType: {order?.paymentType}</h2>
+          <h2>Expires On: {order?.deliveryDate}</h2>
         </div>
         <div>
           Contract Terms and Condition:
-          {contract?.termsAndConditions}
+          {order?.termsAndConditions}
         </div>
+      </div> */}
+      <div className="flex items-center">
+        <button
+          onClick={() => handleApprovalAction("APPROVED")}
+          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 mr-2"
+        >
+          ACCEPTED{" "}
+        </button>
+        <button
+          onClick={() => handleApprovalAction("REJECT")}
+          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300 mr-2"
+        >
+          DECLINE
+        </button>
+      </div>
+
+      <div>
         <div className="max-w-7xl mx-auto pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
             <div className="w-full overflow-x-auto">
@@ -77,7 +96,7 @@ const ContractView = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y dark:divide-gray-500">
-                  {contract?.items.map((order, i) => (
+                  {order?.items.map((order, i) => (
                     <tr
                       key={i}
                       className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
@@ -96,12 +115,6 @@ const ContractView = () => {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm">{order.totalPrice}</td>
-                      {/* <button
-                        onClick={() => sendToSupplier(contract?.contractId)} // Pass the 'id' to the function
-                        className="bg-green-500 mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
-                      >
-                        Send Contract to Supplier
-                      </button> */}
                     </tr>
                   ))}
                 </tbody>
@@ -114,4 +127,4 @@ const ContractView = () => {
   );
 };
 
-export default ContractView;
+export default ApproveOrder;

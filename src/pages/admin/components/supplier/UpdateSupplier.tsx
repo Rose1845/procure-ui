@@ -27,7 +27,6 @@ const UpdateSupplier= () => {
         const response = await axiosApi.get(`/suppliers/supplier/${id}`);
         const existingSupplierData = response.data;
         console.log(existingSupplierData, "id supllier");
-
         setSupplierData(existingSupplierData);
       } catch (error) {
         console.error(

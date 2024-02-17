@@ -1,16 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { PurchaseOrder } from "../types";
+import { toast } from "react-toastify";
 
 const OrderView = () => {
   const { id } = useParams();
   const [order, setOrder] = React.useState<PurchaseOrder>();
+  const [isLoadig, setIsLoading] = useState<boolean>(false);
+
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchCategory = async () => {
       try {
         const response = await axiosApi.get(
-          `/purchase-order/get/order-items/${id}`
+          `/purchase-order/get/order-items/${id}`,
+          { signal: abortController.signal }
         );
         const categoryData = response.data;
         setOrder(categoryData);
@@ -19,27 +24,88 @@ const OrderView = () => {
         console.error("Error updating order:", error);
       }
     };
+
     fetchCategory();
+    return () => {
+      abortController.abort();
+    };
   }, [id]);
 
-  return (
-    <div className="container flex justify-center items-center mx-auto mt-8 py-16">
-      <div>
-        <td className="px-4 py-3 text-xs">
-          <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
-            {order?.approvalStatus}
-          </span>
-        </td>
-        <h2>Order Name: {order?.purchaseOrderTitle}</h2>
-        <h2>CreatedOn:</h2>
-        <h2>Order PaymentType: {order?.paymentType}</h2>
-        <h2>Expires On: {order?.deliveryDate}</h2>
-      </div>
-      <div>
-        Contract Terms and Condition:
-        {order?.termsAndConditions}
-      </div>
+  const markAsPaid = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axiosApi.patch(
+        `/purchase_order/approve/${id}?approvalStatus=CLOSED`
+      );
+      
+      console.log("reponse padi", response.data);
+      toast.success(response.data.message);
+      console.log("Response from backend:", response.data);
+    } catch (error) {
+      toast.error("An error occurred while sending order to supplier");
+      console.error("Error sending order to supplier:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const sendToSupplier = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axiosApi.post(
+        `/purchase-order/send-order-to-supplier/${id}`
+      );
 
+      console.log(response.data);
+      toast.success(response.data.message);
+      console.log("Response from backend:", response.data);
+    } catch (error) {
+      toast.error("An error occurred while sending order to supplier");
+      console.error("Error sending order to supplier:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
+      <div className="flex flex-col space-y-2 items-center">
+        <button
+          onClick={markAsPaid}
+          disabled={isLoadig}
+          className={`bg-green-500 mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 ${
+            isLoadig ? "bg-opacity-35 cursor-not-allowed" : ""
+          }`}
+        >
+          Mark as FULLY RECEIVED{" "}
+        </button>
+        <button
+          type="submit"
+          disabled={isLoadig}
+          onClick={sendToSupplier}
+          className={`bg-green-500 mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 ${
+            isLoadig ? "bg-opacity-35 cursor-not-allowed" : ""
+          }`}
+        >
+          Send to Supplier
+        </button>
+      </div>{" "}
+      <div>
+        <div>
+          <td className="px-4 py-3 text-xs">
+            <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
+              {order?.approvalStatus}
+            </span>
+          </td>
+          <h2>Order Name: {order?.purchaseOrderTitle}</h2>
+          <h2>CreatedOn:</h2>
+          <h2>Order PaymentType: {order?.paymentType}</h2>
+          <h2>Expires On: {order?.deliveryDate}</h2>
+        </div>
+        <div>
+          order Terms and Condition:
+          {order?.termsAndConditions}
+        </div>
+      </div>
       <div>
         <div className="max-w-7xl mx-auto pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">

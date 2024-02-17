@@ -30,6 +30,8 @@ import ContractView from "../pages/admin/views/ContractView";
 import Deliveries from "../pages/admin/pages/Deliveries";
 import OrderView from "../pages/admin/views/Order";
 import CreateDelivery from "../pages/admin/components/delivery/CreateDelivery";
+import CreateInvoice from "../pages/admin/components/invoice/CreateInvoice";
+import Invoice from "../pages/admin/pages/Invoice";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -133,6 +135,15 @@ export const DashboardRoutes: RouteObject = {
       path: "/dashboard/contract/view/:id",
       element: <ContractView />,
     },
+    {
+      path: "/dashboard/invoice/add/:id",
+      element: <CreateInvoice />,
+    },
+    {
+      path: "/dashboard/invoice",
+      element: <Invoice />,
+    },
+
     {
       path: "/dashboard/deliveries",
       element: <Deliveries />,

@@ -81,6 +81,7 @@ const CreateContract = () => {
       console.error("Error creating contract:", error);
     }
   };
+ 
 
   return (
     <div className="py-16 max-w-2xl mx-auto">

@@ -63,7 +63,6 @@ export interface PurchaseRequest {
   purchaseRequestTitle: string;
   dueDate: string;
   approvalStatus: string;
-
   termsAndConditions: string;
   items: Item[];
   suppliers: Supplier[];
@@ -125,7 +124,7 @@ export interface Contract {
   contractStartDate: string;
   contractEndDate: string;
   termsAndConditions: string;
-  approvalStatus: string;
+  contractStatus: string;
   items: Item[];
   vendorId: Supplier;
   createdAt: Date;
@@ -144,7 +143,6 @@ export type Invoice = {
   invoiceId: string;
   invoiceNumber: string;
   dueDate: string;
-  purchaseOrder: PurchaseOrder;
 };
 type DeliveryDTo = {
   deliveryDate: string;

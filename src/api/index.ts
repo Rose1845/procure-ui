@@ -44,7 +44,6 @@ axiosApi.interceptors.response.use(
           refreshToken,
         });
         const { token } = response.data;
-
         localStorage.setItem("token", token);
 
         // Retry the original request with the new token

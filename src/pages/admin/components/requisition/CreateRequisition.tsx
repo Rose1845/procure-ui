@@ -52,9 +52,14 @@ const CreateRequisition = () => {
 
     try {
       const response = await axiosApi.post("/purchase-requisition", dataToSend);
-
       const responseData = response.data;
       toast.success("Requisition created successfully")
+      setOrderData({
+        requisitionTitle: "",
+        dateNeeded: "",
+        description: "",
+        items: [],
+      });
       console.log("Response from backend:", responseData);
     } catch (error) {
       toast.error("An error occured!")

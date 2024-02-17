@@ -1,13 +1,15 @@
 import React from "react";
 import { PurchaseOrder } from "../types";
-import CreateOrder from "../components/order/CreateOrder";
 import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 function Order() {
   const navigate = useNavigate();
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
+  const [orders1, setOrders1] = React.useState<PurchaseOrder[]>([]);
+
   React.useEffect(() => {
     fetchOrders()
       .then((data) => setOrders(data))
@@ -25,18 +27,31 @@ function Order() {
     navigate(`/dashboard/order/edit/${id}`);
     console.log(`Editing Order with ID: ${id}`);
   };
+  
   const handleDelete = async (id: number) => {
     try {
       // Send a DELETE request to delete the supplier with the given ID
       await axiosApi.delete(`/purchase-order/${id}`);
       console.log(`Order with ID ${id} deleted successfully`);
-
       // Refresh the list of suppliers after deletion
       fetchOrders();
     } catch (error) {
       console.error(`Error deleting supplier with ID ${id}:`, error);
     }
   };
+    const ApproveContract = async (id: number) => {
+      try {
+        const response = await axiosApi.patch(
+          `/purchase_order/approve/${id}?approvalStatus=CLOSED`
+        );
+        console.log("reponse padi", response.data);
+        toast.success("Contract sent to supplier successfully");
+        console.log("Response from backend:", response.data);
+      } catch (error) {
+        toast.error("An error occurred while sending contract to supplier");
+        console.error("Error sending contract to supplier:", error);
+      }
+    };
   return (
     <div className="max-w-7xl mx-auto pt-16 ">
       <div className="flex justify-end">
@@ -102,13 +117,21 @@ function Order() {
                       >
                         <FaEye />
                       </Link>
+                      <div className="flex items-center">
+                        <button
+                          onClick={()=>ApproveContract(order.purchaseOrderId)}
+                          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 mr-2"
+                        >
+                          MARK AS FULLY RECEIVED{" "}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 ">
+          {/* <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 ">
             <span className="flex items-center col-span-3">
               {" "}
               Showing 21-30 of 100{" "}
@@ -190,7 +213,7 @@ function Order() {
                 </ul>
               </nav>
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

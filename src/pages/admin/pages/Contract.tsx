@@ -1,9 +1,9 @@
 import React from "react";
-import CreateContract from "../components/contract/CreateContract";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { Contract } from "../types";
 import { FaEye } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 function Contract() {
   const navigate = useNavigate();
@@ -13,6 +13,7 @@ function Contract() {
       .then((data) => setContracts(data))
       .catch((error) => console.error("Error fetching contuisition:", error));
   }, []);
+
   const fetchcontuisitions = async () => {
     const response = await axiosApi.get("/contract");
     const contract = response.data;
@@ -20,6 +21,7 @@ function Contract() {
     console.log(contracts, "contesss");
     return contract;
   };
+  
   const handleEdit = (id: number) => {
     // Redirect or open a modal for editing based on the id
     navigate(`/dashboard/contract/edit/${id}`);
@@ -35,6 +37,24 @@ function Contract() {
       // fetchsuppliers();
     } catch (error) {
       console.error(`Error deleting contract with ID ${id}:`, error);
+    }
+  };
+
+  const sendToSupplier = async (id: string) => {
+    try {
+      const response = await axiosApi.post(`/contract/send-to-supplier/${id}`);
+      console.log(response.request);
+
+      if (!response.data) {
+        throw new Error(
+          `Failed to send contract to supplier: ${response.statusText}`
+        );
+      }
+      toast.success("Contract sent to supplier successfully");
+      console.log("Response from backend:", response.data);
+    } catch (error) {
+      toast.error("An error occurred while sending contract to supplier");
+      console.error("Error sending contract to supplier:", error);
     }
   };
 
@@ -68,7 +88,7 @@ function Contract() {
 
                       <div>
                         <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                          {cont.approvalStatus}{" "}
+                          {cont.contractStatus}{" "}
                         </span>{" "}
                       </div>
                     </td>
@@ -83,6 +103,16 @@ function Contract() {
                       <Link to={`/dashboard/contract/view/${cont.contractId}`}>
                         <FaEye />
                       </Link>
+                    </td>
+                    <td className="px-4 py-3 text-sm">
+                      <button
+                        // type="submit"
+                        onClick={()=>sendToSupplier(cont.contractId)}
+                        className="bg-green-500 mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
+                      >
+                        {/* <SendApprovalEmail /> */}
+                        Send Contract to Supplier
+                      </button>
                     </td>
                   </tr>
                 ))}

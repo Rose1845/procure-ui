@@ -1,131 +1,122 @@
 import React, { useState, useEffect } from "react";
 import { axiosApi } from "../../../api";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-
-interface Address {
-  box: string;
-  country: string;
-  city: string;
-  location: string;
-}
-
-interface Item {
-  itemId: string;
-  itemName: string;
-  itemNumber: string;
-  itemDescription: string;
-  quantity: number;
-  unitPrice: number;
-  totalPrice: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface PurchaseOrder {
-  purchaseOrderId: number;
-  purchaseOrderTitle: string;
-  deliveryDate: string;
-  termsAndConditions: string;
-  paymentType: string;
-  approvalStatus: string;
-  createdAt: string;
-  updatedAt: string;
-  supplier?: Supplier;
-  items?: Item[];
-}
-
-interface Supplier {
-  vendorId: number;
-  name: string;
-  contactPerson: string;
-  contactInformation: string;
-  address: Address;
-  email: string;
-  phoneNumber: string;
-  paymentType: string;
-  termsAndConditions: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface Invoice {
+import { FaTrashAlt } from "react-icons/fa";
+import { PurchaseOrder } from "../types";
+import { Link } from "react-router-dom";
+type Invoice = {
   invoiceId: string;
   invoiceNumber: string;
   dueDate: string;
   totalAmount: number;
+  invoiceStatus: string;
   purchaseOrder?: PurchaseOrder;
   createdAt: string;
   updatedAt: string;
-}
+  createdBy: number;
+};
 
 const Invoice: React.FC = () => {
-  const { id } = useParams();
-  const [invoiceDetailsList, setInvoiceDetailsList] = useState<
-    Invoice[][] | null
-  >(null);
-  const [loading, setLoading] = useState(true);
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
 
   useEffect(() => {
-    const invoiceId = "17df3f37-0b5f-4508-b37a-3cc6b0791896"; // Replace with the actual invoice ID
-
-    const fetchInvoiceDetails = async () => {
-      try {
-        const response = await axiosApi.get(`/invoices/invoice-details/${id}`);
-        const data = await response.data;
-        setInvoiceDetailsList(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching invoice details:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchInvoiceDetails();
+    fetchInvoice()
+      .then((data) => {
+        return setInvoices(data);
+      })
+      .catch((error) => console.error("Error fetching orders:", error));
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const fetchInvoice = async () => {
+    // try {
+    const response = await axiosApi.get("/invoices");
+    const invoicedata = response.data;
+    setInvoices(invoicedata);
+    return invoicedata;
+    // } catch (error) {
+    //   console.error("Error fetching invoice details:", error);
+    // }
+  };
 
-  if (!invoiceDetailsList) {
-    return <div>Invoice details not found.</div>;
-  }
-  console.log(invoiceDetailsList, "details");
+  const handleDelete = async (id: string) => {
+    try {
+      await axiosApi.delete(`/invoices/${id}`);
+      console.log(`Invoice with ID ${id} deleted successfully`);
 
+      // Update state after deletion
+      fetchInvoice();
+    } catch (error) {
+      console.error(`Error deleting supplier with ID ${id}:`, error);
+    }
+  };
   return (
     <div className="max-w-7xl mx-auto py-16">
-      {invoiceDetailsList.map((invoiceDetails, index) => (
-        <div key={index}>
-          <h1>Invoice Details</h1>
-          <p>Invoice Number: {invoiceDetails[0].invoiceNumber}</p>
-          <p>Due Date: {invoiceDetails[0].dueDate}</p>
-          {/* Display other invoice details here */}
+      <div className="flex justify-end">
+        <button className="px-4 py-2 bg-blue-600 text-white">
+          <Link to={"/dashboard/invoice/add"}> Add Invoice</Link>
+        </button>
+      </div>
+      <div className="max-w-7xl mx-auto pt-16 ">
+        <div className="w-full overflow-hidden rounded-lg shadow-xs">
+          <div className="w-full overflow-x-auto">
+            <table className="w-full">
+              <div>
+                <div className="text-xs flex flex-row space-x-3 font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
+                  <div className="px-4 py-3">Invoice</div>
+                  <div className="px-4 py-3">Status</div>
+                  <div className="px-4 py-3">Last Edited</div>
+                </div>
+              </div>
+              <tbody className="bg-white divide-y dark:divide-gray-500">
+                {invoices.map((order, i) => (
+                  <div
+                    key={i}
+                    className="bg-gray-50 flex flex-row space-x-3 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
+                  >
+                    <div className="px-4 py-3">
+                      <div className="flex items-center text-sm">
+                        <div>
+                          <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                            Invoice Status: {order.invoiceStatus}{" "}
+                          </span>
 
-          <h2>Purchase Order Details</h2>
-          <p>
-            Purchase Order Title:{" "}
-            {invoiceDetails[0].purchaseOrder?.purchaseOrderTitle}
-          </p>
-          {/* Display other purchase order details here */}
+                          <p className="font-semibold">
+                            Invoice #{order.invoiceNumber}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="px-4 py-3 text-sm">
+                      Due Date:{order.dueDate}
+                    </div>
 
-          <h3>Items</h3>
-          <ul>
-            {invoiceDetails[0].purchaseOrder?.items?.map((item) => (
-              <li key={item.itemId}>
-                {item.itemName} - Quantity: {item.quantity}
-              </li>
-            ))}
-          </ul>
-
-          <h3>Supplier Details</h3>
-          {/* Display other supplier details here */}
-          <p>
-            Supplier Name: {invoiceDetails[1].purchaseOrder?.supplier?.name}
-          </p>
-          {/* Display other supplier details here */}
+                    <div className="px-4 py-3 text-sm">
+                      Created On:{new Date(order.createdAt).toLocaleString()}
+                    </div>
+                    <div className="px-4 py-3 text-sm">
+                      <button
+                        className="text-neutral-900 bg-gray-400 rounded-sm hover:underline"
+                        onClick={() => handleDelete(order.invoiceId)}
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </div>
+                    <div className="flex flex-col items-end justify-end">
+                      <span className="px-4 py-3 text-sm">
+                        PurchaseOrderTitle:{" "}
+                        {order.purchaseOrder?.purchaseOrderTitle}
+                      </span>
+                      <span className="px-4 py-3 text-sm">
+                        PurchaseOrderStatus:{" "}
+                        {order.purchaseOrder?.approvalStatus}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 };

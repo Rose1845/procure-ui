@@ -94,20 +94,44 @@ function CreateDelivery() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
+      const deliveredOnDate = new Date(formData.deliveredOn);
+      const expectedOnDate = new Date(formData.expectedOn);
+      const receivedOnDate = new Date(formData.receivedOn);
+
+      // Convert the dates to strings in ISO format
+      const deliveredOnISO = deliveredOnDate.toISOString();
+      const expectedOnISO = expectedOnDate.toISOString();
+      const receivedOnISO = receivedOnDate.toISOString();
+
+      // Create your invoice object with the date properties
+      const newInvoice = {
+        receivedBy: formData.receivedBy,
+        deliveredOn: deliveredOnISO,
+        expectedOn: expectedOnISO,
+        itemDToSet: formData.itemDToSet,
+        receivedOn: receivedOnISO,
+      };
       const response = await axiosApi.post(
         `/deliveries/${id}/deliveries`,
-        formData
+        newInvoice
       );
       if (!response.data) {
         toast.error("error coocured");
       }
-      toast.success("contract created succesfully")
+      toast.success("contract created succesfully");
+      setFormData({
+        deliveryDate: "",
+        receivedBy: "",
+        itemDToSet: [],
+        deliveredOn: "",
+        expectedOn: "",
+        receivedOn: "",
+      });
       console.log(response);
     } catch (error) {
       console.log(error);
-      toast.error("an error occured")
+      toast.error("an error occured");
     }
     console.log("Form data submitted:", formData);
   };
