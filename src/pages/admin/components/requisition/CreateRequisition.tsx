@@ -1,5 +1,5 @@
 import React from "react";
-import { PurchaseRequisitiontData } from "../../types";
+import { Item, PurchaseRequisitiontData } from "../../types";
 import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";
 
@@ -12,6 +12,9 @@ const CreateRequisition = () => {
   });
 
   const [items, setItems] = React.useState([]);
+  const [selectedItemsDetails, setSelectedItemsDetails] = React.useState<
+    Item[]
+  >([]);
 
   React.useEffect(() => {
     fetchItems()
@@ -62,6 +65,21 @@ const CreateRequisition = () => {
       console.error("Error creating order:", error);
     }
   };
+  React.useEffect(() => {
+    const fetchSelectedItemsDetails = async () => {
+      const selectedItemsDetailsPromises = orderData.items.map(
+        async (itemId) => {
+          const response = await axiosApi.get(`/items/${itemId}`);
+          return response.data;
+        }
+      );
+
+      const details = await Promise.all(selectedItemsDetailsPromises);
+      setSelectedItemsDetails(details);
+    };
+
+    fetchSelectedItemsDetails();
+  }, [orderData.items]);
 
   return (
     <div className="py-16 max-w-2xl mx-auto">
@@ -118,9 +136,38 @@ const CreateRequisition = () => {
           </label>
         </div>
       ))}
+      {selectedItemsDetails.length > 0 && (
+        <div className="mt-4">
+          <h2>Selected Items Details:</h2>
+          <table className="w-full border p-2">
+            <thead>
+              <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Item Number</th>
+                <th>Unit Price</th>
+                <th>TotalPrice</th>
+
+                {/* Add more columns as needed */}
+              </tr>
+            </thead>
+            <tbody>
+              {selectedItemsDetails.map((itemDetails: any, index) => (
+                <tr key={index}>
+                  <td>{itemDetails.itemName}</td>
+                  <td>{itemDetails.quantity}</td>
+                  <td>{itemDetails.itemNumber}</td>
+                  <td>{itemDetails.unitPrice}</td>
+                  <td>{itemDetails.totalPrice}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       <button
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+        className="bg-blue-500 mb-4 text-white py-2 px-4 rounded hover:bg-blue-700"
         onClick={createRequisition}
       >
         Create Purchase Requisition
