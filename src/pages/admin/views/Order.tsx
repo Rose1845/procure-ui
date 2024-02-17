@@ -37,7 +37,6 @@ const OrderView = () => {
       const response = await axiosApi.patch(
         `/purchase_order/approve/${id}?approvalStatus=CLOSED`
       );
-      
       console.log("reponse padi", response.data);
       toast.success(response.data.message);
       console.log("Response from backend:", response.data);
@@ -78,7 +77,7 @@ const OrderView = () => {
         >
           Mark as FULLY RECEIVED{" "}
         </button>
-        <button
+        {/* <button
           type="submit"
           disabled={isLoadig}
           onClick={sendToSupplier}
@@ -87,7 +86,7 @@ const OrderView = () => {
           }`}
         >
           Send to Supplier
-        </button>
+        </button> */}
       </div>{" "}
       <div>
         <div>

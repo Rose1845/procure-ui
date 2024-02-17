@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 function Order() {
   const navigate = useNavigate();
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
-  const [orders1, setOrders1] = React.useState<PurchaseOrder[]>([]);
 
   React.useEffect(() => {
     fetchOrders()
@@ -22,7 +21,7 @@ function Order() {
     console.log(order, "orders");
     return order;
   };
-  const handleEdit = (id: number) => {
+  const handleEdit = async (id: number) => {
     // Redirect or open a modal for editing based on the id
     navigate(`/dashboard/order/edit/${id}`);
     console.log(`Editing Order with ID: ${id}`);

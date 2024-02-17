@@ -25,22 +25,18 @@ const CreateRequisition = () => {
     return items;
   };
 
+  const handleCheckboxChange = (itemId: string) => {
+    const updatedItems = orderData.items.includes(itemId)
+      ? orderData.items.filter((id) => id !== itemId)
+      : [...orderData.items, itemId];
+
+    setOrderData((prevData) => ({ ...prevData, items: updatedItems }));
+  };
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    if (name === "items") {
-      const selectElement = e.target as HTMLSelectElement;
-      const selectedItems = Array.from(
-        selectElement.selectedOptions,
-        (option) => option.value
-      );
-      setOrderData((prevData) => ({ ...prevData, items: selectedItems }));
-    } else {
-      setOrderData((prevData) => ({ ...prevData, [name]: value }));
-    }
+    setOrderData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const createRequisition = async () => {
@@ -53,7 +49,7 @@ const CreateRequisition = () => {
     try {
       const response = await axiosApi.post("/purchase-requisition", dataToSend);
       const responseData = response.data;
-      toast.success("Requisition created successfully")
+      toast.success("Requisition created successfully");
       setOrderData({
         requisitionTitle: "",
         dateNeeded: "",
@@ -62,7 +58,7 @@ const CreateRequisition = () => {
       });
       console.log("Response from backend:", responseData);
     } catch (error) {
-      toast.error("An error occured!")
+      toast.error("An error occurred!");
       console.error("Error creating order:", error);
     }
   };
@@ -107,20 +103,22 @@ const CreateRequisition = () => {
       <label className="block mb-2" htmlFor="items">
         Select items:
       </label>
-      <select
-        className="w-full border p-2 mb-4"
-        id="items"
-        name="items"
-        onChange={handleInputChange}
-        value={orderData.items}
-        multiple
-      >
-        {items.map((item: any, i) => (
-          <option key={i} value={item.itemId}>
+      {items.map((item: any, i) => (
+        <div key={i} className="mb-2">
+          <input
+            type="checkbox"
+            id={`itemCheckbox-${i}`}
+            name="items"
+            value={item.itemId}
+            checked={orderData.items.includes(item.itemId)}
+            onChange={() => handleCheckboxChange(item.itemId)}
+          />
+          <label htmlFor={`itemCheckbox-${i}`} className="ml-2">
             {item.itemName}
-          </option>
-        ))}
-      </select>
+          </label>
+        </div>
+      ))}
+
       <button
         className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
         onClick={createRequisition}
