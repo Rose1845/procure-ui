@@ -67,7 +67,15 @@ const CreateOrder = () => {
       const response = await axiosApi.post("/purchase-order", dataToSend);
 
       const responseData = response.data;
-      toast.success("order created successfully");
+      toast.success(response.data.message);
+      setOrderData({
+        purchaseOrderTitle: "",
+        deliveryDate: "",
+        termsAndConditions: "",
+        paymentType: "MPESA" || "PAYPAL",
+        items: [],
+        vendorId: 0,
+      });
       console.log("Response from backend:", responseData);
     } catch (error) {
       toast.error("An error occured!");

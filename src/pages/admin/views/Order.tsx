@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { PurchaseOrder } from "../types";
 import { toast } from "react-toastify";
+import MarkPaid from "../components/order/MarkPaid";
 
 const OrderView = () => {
   const { id } = useParams();
@@ -31,22 +32,25 @@ const OrderView = () => {
     };
   }, [id]);
 
-  const markAsPaid = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axiosApi.patch(
-        `/purchase_order/approve/${id}?approvalStatus=CLOSED`
-      );
-      console.log("reponse padi", response.data);
-      toast.success(response.data.message);
-      console.log("Response from backend:", response.data);
-    } catch (error) {
-      toast.error("An error occurred while sending order to supplier");
-      console.error("Error sending order to supplier:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const markAsPaid = async () => {
+  //   const abortController = new AbortController();
+
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await axiosApi.patch(
+  //       `/purchase_order/approve/${id}?approvalStatus=CLOSED`,
+  //       { signal: abortController.signal }
+  //     );
+  //     console.log("reponse padi", response.data);
+  //     toast.success(response.data.message);
+  //     console.log("Response from backend:", response.data);
+  //   } catch (error) {
+  //     toast.error("An error occurred while sending order to supplier");
+  //     console.error("Error sending order to supplier:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
   const sendToSupplier = async () => {
     setIsLoading(true);
     try {
@@ -68,7 +72,7 @@ const OrderView = () => {
   return (
     <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
       <div className="flex flex-col space-y-2 items-center">
-        <button
+        {/* <button
           onClick={markAsPaid}
           disabled={isLoadig}
           className={`bg-green-500 mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 ${
@@ -76,8 +80,9 @@ const OrderView = () => {
           }`}
         >
           Mark as FULLY RECEIVED{" "}
-        </button>
-        {/* <button
+        </button> */}
+        <MarkPaid />
+        <button
           type="submit"
           disabled={isLoadig}
           onClick={sendToSupplier}
@@ -86,7 +91,7 @@ const OrderView = () => {
           }`}
         >
           Send to Supplier
-        </button> */}
+        </button>
       </div>{" "}
       <div>
         <div>

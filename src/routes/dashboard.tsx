@@ -136,7 +136,7 @@ export const DashboardRoutes: RouteObject = {
       element: <ContractView />,
     },
     {
-      path: "/dashboard/invoice/add/:id",
+      path: "/dashboard/invoice/add",
       element: <CreateInvoice />,
     },
     {

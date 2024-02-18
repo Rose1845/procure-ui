@@ -4,6 +4,9 @@ import { axiosApi } from '../../../../api';
 import { useParams } from 'react-router-dom';
 
 function MarkPaid() {
+    const abortController = new AbortController();
+    abortController.abort()
+
     const {id} = useParams()
       const ApproveContract = async () => {
         try {
@@ -12,11 +15,6 @@ function MarkPaid() {
           );
           console.log("reponse padi",response.data)
 
-          // if (!response.data) {
-          //   throw new Error(
-          //     `Failed to send contract to supplier: ${response.statusText}`
-          //   );
-          // }
           toast.success("Contract sent to supplier successfully");
           console.log("Response from backend:", response.data);
         } catch (error) {

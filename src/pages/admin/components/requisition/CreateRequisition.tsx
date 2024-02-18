@@ -24,7 +24,7 @@ const CreateRequisition = () => {
 
   const fetchItems = async () => {
     const response = await axiosApi.get("/items");
-    const items = await response.data;
+    const items = response.data;
     return items;
   };
 
@@ -65,6 +65,7 @@ const CreateRequisition = () => {
       console.error("Error creating order:", error);
     }
   };
+
   React.useEffect(() => {
     const fetchSelectedItemsDetails = async () => {
       const selectedItemsDetailsPromises = orderData.items.map(

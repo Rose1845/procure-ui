@@ -1,64 +1,50 @@
-// CreateInvoice.tsx
-
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import { toast } from "react-toastify";
-import { PurchaseOrder, PurchaseOrderData } from "../../types";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from "react-query";
 import { axiosApi } from "../../../../api";
-import { useParams } from "react-router-dom";
+import { PurchaseOrder } from "../../types";
+
 
 const CreateInvoice = () => {
-  const { id } = useParams();
-
-  //   const [purchaseOrderId, setPurchaseOrderId] = useState("");
-  const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrder[]>([]);
-  const [purchaseOrderData, setPurchaseOrderData] =
-    React.useState<PurchaseOrderData>({
-      purchaseOrderTitle: "",
-      deliveryDate: "",
-      termsAndConditions: "",
-      paymentType: "MPESA" || "PAYPAL",
-      items: [],
-      vendorId: 0,
-    });
-
-  const [invoiceData, setInvoiceData] = useState({
+  const queryClient = useQueryClient();
+  const { data: purchaseOrders } = useQuery(
+    "purchaseOrders",
+    fetchPurchaseOrders
+  );
+  const mutation = useMutation(createInvoice, {
+    onSuccess: (responseData) => {
+      console.log("Response from backend:", responseData);
+      toast.success("Invoice created successfully");
+    },
+    onError: (error) => {
+      console.error("Error creating invoice:", error);
+      toast.error("Error creating invoice");
+    },
+    onSettled: () => {
+      // Refetch the list of purchase orders after creating the invoice
+      queryClient.invalidateQueries("purchaseOrders");
+    },
+  });
+  const [invoiceData, setInvoiceData] = React.useState({
     invoiceNumber: "",
     dueDate: "",
     totalAmount: 0,
+    purchaseOrderId: 0,
   });
+  async function fetchPurchaseOrders() {
+    const response = await axiosApi.get("/purchase-order");
+    return response.data;
+  }
 
-  useEffect(() => {
-    // Fetch the list of purchase orders
-    const fetchPurchaseOrders = async () => {
-      try {
-        const response = await axiosApi.get("/api/v1/purchase-order");
-        setPurchaseOrders(response.data);
-      } catch (error) {
-        toast.error("Error fetching purchase orders");
-        console.error("Error fetching purchase orders:", error);
-      }
-    };
-    fetchPurchaseOrders();
-  }, []);
-
-  const handlePurchaseOrderChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
-    e.preventDefault();
-    try {
-      const response = await axios.get(
-        `/api/purchase-order/get/order-items/${id}`
-      );
-      //   setPurchaseOrderId(id);
-      setPurchaseOrderData(response.data);
-    } catch (error) {
-      toast.error("Error fetching purchase order details");
-      console.error("Error fetching purchase order details:", error);
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInvoiceData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -66,65 +52,63 @@ const CreateInvoice = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post(`/api/v1/invoices/${id}`, {
-        ...invoiceData,
-      });
-      toast.success("Invoice created successfully");
-    } catch (error) {
-      toast.error("Error creating invoice");
-      console.error("Error creating invoice:", error);
-    }
+    mutation.mutate(invoiceData);
   };
 
+  async function createInvoice(dataToSend: any) {
+    const response = await axiosApi.post("/invoices/add", dataToSend);
+    return response.data;
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="purchaseOrderId">Select Purchase Order:</label>
-      <select
-        id="purchaseOrderId"
-        name="purchaseOrderId"
-        onChange={handlePurchaseOrderChange}
-      >
-        <option value="">Select a Purchase Order</option>
-        {purchaseOrders?.map((order) => (
-          <option key={order.purchaseOrderId} value={order.purchaseOrderId}>
-            {order.purchaseOrderId}
-          </option>
-        ))}
-      </select>
+    <div className="py-16 flex justify-center items-center">
+      <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
+        <label htmlFor="purchaseOrderId">Select Purchase Order:</label>
+        <select
+          id="purchaseOrderId"
+          name="purchaseOrderId"
+          value={invoiceData.purchaseOrderId}
+          onChange={handleInputChange}
+        >
+          <option value="">Select a Purchase Order</option>
+          {purchaseOrders &&
+            purchaseOrders.map((order: PurchaseOrder) => (
+              <option key={order.purchaseOrderId} value={order.purchaseOrderId}>
+                {order.purchaseOrderTitle}
+              </option>
+            ))}
+        </select>
 
-      {/* Display purchase order details */}
+        <label htmlFor="invoiceNumber">Invoice Number:</label>
+        <input
+          type="text"
+          id="invoiceNumber"
+          name="invoiceNumber"
+          value={invoiceData.invoiceNumber}
+          onChange={handleInputChange}
+        />
 
-      {/* Invoice form fields */}
-      <label htmlFor="invoiceNumber">Invoice Number:</label>
-      <input
-        type="text"
-        id="invoiceNumber"
-        name="invoiceNumber"
-        value={invoiceData.invoiceNumber}
-        onChange={handleInputChange}
-      />
+        <label htmlFor="dueDate">Due Date:</label>
+        <input
+          type="date"
+          id="dueDate"
+          name="dueDate"
+          value={invoiceData.dueDate}
+          onChange={handleInputChange}
+        />
 
-      <label htmlFor="dueDate">Due Date:</label>
-      <input
-        type="date"
-        id="dueDate"
-        name="dueDate"
-        value={invoiceData.dueDate}
-        onChange={handleInputChange}
-      />
+        <label htmlFor="totalAmount">Total Amount:</label>
+        <input
+          type="number"
+          id="totalAmount"
+          name="totalAmount"
+          value={invoiceData.totalAmount}
+          onChange={handleInputChange}
+        />
 
-      <label htmlFor="totalAmount">Total Amount:</label>
-      <input
-        type="number"
-        id="totalAmount"
-        name="totalAmount"
-        value={invoiceData.totalAmount}
-        onChange={handleInputChange}
-      />
-
-      <button type="submit">Create Invoice</button>
-    </form>
+        <button type="submit">Create Invoice</button>
+      </form>
+    </div>
   );
 };
 

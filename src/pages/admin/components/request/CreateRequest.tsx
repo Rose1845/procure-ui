@@ -1,6 +1,6 @@
 import React from "react";
-import { PurchaseRequestData } from "../../types";
 import { axiosApi } from "../../../../api";
+import { PurchaseRequestData } from "../../types";
 
 const CreateRequest = () => {
   const [orderData, setOrderData] = React.useState<PurchaseRequestData>({
@@ -65,7 +65,8 @@ const CreateRequest = () => {
     }
   };
 
-  const createRequest = async () => {
+  const createRequest = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const itemsArray = orderData.items.map((itemId) => ({ itemId }));
     const dataToSend = {
       ...orderData,
@@ -73,8 +74,8 @@ const CreateRequest = () => {
     };
 
     try {
-      const response = await axiosApi.post("/purchase-request", dataToSend);
-      const responseData = await response.data;
+      const response = await axiosApi.post("/purchase-request/create", dataToSend);
+      const responseData = response.data;
       console.log("Response from backend:", responseData);
     } catch (error) {
       console.error("Error creating order:", error);
@@ -83,83 +84,82 @@ const CreateRequest = () => {
 
   return (
     <div className="py-16 max-w-2xl mx-auto">
-      <label className="block mb-2" htmlFor="purchaseRequestTitle">
-        Purchase Request Title:
-      </label>
-      <input
-        className="w-full border p-2 mb-4"
-        type="text"
-        id="purchaseRequestTitle"
-        name="purchaseRequestTitle"
-        value={orderData.purchaseRequestTitle}
-        onChange={handleInputChange}
-      />
+      <form onSubmit={createRequest} action="">
+        <label className="block mb-2" htmlFor="purchaseRequestTitle">
+          Purchase Request Title:
+        </label>
+        <input
+          className="w-full border p-2 mb-4"
+          type="text"
+          id="purchaseRequestTitle"
+          name="purchaseRequestTitle"
+          value={orderData.purchaseRequestTitle}
+          onChange={handleInputChange}
+        />
 
-      <label className="block mb-2" htmlFor="dueDate">
-        Due Date:
-      </label>
-      <input
-        className="w-full border p-2 mb-4"
-        type="date"
-        id="dueDate"
-        name="dueDate"
-        value={orderData.dueDate}
-        onChange={handleInputChange}
-      />
+        <label className="block mb-2" htmlFor="dueDate">
+          Due Date:
+        </label>
+        <input
+          className="w-full border p-2 mb-4"
+          type="date"
+          id="dueDate"
+          name="dueDate"
+          value={orderData.dueDate}
+          onChange={handleInputChange}
+        />
 
-      <label className="block mb-2" htmlFor="termsAndConditions">
-        Terms and Conditions:
-      </label>
-      <textarea
-        className="w-full border p-2 mb-4"
-        id="termsAndConditions"
-        name="termsAndConditions"
-        value={orderData.termsAndConditions}
-        onChange={handleInputChange}
-      />
+        <label className="block mb-2" htmlFor="termsAndConditions">
+          Terms and Conditions:
+        </label>
+        <textarea
+          className="w-full border p-2 mb-4"
+          id="termsAndConditions"
+          name="termsAndConditions"
+          value={orderData.termsAndConditions}
+          onChange={handleInputChange}
+        />
 
-      <label className="block mb-2" htmlFor="items">
-        Select items:
-      </label>
-      <select
-        className="w-full border p-2 mb-4"
-        id="items"
-        name="items"
-        onChange={handleInputChange}
-        value={orderData.items}
-        multiple
-      >
-        {items.map((item: any, i) => (
-          <option key={i} value={item.itemId}>
-            {item.itemName}
-          </option>
-        ))}
-      </select>
+        <label className="block mb-2" htmlFor="items">
+          Select items:
+        </label>
+        <select
+          className="w-full border p-2 mb-4"
+          id="items"
+          name="items"
+          onChange={handleInputChange}
+          value={orderData.items}
+          multiple
+        >
+          {items.map((item: any, i) => (
+            <option key={i} value={item.itemId}>
+              {item.itemName}
+            </option>
+          ))}
+        </select>
 
-      <label className="block mb-2" htmlFor="suppliers">
-        Select Suppliers:
-      </label>
-      <select
-        className="w-full border p-2 mb-4"
-        id="suppliers"
-        name="suppliers"
-        onChange={handleInputChange}
-        // value={orderData.suppliers}
-        multiple
-      >
-        {suppliers.map((supplier: any) => (
-          <option key={supplier.vendorId} value={supplier.vendorId}>
-            {supplier.name}
-          </option>
-        ))}
-      </select>
+        <label className="block mb-2" htmlFor="suppliers">
+          Select Suppliers:
+        </label>
+        <select
+          className="w-full border p-2 mb-4"
+          id="suppliers"
+          name="suppliers"
+          onChange={handleInputChange}
+          // value={orderData.suppliers}
+          multiple
+        >
+          {suppliers.map((supplier: any) => (
+            <option key={supplier.vendorId} value={supplier.vendorId}>
+              {supplier.name}
+            </option>
+          ))}
+        </select>
 
-      <button
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-        onClick={createRequest}
-      >
-        Create Purchase Request
-      </button>
+        <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+          Create Purchase Request
+        </button>
+      </form>
     </div>
   );
 };
