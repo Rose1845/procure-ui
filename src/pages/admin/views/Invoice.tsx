@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { Invoice } from "../types";
 
-const Invoice = () => {
+const InvoiceView = () => {
   const { id } = useParams();
   const [invoice, setInvoice] = React.useState<Invoice>();
   useEffect(() => {
@@ -31,4 +31,4 @@ const Invoice = () => {
   );
 };
 
-export default Invoice;
+export default InvoiceView;

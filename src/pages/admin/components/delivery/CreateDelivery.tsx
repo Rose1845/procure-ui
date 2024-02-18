@@ -138,76 +138,84 @@ function CreateDelivery() {
 
   return (
     <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
-      <div>
-        <td className="px-4 py-3 text-xs">
-          <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
-            {order?.approvalStatus}
-          </span>
-        </td>
-        <h2>Order Name: {order?.purchaseOrderTitle}</h2>
-        <h2>CreatedOn:</h2>
-        <h2>Order PaymentType: {order?.paymentType}</h2>
-        <h2>Expires On: {order?.deliveryDate}</h2>
-      </div>
-      <div>
-        Contract Terms and Condition:
-        {order?.termsAndConditions}
-      </div>
       <form
         onSubmit={handleSubmit}
         className="container flex flex-col justify-center items-center mx-auto mt-8 py-16"
       >
-        <div className="flex flex-col">
-          <label htmlFor="deliveryDate">Delivery Date:</label>
-          <input
-            type="date"
-            id="deliveryDate"
-            name="deliveryDate"
-            value={formData.deliveryDate}
-            onChange={handleInputChange}
-            required
-          />
+        <div className=" flex flex-row justify-center items-center space-x-6">
+          <div className="flex flex-col justify-start space-x-2">
+            <td className="px-4 py-3 text-xs">
+              <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
+                {order?.approvalStatus}
+              </span>
+            </td>
+            <h2>Order Name: {order?.purchaseOrderTitle}</h2>
+            <h2>CreatedOn:</h2>
+            <h2>Order PaymentType: {order?.paymentType}</h2>
+            <h2>Expires On: {order?.deliveryDate}</h2>
+            <div>
+              Contract Terms and Condition:
+              {order?.termsAndConditions}
+            </div>
+          </div>
+          <div className="flex flex-col justify-end">
+            <label htmlFor="deliveryDate">Delivery Date:</label>
+            <input
+              type="date"
+              id="deliveryDate"
+              name="deliveryDate"
+              value={formData.deliveryDate}
+              onChange={handleInputChange}
+              required
+              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            />
 
-          <label htmlFor="receivedBy">Received By:</label>
-          <input
-            type="text"
-            id="receivedBy"
-            name="receivedBy"
-            value={formData.receivedBy}
-            onChange={handleInputChange}
-            required
-          />
+            <label htmlFor="receivedBy">Received By:</label>
+            <input
+              type="text"
+              id="receivedBy"
+              name="receivedBy"
+              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+              value={formData.receivedBy}
+              onChange={handleInputChange}
+              required
+            />
 
-          <label htmlFor="deliveredOn">Delivered On:</label>
-          <input
-            type="date"
-            id="deliveredOn"
-            name="deliveredOn"
-            value={formData.deliveredOn}
-            onChange={handleInputChange}
-            required
-          />
+            <label htmlFor="deliveredOn">Delivered On:</label>
+            <input
+              type="date"
+              id="deliveredOn"
+              name="deliveredOn"
+              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+              value={formData.deliveredOn}
+              onChange={handleInputChange}
+              required
+            />
 
-          <label htmlFor="expectedOn">Expected On:</label>
-          <input
-            type="date"
-            id="expectedOn"
-            name="expectedOn"
-            value={formData.expectedOn}
-            onChange={handleInputChange}
-            required
-          />
+            <label htmlFor="expectedOn">Expected On:</label>
+            <input
+              type="date"
+              id="expectedOn"
+              name="expectedOn"
+              value={formData.expectedOn}
+              onChange={handleInputChange}
+              required
+              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            />
 
-          <label htmlFor="receivedOn">Received On:</label>
-          <input
-            type="date"
-            id="receivedOn"
-            name="receivedOn"
-            value={formData.receivedOn}
-            onChange={handleInputChange}
-            required
-          />
+            <label htmlFor="receivedOn">Received On:</label>
+            <input
+              type="date"
+              id="receivedOn"
+              name="receivedOn"
+              value={formData.receivedOn}
+              onChange={handleInputChange}
+              required
+              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            />
+          </div>
         </div>
+
         <div className="flexs flex-col space-y-6">
           <div className="max-w-7xl mx-auto pt-16 ">
             <div className="w-full overflow-hidden rounded-lg shadow-xs">

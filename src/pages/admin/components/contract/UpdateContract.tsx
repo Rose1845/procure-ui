@@ -94,7 +94,7 @@ const UpdateContract = () => {
   };
 
   return (
-    <div className="py-16 max-w-2xl mx-auto">
+    <div className=" max-w-7xl m-auto">
       <label
         htmlFor="contractTitle"
         className="block text-sm font-medium text-gray-700 mb-2"
@@ -107,7 +107,7 @@ const UpdateContract = () => {
         name="contractTitle"
         value={contractData.contractTitle}
         onChange={handleInputChange}
-        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
       />
 
       <label
@@ -122,38 +122,70 @@ const UpdateContract = () => {
         name="contractType"
         value={contractData.contractType}
         onChange={handleInputChange}
-        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
       />
 
-      <label
-        htmlFor="contractStartDate"
-        className="block text-sm font-medium text-gray-700 mb-2"
-      >
-        Contract Start Date:
-      </label>
-      <input
-        type="date"
-        id="contractStartDate"
-        name="contractStartDate"
-        value={contractData.contractStartDate}
-        onChange={handleInputChange}
-        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-      />
+      <div className="flex flex-col">
+        <label className="leading-loose">Start Date</label>
+        <div className="relative focus-within:text-gray-600 text-gray-400">
+          <input
+            type="date"
+            id="dueDate"
+            name="dueDate"
+            value={contractData.contractStartDate}
+            onChange={handleInputChange}
+            className="pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            placeholder="02/26/2020"
+          />
+          <div className="absolute left-3 top-2">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+      </div>
 
-      <label
-        htmlFor="contractEndDate"
-        className="block text-sm font-medium text-gray-700 mb-2"
-      >
-        Contract End Date:
-      </label>
-      <input
-        type="date"
-        id="contractEndDate"
-        name="contractEndDate"
-        value={contractData.contractEndDate}
-        onChange={handleInputChange}
-        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-      />
+      <div className="flex flex-col">
+        <label className="leading-loose">Due Date</label>
+        <div className="relative focus-within:text-gray-600 text-gray-400">
+          <input
+            type="date"
+            id="dueDate"
+            name="dueDate"
+            value={contractData.contractEndDate}
+            onChange={handleInputChange}
+            className="pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            placeholder="02/26/2020"
+          />
+          <div className="absolute left-3 top-2">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+      </div>
 
       <label
         htmlFor="termsAndConditions"
@@ -161,15 +193,14 @@ const UpdateContract = () => {
       >
         Terms and Conditions:
       </label>
-      <textarea
+      <input
         id="termsAndConditions"
         name="termsAndConditions"
         value={contractData.termsAndConditions}
         onChange={handleInputChange}
-        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
       />
 
-      {/* Items dropdown */}
       <label
         htmlFor="items"
         className="block text-sm font-medium text-gray-700 mb-2"
@@ -182,7 +213,7 @@ const UpdateContract = () => {
         onChange={handleInputChange}
         value={contractData.items}
         multiple
-        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
       >
         {items.map((item: any, i) => (
           <option key={i} value={item.itemId}>
@@ -199,7 +230,7 @@ const UpdateContract = () => {
         Select Supplier:
       </label>
       <select
-        className="w-full border p-2 mb-4"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         id="vendorId"
         name="vendorId"
         onChange={handleInputChange}
@@ -213,12 +244,14 @@ const UpdateContract = () => {
         ))}
       </select>
 
-      <button
-        onClick={UpdateContract}
-        className="bg-blue-500 mt-5 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
-      >
-        Create Contract
-      </button>
+      <div className="pt-4 flex items-center space-x-4">
+        <button
+          onClick={UpdateContract}
+          className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+        >
+          Create Category
+        </button>
+      </div>
     </div>
   );
 };

@@ -45,19 +45,19 @@ const CreateItem = () => {
   const createItem = async () => {
     try {
       const response = await axiosApi.post("/items", contractData);
-      if(!response.data){
-        toast.error("please try again later")
+      if (!response.data) {
+        toast.error("please try again later");
       }
-      toast.success("item creasted successfuly")
+      toast.success("item creasted successfuly");
       console.log("Item created successfully:", response.data);
     } catch (error) {
-      toast.error("an error occureds")
+      toast.error("an error occureds");
       console.error("Error creating item:", error);
     }
   };
 
   return (
-    <div className="py-16 max-w-2xl mx-auto">
+    <div className="py-16 max-w-7xl m-auto">
       <h1 className="text-2xl font-bold mb-8">Create Item</h1>
 
       <div className="mb-4">
@@ -73,23 +73,20 @@ const CreateItem = () => {
           name="itemName"
           value={contractData.itemName}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
       </div>
 
-      <div className="mb-4">
-        <label
-          htmlFor="itemDescription"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Item Description:
-        </label>
-        <textarea
+      <div className="flex flex-col">
+        <label className="leading-loose"> Item Description:</label>
+        <input
+          type="text"
           id="itemDescription"
           name="itemDescription"
           value={contractData.itemDescription}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+          placeholder="Optional"
         />
       </div>
 
@@ -106,7 +103,7 @@ const CreateItem = () => {
           name="quantity"
           value={contractData.quantity}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
       </div>
 
@@ -123,7 +120,7 @@ const CreateItem = () => {
           name="unitPrice"
           value={contractData.unitPrice}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
       </div>
 
@@ -140,7 +137,7 @@ const CreateItem = () => {
           name="itemNumber"
           value={contractData.itemNumber}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
       </div>
 
@@ -156,7 +153,7 @@ const CreateItem = () => {
           name="vendorId"
           onChange={handleInputChange}
           value={contractData.vendorId}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         >
           <option value="">Select a supplier</option>
           {suppliers.map((supplier) => (
@@ -179,7 +176,7 @@ const CreateItem = () => {
           name="categoryId"
           onChange={handleInputChange}
           value={contractData.categoryId}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         >
           <option value="">Select a category</option>
           {categories.map((category, i) => (
@@ -190,12 +187,14 @@ const CreateItem = () => {
         </select>
       </div>
 
-      <button
-        onClick={createItem}
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
-      >
-        Create Item
-      </button>
+      <div className="pt-4 flex items-center space-x-4">
+        <button
+          onClick={createItem}
+          className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+        >
+          Create Item
+        </button>
+      </div>
     </div>
   );
 };

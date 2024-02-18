@@ -87,8 +87,15 @@ const UpdateOrder = () => {
   };
 
   return (
-    <div className="py-16 max-w-2xl mx-auto">
-      <h1>Updated Order</h1>
+    <div className="py-16 max-w-7xl m-auto">
+      <div className="flex items-center space-x-5">
+        <div className="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">
+          i
+        </div>
+        <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
+          <h2 className="leading-relaxed">Update Order</h2>
+        </div>
+      </div>{" "}
       <form onSubmit={UpdateOrder}>
         <label className="block mb-2" htmlFor="purchaseOrderTitle">
           Purchase Order Title:
@@ -112,7 +119,6 @@ const UpdateOrder = () => {
           value={orderData.deliveryDate}
           onChange={handleInputChange}
         />
-
         <label className="block mb-2" htmlFor="termsAndConditions">
           Terms and Conditions:
         </label>
@@ -123,7 +129,6 @@ const UpdateOrder = () => {
           value={orderData.termsAndConditions}
           onChange={handleInputChange}
         />
-
         <label className="block mb-2" htmlFor="items">
           Select items:
         </label>
@@ -141,7 +146,6 @@ const UpdateOrder = () => {
             </option>
           ))}
         </select>
-
         <label className="block mb-2" htmlFor="paymentType">
           Payment Type:
         </label>
@@ -156,7 +160,6 @@ const UpdateOrder = () => {
           <option value="MPESA">MPESA</option>
           <option value="PAYPAL">PAYPAL</option>
         </select>
-
         <label className="block mb-2" htmlFor="vendorId">
           Select Supplier:
         </label>
@@ -175,9 +178,11 @@ const UpdateOrder = () => {
           ))}
         </select>
 
-        <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
-          update Order
-        </button>
+        <div className="pt-4 flex items-center space-x-4">
+          <button className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">
+            Update Order
+          </button>
+        </div>
       </form>
     </div>
   );

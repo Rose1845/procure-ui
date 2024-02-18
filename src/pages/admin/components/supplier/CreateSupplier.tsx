@@ -60,46 +60,36 @@ function CreateSupplier() {
   };
 
   return (
-    <div className="container mx-auto mt-8">
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-md mx-auto bg-white p-8 shadow-md rounded-md"
-      >
+    <div className="py-16 max-w-7xl m-auto">
+      <form onSubmit={handleSubmit}>
         <h2 className="text-2xl font-semibold mb-6">Create Supplier</h2>
-
-        {/* Company Information */}
-        <div className="mb-4">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Company Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={supplierData.name}
-            onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label
-            htmlFor="contactPerson"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Contact Person
-          </label>
-          <input
-            type="text"
-            id="contactPerson"
-            name="contactPerson"
-            value={supplierData.contactPerson}
-            onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
-          />
+        <div className="flex items-center space-x-6">
+          <div className="flex flex-col">
+            <label className="leading-loose">Company Name</label>
+            <div className="relative focus-within:text-gray-600 text-gray-400">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={supplierData.name}
+                onChange={handleInputChange}
+                className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <label className="leading-loose">Contact Person</label>
+            <div className="relative focus-within:text-gray-600 text-gray-400">
+              <input
+                type="text"
+                id="contactPerson"
+                name="contactPerson"
+                value={supplierData.contactPerson}
+                onChange={handleInputChange}
+                className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="mb-4">
@@ -115,7 +105,7 @@ function CreateSupplier() {
             name="contactInformation"
             value={supplierData.contactInformation}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -132,7 +122,7 @@ function CreateSupplier() {
             name="address.box"
             value={supplierData.address.box}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -149,7 +139,7 @@ function CreateSupplier() {
             name="address.country"
             value={supplierData.address.country}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -166,7 +156,7 @@ function CreateSupplier() {
             name="address.city"
             value={supplierData.address.city}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -183,7 +173,7 @@ function CreateSupplier() {
             name="address.location"
             value={supplierData.address.location}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -200,7 +190,7 @@ function CreateSupplier() {
             name="email"
             value={supplierData.email}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -217,7 +207,7 @@ function CreateSupplier() {
             name="phoneNumber"
             value={supplierData.phoneNumber}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -234,7 +224,7 @@ function CreateSupplier() {
             name="paymentType"
             value={supplierData.paymentType}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -251,16 +241,12 @@ function CreateSupplier() {
             name="termsAndConditions"
             value={supplierData.termsAndConditions}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
-        {/* Submit Button */}
-        <div className="mt-6">
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none"
-          >
+        <div className="pt-4 flex items-center space-x-4">
+          <button className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">
             Create Supplier
           </button>
         </div>

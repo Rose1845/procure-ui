@@ -83,12 +83,12 @@ const CreateRequisition = () => {
   }, [orderData.items]);
 
   return (
-    <div className="py-16 max-w-2xl mx-auto">
+    <div className="py-16 max-w-7xl m-auto">
       <label className="block mb-2" htmlFor="purchaseOrderTitle">
         Purchase Request Title:
       </label>
       <input
-        className="w-full border p-2 mb-4"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         type="text"
         id="requisitionTitle"
         name="requisitionTitle"
@@ -100,7 +100,7 @@ const CreateRequisition = () => {
         Date Needed:
       </label>
       <input
-        className="w-full border p-2 mb-4"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         type="date"
         id="dateNeeded"
         name="dateNeeded"
@@ -111,8 +111,8 @@ const CreateRequisition = () => {
       <label className="block mb-2" htmlFor="termsAndConditions">
         Description
       </label>
-      <textarea
-        className="w-full border p-2 mb-4"
+      <input
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         id="description"
         name="description"
         value={orderData.description}
@@ -167,12 +167,14 @@ const CreateRequisition = () => {
         </div>
       )}
 
-      <button
-        className="bg-blue-500 mb-4 text-white py-2 px-4 rounded hover:bg-blue-700"
-        onClick={createRequisition}
-      >
-        Create Purchase Requisition
-      </button>
+      <div className="pt-4 flex items-center space-x-4">
+        <button
+          onClick={createRequisition}
+          className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+        >
+          Create Purchase Requisition
+        </button>
+      </div>
     </div>
   );
 };

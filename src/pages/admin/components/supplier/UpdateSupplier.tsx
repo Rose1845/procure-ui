@@ -2,8 +2,8 @@ import React from "react";
 import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
 
-const UpdateSupplier= () => {
-    const { id } = useParams();
+const UpdateSupplier = () => {
+  const { id } = useParams();
 
   const [supplierData, setSupplierData] = React.useState({
     name: "",
@@ -77,46 +77,45 @@ const UpdateSupplier= () => {
   };
 
   return (
-    <div className="container mx-auto mt-8">
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-md mx-auto bg-white p-8 shadow-md rounded-md"
-      >
+    <div className="py-16 max-w-7xl  m-auto">
+      <form onSubmit={handleSubmit}>
         <h2 className="text-2xl font-semibold mb-6">Update Supplier</h2>
 
         {/* Company Information */}
-        <div className="mb-4">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Supplier Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={supplierData.name}
-            onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
-          />
-        </div>
+        <div className="flex flex-row space-x-5">
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Supplier Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={supplierData.name}
+              onChange={handleInputChange}
+              className="mt-1 p-2 border rounded-md w-full"
+            />
+          </div>
 
-        <div className="mb-4">
-          <label
-            htmlFor="contactPerson"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Contact Person
-          </label>
-          <input
-            type="text"
-            id="contactPerson"
-            name="contactPerson"
-            value={supplierData.contactPerson}
-            onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
-          />
+          <div className="mb-4">
+            <label
+              htmlFor="contactPerson"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Contact Person
+            </label>
+            <input
+              type="text"
+              id="contactPerson"
+              name="contactPerson"
+              value={supplierData.contactPerson}
+              onChange={handleInputChange}
+              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            />
+          </div>
         </div>
 
         <div className="mb-4">
@@ -132,7 +131,7 @@ const UpdateSupplier= () => {
             name="contactInformation"
             value={supplierData.contactInformation}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -149,7 +148,7 @@ const UpdateSupplier= () => {
             name="address.box"
             value={supplierData.address.box}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -166,7 +165,7 @@ const UpdateSupplier= () => {
             name="address.country"
             value={supplierData.address.country}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -183,7 +182,7 @@ const UpdateSupplier= () => {
             name="address.city"
             value={supplierData.address.city}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -200,7 +199,7 @@ const UpdateSupplier= () => {
             name="address.location"
             value={supplierData.address.location}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -217,7 +216,7 @@ const UpdateSupplier= () => {
             name="email"
             value={supplierData.email}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -234,7 +233,7 @@ const UpdateSupplier= () => {
             name="phoneNumber"
             value={supplierData.phoneNumber}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -251,7 +250,7 @@ const UpdateSupplier= () => {
             name="paymentType"
             value={supplierData.paymentType}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -268,7 +267,7 @@ const UpdateSupplier= () => {
             name="termsAndConditions"
             value={supplierData.termsAndConditions}
             onChange={handleInputChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
         </div>
 
@@ -278,7 +277,7 @@ const UpdateSupplier= () => {
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none"
           >
-            Create Supplier
+            Update Supplier
           </button>
         </div>
       </form>

@@ -84,7 +84,7 @@ const CreateOrder = () => {
   };
 
   return (
-    <div className="py-16 max-w-2xl mx-auto">
+    <div className="py-16 max-w-7xl m-auto">
       <label className="block mb-2" htmlFor="purchaseOrderTitle">
         Purchase Order Title:
       </label>
@@ -101,7 +101,7 @@ const CreateOrder = () => {
         Delivery Date:
       </label>
       <input
-        className="w-full border p-2 mb-4"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         type="date"
         id="deliveryDate"
         name="deliveryDate"
@@ -113,7 +113,7 @@ const CreateOrder = () => {
         Terms and Conditions:
       </label>
       <textarea
-        className="w-full border p-2 mb-4"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         id="termsAndConditions"
         name="termsAndConditions"
         value={orderData.termsAndConditions}
@@ -124,7 +124,7 @@ const CreateOrder = () => {
         Select items:
       </label>
       <select
-        className="w-full border p-2 mb-4"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         id="items"
         name="items"
         onChange={handleInputChange}
@@ -157,7 +157,7 @@ const CreateOrder = () => {
         Select Supplier:
       </label>
       <select
-        className="w-full border p-2 mb-4"
+        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         id="vendorId"
         name="vendorId"
         onChange={handleInputChange}
@@ -171,12 +171,14 @@ const CreateOrder = () => {
         ))}
       </select>
 
-      <button
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-        onClick={createOrder}
-      >
-        Create Order
-      </button>
+      <div className="pt-4 flex items-center space-x-4">
+        <button
+          onClick={createOrder}
+          className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+        >
+          Create Order
+        </button>
+      </div>
     </div>
   );
 };

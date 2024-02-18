@@ -24,9 +24,14 @@ function SendApprovalEmail() {
     }
   };
   return (
-    <div>
-      <button onClick={sendToSupplier}>send to supplier</button>
-    </div>
+      <div className="pt-4 flex items-center space-x-4">
+        <button
+          onClick={sendToSupplier}
+          className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+        >
+          Send to Supplier
+        </button>
+      </div>
   );
 }
 

@@ -74,7 +74,10 @@ const CreateRequest = () => {
     };
 
     try {
-      const response = await axiosApi.post("/purchase-request/create", dataToSend);
+      const response = await axiosApi.post(
+        "/purchase-request/create",
+        dataToSend
+      );
       const responseData = response.data;
       console.log("Response from backend:", responseData);
     } catch (error) {
@@ -83,13 +86,13 @@ const CreateRequest = () => {
   };
 
   return (
-    <div className="py-16 max-w-2xl mx-auto">
+    <div className="py-16 max-w-7xl m-auto">
       <form onSubmit={createRequest} action="">
         <label className="block mb-2" htmlFor="purchaseRequestTitle">
           Purchase Request Title:
         </label>
         <input
-          className="w-full border p-2 mb-4"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           type="text"
           id="purchaseRequestTitle"
           name="purchaseRequestTitle"
@@ -101,10 +104,10 @@ const CreateRequest = () => {
           Due Date:
         </label>
         <input
-          className="w-full border p-2 mb-4"
           type="date"
           id="dueDate"
           name="dueDate"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           value={orderData.dueDate}
           onChange={handleInputChange}
         />
@@ -112,10 +115,10 @@ const CreateRequest = () => {
         <label className="block mb-2" htmlFor="termsAndConditions">
           Terms and Conditions:
         </label>
-        <textarea
-          className="w-full border p-2 mb-4"
+        <input
           id="termsAndConditions"
           name="termsAndConditions"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           value={orderData.termsAndConditions}
           onChange={handleInputChange}
         />
@@ -156,9 +159,11 @@ const CreateRequest = () => {
           ))}
         </select>
 
-        <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
-          Create Purchase Request
-        </button>
+        <div className="pt-4 flex items-center space-x-4">
+          <button className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">
+            Create Purchase Request
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -32,6 +32,7 @@ import OrderView from "../pages/admin/views/Order";
 import CreateDelivery from "../pages/admin/components/delivery/CreateDelivery";
 import CreateInvoice from "../pages/admin/components/invoice/CreateInvoice";
 import Invoice from "../pages/admin/pages/Invoice";
+import InvoiceView from "../pages/admin/views/Invoice";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -153,8 +154,8 @@ export const DashboardRoutes: RouteObject = {
       element: <CreateDelivery />,
     },
     {
-      path: "/dashboard/invoice/view",
-      element: <InvoiceDetails />,
+      path: "/dashboard/invoice/view/:id",
+      element: <InvoiceView />,
     },
     {
       path: "/dashboard/contract",

@@ -3,6 +3,7 @@ import { axiosApi } from "../../../api";
 import { FaTrashAlt } from "react-icons/fa";
 import { PurchaseOrder } from "../types";
 import { Link } from "react-router-dom";
+import { FaEye } from "react-icons/fa6";
 type Invoice = {
   invoiceId: string;
   invoiceNumber: string;
@@ -99,6 +100,11 @@ const Invoice: React.FC = () => {
                       >
                         <FaTrashAlt />
                       </button>
+                      <Link
+                        to={`/dashboard/invoice/view/${order.invoiceId}`}
+                      >
+                        <FaEye />
+                      </Link>
                     </div>
                     <div className="flex flex-col items-end justify-end">
                       <span className="px-4 py-3 text-sm">

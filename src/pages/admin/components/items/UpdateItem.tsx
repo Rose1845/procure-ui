@@ -66,7 +66,7 @@ const UpdateItem = () => {
 
   return (
     <div className="py-16 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-8">Create Item</h1>
+      <h1 className="text-2xl font-bold mb-8">Edit Item</h1>
 
       <div className="mb-4">
         <label
@@ -81,7 +81,7 @@ const UpdateItem = () => {
           name="itemName"
           value={contractData.itemName}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
       </div>
 
@@ -97,7 +97,7 @@ const UpdateItem = () => {
           name="itemDescription"
           value={contractData.itemDescription}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
       </div>
 
@@ -114,7 +114,7 @@ const UpdateItem = () => {
           name="quantity"
           value={contractData.quantity}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
       </div>
 
@@ -131,7 +131,7 @@ const UpdateItem = () => {
           name="unitPrice"
           value={contractData.unitPrice}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
       </div>
 
@@ -148,7 +148,7 @@ const UpdateItem = () => {
           name="itemNumber"
           value={contractData.itemNumber}
           onChange={handleInputChange}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
       </div>
 
@@ -164,7 +164,7 @@ const UpdateItem = () => {
           name="vendorId"
           onChange={handleInputChange}
           value={contractData.vendorId}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         >
           <option value="">Select a supplier</option>
           {suppliers.map((supplier) => (
@@ -187,7 +187,7 @@ const UpdateItem = () => {
           name="categoryId"
           onChange={handleInputChange}
           value={contractData.categoryId}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         >
           <option value="">Select a category</option>
           {categories.map((category, i) => (
@@ -198,12 +198,14 @@ const UpdateItem = () => {
         </select>
       </div>
 
-      <button
-        onClick={UpdateItem}
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
-      >
-        Create Item
-      </button>
+      <div className="pt-4 flex items-center space-x-4">
+        <button
+          onClick={UpdateItem}
+          className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+        >
+          Update Item
+        </button>
+      </div>
     </div>
   );
 };

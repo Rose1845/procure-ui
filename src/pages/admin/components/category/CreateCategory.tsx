@@ -37,34 +37,38 @@ function CreateCategory() {
     }
   };
   return (
-    <div className="flex items-center justify-center p-16">
-      <div className="mx-auto w-full max-w-[550px]">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-5">
-            <label
-              htmlFor="categoryName"
-              className="mb-3 block text-base font-medium text-[#07074D]"
-            >
-              Category Name{" "}
-            </label>
-            <input
-              type="text"
-              // name="categoryName"
-              id="categoryName"
-              // onChange={handleInputChange}
-              // value={categoryName}
-              {...register("categoryName")}
-              placeholder="Name"
-              className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-            />
-            {errors.categoryName && <span>{errors.categoryName.message}</span>}
+    <div className="px-4 py-16 bg-white mx-8 rounded-3xl">
+      <div className="max-w-7xl m-auto">
+        <div className="flex items-center space-x-5">
+          <div className="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">
+            i
           </div>
-          <div>
-            <button
-              // onClick={createCategory}
-              className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none"
-            >
-              Submit
+          <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
+            <h2 className="leading-relaxed">Create Category</h2>
+          </div>
+        </div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="divide-y divide-gray-200"
+        >
+          <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+            <div className="flex flex-col">
+              <label className="leading-loose">Category Name</label>
+              <input
+                type="text"
+                id="categoryName"
+                {...register("categoryName")}
+                placeholder="Category"
+                className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+              />
+              {errors.categoryName && (
+                <span>{errors.categoryName.message}</span>
+              )}
+            </div>
+          </div>
+          <div className="pt-4 flex items-center space-x-4">
+            <button className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">
+              Create Category
             </button>
           </div>
         </form>
