@@ -198,6 +198,14 @@ function Category() {
             </div>
           </div>
         </div>
+        <div className="flex justify-end items-center space-x-3">
+          <button className="px-4 py-2 text-white font-bold bg-blue-600">
+            <Link to={"/dashboard/category/import"}> Import from Excel</Link>
+          </button>
+          <button className="px-4 py-2 text-white font-bold bg-blue-600">
+            Export to CSV
+          </button>
+        </div>
       </div>
     </div>
   );

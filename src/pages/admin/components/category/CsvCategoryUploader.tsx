@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";
 
-const CsvUploader: React.FC = () => {
+const CsvCategoryUploader: React.FC = () => {
   const [template, setTemplate] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -23,14 +23,14 @@ const CsvUploader: React.FC = () => {
     formData.append("file", selectedFile);
 
     try {
-      const response = await axiosApi.post("/suppliers/upload", formData, {
+      const response = await axiosApi.post("/category/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      setTemplate(`Successfully uploaded ${response.data} suppliers.`);
-      toast.success(`Successfully uploaded ${response.data} suppliers.`);
+      setTemplate(`Successfully uploaded ${response.data} categories.`);
+      toast.success(`Successfully uploaded ${response.data} categories.`);
     } catch (error) {
       toast.error("Error uploading file");
       console.error("Error uploading file:", error);
@@ -40,7 +40,7 @@ const CsvUploader: React.FC = () => {
   const downloadTemplate = async () => {
     try {
       const response = await axiosApi.get(
-        "/suppliers/template/download/single",
+        "/category/template/download/single",
         {
           responseType: "arraybuffer",
         }
@@ -51,7 +51,7 @@ const CsvUploader: React.FC = () => {
 
       const a = document.createElement("a");
       a.href = url;
-      a.download = "single_supplier_template.csv";
+      a.download = "category_template.csv";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -94,4 +94,4 @@ const CsvUploader: React.FC = () => {
   );
 };
 
-export default CsvUploader;
+export default CsvCategoryUploader;

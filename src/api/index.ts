@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:8081/api/v1";
+export const BASE_URL = "http://localhost:8081/api/v1";
 
 const publicApi = axios.create({
   baseURL: BASE_URL,
@@ -13,7 +13,9 @@ const axiosApi = axios.create({
   headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
     "Content-Type": "application/json",
+    // "Access-Control-Allow-Origin": "*",
   },
+  // withCredentials: true,
 });
 
 // Add a request interceptor

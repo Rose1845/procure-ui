@@ -1,5 +1,7 @@
 import React from "react";
-import { axiosApi } from "../../../../api";
+
+import { toast } from "react-toastify";
+import { axiosApi } from "@/api";
 import { PurchaseRequestData } from "../../types";
 
 const CreateRequest = () => {
@@ -10,11 +12,14 @@ const CreateRequest = () => {
     items: [],
     suppliers: [], // Change vendorId to suppliers as an array
   });
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const [items, setItems] = React.useState([]);
   const [suppliers, setSuppliers] = React.useState([]);
-
+  const controller = new AbortController();
   React.useEffect(() => {
+    const controller = new AbortController();
+
     fetchItems()
       .then((data) => setItems(data))
       .catch((error) => console.error("Error fetching items:", error));
@@ -22,6 +27,9 @@ const CreateRequest = () => {
     fetchSuppliers()
       .then((data) => setSuppliers(data))
       .catch((error) => console.error("Error fetching suppliers:", error));
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   const fetchItems = async () => {
@@ -42,7 +50,6 @@ const CreateRequest = () => {
     >
   ) => {
     const { name, value } = e.target;
-
     if (name === "items") {
       const selectElement = e.target as HTMLSelectElement;
       const selectedItems = Array.from(
@@ -50,7 +57,17 @@ const CreateRequest = () => {
         (option) => option.value
       );
       setOrderData((prevData) => ({ ...prevData, items: selectedItems }));
-    } else if (name === "suppliers") {
+    } else {
+      setOrderData((prevData) => ({ ...prevData, [name]: value }));
+    }
+  };
+  const handleInputChange1 = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    if (name === "suppliers") {
       const selectElement = e.target as HTMLSelectElement;
       const selectedSuppliers = Array.from(
         selectElement.selectedOptions,
@@ -66,11 +83,16 @@ const CreateRequest = () => {
   };
 
   const createRequest = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
+
     e.preventDefault();
+
     const itemsArray = orderData.items.map((itemId) => ({ itemId }));
+    const supplierArray = orderData.suppliers.map((vendorId) => ({ vendorId }));
     const dataToSend = {
       ...orderData,
       items: itemsArray,
+      suppliers: supplierArray,
     };
 
     try {
@@ -79,12 +101,15 @@ const CreateRequest = () => {
         dataToSend
       );
       const responseData = response.data;
+      toast.success("Success");
       console.log("Response from backend:", responseData);
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error.message);
       console.error("Error creating order:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
-
   return (
     <div className="py-16 max-w-7xl m-auto">
       <form onSubmit={createRequest} action="">
@@ -148,8 +173,8 @@ const CreateRequest = () => {
           className="w-full border p-2 mb-4"
           id="suppliers"
           name="suppliers"
-          onChange={handleInputChange}
-          // value={orderData.suppliers}
+          onChange={handleInputChange1}
+          value={orderData.suppliers}
           multiple
         >
           {suppliers.map((supplier: any) => (
@@ -160,7 +185,13 @@ const CreateRequest = () => {
         </select>
 
         <div className="pt-4 flex items-center space-x-4">
-          <button className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">
+          <button
+            disabled={isLoading}
+            type="submit"
+            className={`bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none ${
+              isLoading ? "bg-opacity-45 bg-red-900 cursor-not-allowed" : ""
+            }`}
+          >
             Create Purchase Request
           </button>
         </div>

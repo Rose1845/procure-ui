@@ -56,7 +56,7 @@ export interface PurchaseRequestData {
   dueDate: string;
   termsAndConditions: string;
   items: string[];
-  suppliers: number[];
+  suppliers: string[];
 }
 export interface PurchaseRequest {
   requestId: number;

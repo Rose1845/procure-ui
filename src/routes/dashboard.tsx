@@ -33,6 +33,7 @@ import CreateDelivery from "../pages/admin/components/delivery/CreateDelivery";
 import CreateInvoice from "../pages/admin/components/invoice/CreateInvoice";
 import Invoice from "../pages/admin/pages/Invoice";
 import InvoiceView from "../pages/admin/views/Invoice";
+import CsvCategoryUploader from "../pages/admin/components/category/CsvCategoryUploader";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -56,7 +57,11 @@ export const DashboardRoutes: RouteObject = {
       element: <CreateSupplier />,
     },
     {
-      path: "/dashboard/suppliers/import",
+      path: "/dashboard/category/import",
+      element: <CsvCategoryUploader/>,
+    },
+    {
+      path: "/dashboard/category/import",
       element: <CsvUploader />,
     },
     {
