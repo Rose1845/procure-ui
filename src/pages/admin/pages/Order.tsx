@@ -26,11 +26,12 @@ function Order() {
     navigate(`/dashboard/order/edit/${id}`);
     console.log(`Editing Order with ID: ${id}`);
   };
-  
+
   const handleDelete = async (id: number) => {
     try {
       // Send a DELETE request to delete the supplier with the given ID
       await axiosApi.delete(`/purchase-order/${id}`);
+      toast.success("deleted succesfuly")
       console.log(`Order with ID ${id} deleted successfully`);
       // Refresh the list of suppliers after deletion
       fetchOrders();
@@ -38,19 +39,7 @@ function Order() {
       console.error(`Error deleting supplier with ID ${id}:`, error);
     }
   };
-    const ApproveContract = async (id: number) => {
-      try {
-        const response = await axiosApi.patch(
-          `/purchase_order/approve/${id}?approvalStatus=CLOSED`
-        );
-        console.log("reponse padi", response.data);
-        toast.success("Contract sent to supplier successfully");
-        console.log("Response from backend:", response.data);
-      } catch (error) {
-        toast.error("An error occurred while sending contract to supplier");
-        console.error("Error sending contract to supplier:", error);
-      }
-    };
+
   return (
     <div className="max-w-7xl mx-auto pt-16 ">
       <div className="flex justify-end">
@@ -116,14 +105,6 @@ function Order() {
                       >
                         <FaEye />
                       </Link>
-                      <div className="flex items-center">
-                        <button
-                          onClick={()=>ApproveContract(order.purchaseOrderId)}
-                          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 mr-2"
-                        >
-                          MARK AS FULLY RECEIVED{" "}
-                        </button>
-                      </div>
                     </td>
                   </tr>
                 ))}

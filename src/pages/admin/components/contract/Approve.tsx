@@ -3,20 +3,21 @@ import { toast } from "react-toastify";
 import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
 
-function MarkPaid() {
+function Approve() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [approvalAction, setApprovalAction] = React.useState<string>("");
 
-  const approvePurchaseOrder = async () => {
+  const approveContract = async () => {
     setIsLoading(true);
 
     try {
       const response = await axiosApi.patch(
-        `/purchase-order/approve/${id}`,
+        `/contract/edit-contract/${id}`,
         null,
         {
           params: {
-            approvalStatus: "ISSUED",
+            contractStatus: `${approvalAction}`,
           },
         }
       );
@@ -33,20 +34,20 @@ function MarkPaid() {
   };
 
   React.useEffect(() => {
-    approvePurchaseOrder();
+    approveContract();
   }, []);
   return (
     <div className="py-5">
       <div className="flex items-center">
         <button
-          onClick={approvePurchaseOrder}
+          onClick={approveContract}
           className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 mr-2"
         >
-          MARK AS FULLY RECEIVED{" "}
+          Approve{" "}
         </button>
       </div>
     </div>
   );
 }
 
-export default MarkPaid;
+export default Approve;

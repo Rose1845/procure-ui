@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Contract } from "../../types";
@@ -8,6 +8,7 @@ const ApproveContract = () => {
   const { id } = useParams();
   const [contract, setContract] = React.useState<Contract>();
   const [approvalAction, setApprovalAction] = React.useState<string>("");
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     const fetchContract = async () => {
@@ -28,14 +29,24 @@ const ApproveContract = () => {
 
   const ApproveContract = async () => {
     try {
-      const response = await publicApi.patch(
-        `/contract/edit-contract/${id}?contractStatus=${approvalAction}}`
+      const response = await axiosApi.patch(
+        `/contract/edit-contract/${id}`,
+        null,
+        {
+          params: {
+            contractStatus: `${approvalAction}`,
+          },
+        }
       );
-      toast.success("Contract sent to supplier successfully");
-      console.log("Response from backend:", response.data);
+
+      const responseData = response.data;
+      toast.success(responseData.message);
+      console.log("Response from backend:", responseData);
     } catch (error) {
-      toast.error("An error occurred while sending contract to supplier");
-      console.error("Error sending contract to supplier:", error);
+      toast.error("Error approving contract");
+      console.error("Error approving contract:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

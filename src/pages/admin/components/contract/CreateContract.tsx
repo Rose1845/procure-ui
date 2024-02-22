@@ -75,6 +75,15 @@ const CreateContract = () => {
         throw new Error(`Failed to create contract: ${response.statusText}`);
       }
       toast.success("contract created successfully");
+      setContractData({
+        contractTitle: "",
+        contractType: "",
+        contractStartDate: "",
+        contractEndDate: "",
+        termsAndConditions: "",
+        items: [],
+        vendorId: 0,
+      });
       console.log("Response from backend:", response.data);
     } catch (error) {
       toast.error("An error occured!Please try again later  ");
@@ -128,8 +137,8 @@ const CreateContract = () => {
           <div className="relative focus-within:text-gray-600 text-gray-400">
             <input
               type="date"
-              id="dueDate"
-              name="dueDate"
+              id="contractStartDate"
+              name="contractStartDate"
               value={contractData.contractStartDate}
               onChange={handleInputChange}
               className="pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
@@ -159,8 +168,8 @@ const CreateContract = () => {
           <div className="relative focus-within:text-gray-600 text-gray-400">
             <input
               type="date"
-              id="dueDate"
-              name="dueDate"
+              id="contractEndDate"
+              name="contractEndDate"
               value={contractData.contractEndDate}
               onChange={handleInputChange}
               className="pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"

@@ -41,7 +41,7 @@ const CreateRequisition = () => {
     const { name, value } = e.target;
     setOrderData((prevData) => ({ ...prevData, [name]: value }));
   };
-
+  
   const createRequisition = async () => {
     const itemsArray = orderData.items.map((itemId) => ({ itemId }));
     const dataToSend = {
