@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { clearUserData } from "../../../utils/auth";
-import { endpoints, fetchWrapper } from "../../../utils/api";
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
-import { Link } from "react-router-dom";
-import { publicApi } from "../../../api";
-function Signup() {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+import { publicApi } from "../../../api/index";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+function Register() {
+  const navigate = useNavigate()
   const [register, setRegister] = React.useState({
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
     email: "",
     password: "",
   });
@@ -19,14 +16,26 @@ function Signup() {
     setRegister({ ...register, [name]: value });
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await publicApi.post("/auth/register", register);
-    if (response.data) {
-      clearUserData();
-      console.log("User created successfully");
-    } else {
-      console.error("Please try again");
+    try {
+      const response = await publicApi.post("/auth/register", register);
+      if (response.data) {
+        toast.success("registered successfully");
+        setRegister({
+          firstname: "",
+          lastname: "",
+          email: "",
+          password: "",
+        });
+        navigate("/login")
+        console.log("User created successfully");
+      } else {
+        toast.error("Please try again");
+        console.error("Please try again");
+      }
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
@@ -248,10 +257,13 @@ function Signup() {
                 <h1 className="font-bold text-3xl text-gray-900">REGISTER</h1>
                 <p>Enter your information to register</p>
               </div>
-              <div>
+              <form onSubmit={handleRegister}>
                 <div className="flex -mx-3">
                   <div className="w-1/2 px-3 mb-5">
-                    <label htmlFor="" className="text-xs font-semibold px-1">
+                    <label
+                      htmlFor="firstName"
+                      className="text-xs font-semibold px-1"
+                    >
                       First name
                     </label>
                     <div className="flex">
@@ -260,13 +272,20 @@ function Signup() {
                       </div>
                       <input
                         type="text"
+                        id="firstname"
+                        name="firstname"
+                        value={register.firstname}
+                        onChange={handleInputChange}
                         className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
                         placeholder="John"
                       />
                     </div>
                   </div>
                   <div className="w-1/2 px-3 mb-5">
-                    <label htmlFor="" className="text-xs font-semibold px-1">
+                    <label
+                      htmlFor="lastName"
+                      className="text-xs font-semibold px-1"
+                    >
                       Last name
                     </label>
                     <div className="flex">
@@ -275,6 +294,10 @@ function Signup() {
                       </div>
                       <input
                         type="text"
+                        name="lastname"
+                        id="lastname"
+                        value={register.lastname}
+                        onChange={handleInputChange}
                         className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
                         placeholder="Smith"
                       />
@@ -292,6 +315,10 @@ function Signup() {
                       </div>
                       <input
                         type="email"
+                        id="email"
+                        name="email"
+                        value={register.email}
+                        onChange={handleInputChange}
                         className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
                         placeholder="procure@example.com"
                       />
@@ -309,6 +336,10 @@ function Signup() {
                       </div>
                       <input
                         type="password"
+                        id="password"
+                        name="password"
+                        value={register.password}
+                        onChange={handleInputChange}
                         className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
                         placeholder="************"
                       />
@@ -317,12 +348,15 @@ function Signup() {
                 </div>
                 <div className="flex -mx-3">
                   <div className="w-full px-3 mb-5">
-                    <button className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">
+                    <button
+                      type="submit"
+                      className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
+                    >
                       REGISTER NOW
                     </button>
                   </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
@@ -331,4 +365,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Register;

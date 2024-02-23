@@ -1,66 +1,8 @@
-// import { useState } from "react";
-// import { useAuth } from "../../../utils/auth";
-// import { endpoints, fetchWrapper } from "../../../utils/api";
 
-// function Login() {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   const { onLogin } = useAuth();
-
-//   const handleLogin = async (e: any) => {
-//     e.preventDefault();
-//     const response = await fetchWrapper(endpoints.login, {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: {
-//         email,
-//         password,
-//       },
-//     });
-//     if (response.ok) {
-//       const userData = await response.json();
-//       onLogin(userData);
-//       console.log("data",userData);
-
-//     } else {
-
-//       console.error("Username or Password is incorrect");
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <form onSubmit={handleLogin}>
-//         <h3>Login Form</h3>
-//         <br />
-//         <input
-//           type="email"
-//           placeholder="email"
-//           required
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-//         <br />
-//         <input
-//           type="password"
-//           placeholder="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-//         <br />
-//         <br />
-//         <button type="submit">Login</button>
-//       </form>
-//     </div>
-//   );
-// }
-
-// export default Login;
 
 import React, { useState } from "react";
 import { publicApi } from "../../../api/index";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const [credentials, setCredentials] = useState({
     email: "",
@@ -337,6 +279,10 @@ const Login = () => {
               <button className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
                 sign in
               </button>
+              <div className="flex space-x-2">
+                <p>Don't have an account?</p>{" "}
+                <Link to={"/register"}>Register</Link>
+              </div>
             </div>
 
             <div className="p-4 text-center right-0 left-0 flex justify-center space-x-4 mt-16 lg:hidden ">
