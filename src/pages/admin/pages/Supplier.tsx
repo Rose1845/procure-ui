@@ -18,12 +18,12 @@ function Supplier() {
     console.log(supplier, "suppliers");
     return supplier;
   };
-  const handleEdit = (id: number) => {
+  const handleEdit = (id: string) => {
     // Redirect or open a modal for editing based on the id
     navigate(`/dashboard/update_supplier/${id}`);
     console.log(`Editing supplier with ID: ${id}`);
   };
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     try {
       // Send a DELETE request to delete the supplier with the given ID
       await axiosApi.delete(`/suppliers/${id}`);

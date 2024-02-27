@@ -8,11 +8,8 @@ function ProtectedRoute({ redirectPath = "/login", children }: any) {
 
   if (!token) {
     console.log(token,"token1");
-    
     return <Navigate to={redirectPath} replace state={{ from: location }} />;
   }
-
   return children || <Outlet />;
 }
-
 export default ProtectedRoute;

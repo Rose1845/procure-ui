@@ -1,6 +1,7 @@
 import React from "react";
 import { axiosApi } from "../../../api";
 import { PurchaseOrder } from "../types";
+import PurchaseOrderChart from "../components/order/PurchaseOrderChart";
 
 function Dashboard() {
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
@@ -115,15 +116,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 p-4 gap-4">
-        <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50  w-full shadow-lg rounded">
-          {/* <BarChart/> */}
-        </div>
-
-        
-      </div>
-
+      <PurchaseOrderChart />
       <div className="max-w-7xl mx-auto pt-16 ">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
@@ -170,7 +163,6 @@ function Dashboard() {
               </tbody>
             </table>
           </div>
-          
         </div>
       </div>
     </div>

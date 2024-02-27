@@ -34,6 +34,7 @@ import CreateInvoice from "../pages/admin/components/invoice/CreateInvoice";
 import Invoice from "../pages/admin/pages/Invoice";
 import InvoiceView from "../pages/admin/views/Invoice";
 import CsvCategoryUploader from "../pages/admin/components/category/CsvCategoryUploader";
+import RequestView from "@/pages/admin/views/RequestView";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -58,7 +59,7 @@ export const DashboardRoutes: RouteObject = {
     },
     {
       path: "/dashboard/category/import",
-      element: <CsvCategoryUploader/>,
+      element: <CsvCategoryUploader />,
     },
     {
       path: "/dashboard/category/import",
@@ -71,7 +72,6 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/payments",
       element: <Items />,
-      // loader: dashboardPaymentsLoader,
     },
     {
       path: "/dashboard/category",
@@ -100,6 +100,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/order/view/:id",
       element: <OrderView />,
+    },
+    {
+      path: "/dashboard/request/view/:id",
+      element: <RequestView />,
     },
     {
       path: "/dashboard/purchase-request",

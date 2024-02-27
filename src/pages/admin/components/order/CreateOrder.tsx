@@ -1,5 +1,5 @@
 import React from "react";
-import { PurchaseOrderData } from "../../types";
+import { Item, PurchaseOrderData, Supplier } from "../../types";
 import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";
 
@@ -10,11 +10,11 @@ const CreateOrder = () => {
     termsAndConditions: "",
     paymentType: "MPESA" || "PAYPAL",
     items: [],
-    vendorId: 0,
+    vendorId: "",
   });
 
-  const [items, setItems] = React.useState([]);
-  const [suppliers, setSuppliers] = React.useState([]);
+  const [items, setItems] = React.useState<Item[]>([]);
+  const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
 
   React.useEffect(() => {
     fetchItems()
@@ -33,9 +33,17 @@ const CreateOrder = () => {
   };
 
   const fetchSuppliers = async () => {
-    const response = await axiosApi.get("/suppliers");
-    const suppliers = response.data;
-    return suppliers;
+    try {
+      const response = await axiosApi.get("/suppliers");
+      const suppliers = response.data;
+
+      console.log("Suppliers:", suppliers);
+
+      return suppliers;
+    } catch (error) {
+      console.error("Error fetching suppliers:", error);
+      throw error;
+    }
   };
 
   const handleInputChange = (
@@ -74,7 +82,7 @@ const CreateOrder = () => {
         termsAndConditions: "",
         paymentType: "MPESA" || "PAYPAL",
         items: [],
-        vendorId: 0,
+        vendorId: "",
       });
       console.log("Response from backend:", responseData);
     } catch (error) {
@@ -164,8 +172,8 @@ const CreateOrder = () => {
         value={orderData.vendorId}
       >
         <option value="">Select a supplier</option>
-        {suppliers.map((supplier: any) => (
-          <option key={supplier.vendorId} value={supplier.vendorId}>
+        {suppliers.map((supplier: any, i) => (
+          <option key={i} value={supplier.vendorId}>
             {supplier.name}
           </option>
         ))}

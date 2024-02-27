@@ -15,7 +15,6 @@ function PurchaseRequest() {
     const response = await axiosApi.get("/purchase-request");
     const request = response.data;
     console.log(request, "reqsitions");
-    console.log(requests, "reqesss");
     return request;
   };
   return (
@@ -54,13 +53,19 @@ function PurchaseRequest() {
                         </span>{" "}
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-sm">{req.requestId}</td>
                     <td className="px-4 py-3 text-sm">
                       {" "}
                       {new Date(req.createdAt).toLocaleString()}
                     </td>
                     <td className="px-4 py-3 text-sm">
                       {new Date(req.dueDate).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3 text-sm">
+                      <Link
+                        to={`/dashboard/request/view/${req.purchaseRequestId}`}
+                      >
+                        View
+                      </Link>
                     </td>
                   </tr>
                 ))}

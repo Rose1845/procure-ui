@@ -36,12 +36,6 @@ function Deliveries() {
   };
   return (
     <div className="max-w-7xl mx-auto pt-16 ">
-      {/* <div className="flex justify-end">
-        <button className="px-4 py-2 bg-blue-600 text-white">
-          <Link to={"/dashboard/items/add_order"}> Add Order</Link>
-        </button>
-      </div> */}
-
       <div className="max-w-7xl mx-auto pt-16 ">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
@@ -78,7 +72,7 @@ function Deliveries() {
                     <td className="px-4 py-3 text-sm">
                       {new Date(order.createdAt).toLocaleString()}
                     </td>
-                    
+
                     <td className="px-4 py-3 text-sm">
                       {order.approvalStatus === "ISSUED" && (
                         <Link

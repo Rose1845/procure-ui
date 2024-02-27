@@ -29,10 +29,8 @@ function Register() {
           password: "",
         });
         navigate("/login")
-        console.log("User created successfully");
       } else {
-        toast.error("Please try again");
-        console.error("Please try again");
+        toast.error("Please try again later");
       }
     } catch (error: any) {
       toast.error(error.message);

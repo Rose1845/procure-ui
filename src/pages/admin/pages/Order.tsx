@@ -31,7 +31,7 @@ function Order() {
     try {
       // Send a DELETE request to delete the supplier with the given ID
       await axiosApi.delete(`/purchase-order/${id}`);
-      toast.success("deleted succesfuly")
+      toast.success("deleted succesfuly");
       console.log(`Order with ID ${id} deleted successfully`);
       // Refresh the list of suppliers after deletion
       fetchOrders();
@@ -55,7 +55,7 @@ function Order() {
               <thead>
                 <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
                   <th className="px-4 py-3">Purchase Orders</th>
-                  <th className="px-4 py-3">Amount</th>
+                  <th className="px-4 py-3">Payment Type</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Last Edited</th>
                 </tr>
@@ -66,46 +66,46 @@ function Order() {
                     key={i}
                     className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
                   >
-                    <td className="px-4 py-3">
-                      <div className="flex items-center text-sm">
-                        <div>
-                          <p className="font-semibold">
-                            {order.purchaseOrderTitle}
-                          </p>
+                    <Link
+                      className="bg-gray-50  hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
+                      to={`/dashboard/order/view/${order.purchaseOrderId}`}
+                    >
+                      <td className="px-4 py-3">
+                        <div className="flex items-center text-sm">
+                          <div>
+                            <p className="font-semibold">
+                              {order.purchaseOrderTitle}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-sm">{order.paymentType}</td>
-                    <td className="px-4 py-3 text-xs">
-                      <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                        {order.approvalStatus}{" "}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      {new Date(order.createdAt).toLocaleString()}
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      <button
-                        className="text-blue-600 hover:underline"
-                        onClick={() => handleEdit(order.purchaseOrderId)}
-                      >
-                        Edit
-                        <FaEdit className="text-xl text-gray-900" />
-                      </button>
-                      {" | "}
-                      <button
-                        className="text-red-600 hover:underline"
-                        onClick={() => handleDelete(order.purchaseOrderId)}
-                      >
-                        Delete
-                        <FaTrashAlt />
-                      </button>
-                      <Link
-                        to={`/dashboard/order/view/${order.purchaseOrderId}`}
-                      >
-                        <FaEye />
-                      </Link>
-                    </td>
+                      </td>
+                      <td className="px-4 py-3 text-sm">{order.paymentType}</td>
+                      <td className="px-4 py-3 text-xs">
+                        <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                          {order.approvalStatus}{" "}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        {new Date(order.createdAt).toLocaleString()}
+                      </td>
+                      <td className="px-4 py-3 space-x-5 text-sm">
+                        <button
+                          className="text-blue-600 hover:underline"
+                          onClick={() => handleEdit(order.purchaseOrderId)}
+                        >
+                          Edit
+                          <FaEdit className="text-xl text-gray-900" />
+                        </button>
+                        {" | "}
+                        <button
+                          className="text-red-600 hover:underline"
+                          onClick={() => handleDelete(order.purchaseOrderId)}
+                        >
+                          Delete
+                          <FaTrashAlt />
+                        </button>
+                      </td>
+                    </Link>
                   </tr>
                 ))}
               </tbody>

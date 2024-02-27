@@ -31,26 +31,6 @@ const OrderView = () => {
       abortController.abort();
     };
   }, [id]);
-
-  // const markAsPaid = async () => {
-  //   const abortController = new AbortController();
-
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await axiosApi.patch(
-  //       `/purchase_order/approve/${id}?approvalStatus=CLOSED`,
-  //       { signal: abortController.signal }
-  //     );
-  //     console.log("reponse padi", response.data);
-  //     toast.success(response.data.message);
-  //     console.log("Response from backend:", response.data);
-  //   } catch (error) {
-  //     toast.error("An error occurred while sending order to supplier");
-  //     console.error("Error sending order to supplier:", error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
   const sendToSupplier = async () => {
     setIsLoading(true);
     try {
