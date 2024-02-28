@@ -21,7 +21,7 @@ const CreateOffer = () => {
         console.error("Error updating request:", error);
       }
     };
-
+     
     fetchCategory();
     return () => {
       abortController.abort();

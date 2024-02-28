@@ -6,12 +6,14 @@ import Faq from "../components/Faq";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import FAQs from "../components/faq/FAQS";
+import Purchasing from "../components/Purchasing";
 
 function Home() {
   return (
     <div>
       <Hero />
       <Why />
+      <Purchasing/>
       <FAQs title="FAQS"/>
       <Contact />
       <Footer />
