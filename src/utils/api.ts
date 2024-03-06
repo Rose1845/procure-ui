@@ -2,7 +2,7 @@ export const API_HOST = "http://localhost:8081";
 
 export const endpoints = {
   login: "/api/v1/auth/authenticate",
-  logout: "/api/auth/logout",
+  logout: "/api/v1/auth/logout",
   signup: "/api/v1/auth/register",
   token: "/api/v1/auth/token",
   user: "/api/users/me",

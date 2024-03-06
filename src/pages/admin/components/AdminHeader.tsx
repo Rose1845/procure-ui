@@ -1,10 +1,22 @@
+import { clearUserData, useAuth } from "@/utils/auth";
 import { Menu, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 function AdminHeader() {
+  const navigate = useNavigate();
+  const auth = useAuth(); // Use the useAuth hook to get authentication context
+
+  const handleLogout = () => {
+    clearUserData();
+    // Clear user data from local storage
+    // navigate("/login");
+    // You might also want to perform additional logout actions, e.g., redirecting to login page
+  };
+
   return (
     <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -33,11 +45,6 @@ function AdminHeader() {
               </svg>
             </button>
             <a href="/" className="flex ms-2 md:me-24">
-              {/* <img
-                src="https://flowbite.com/docs/images/logo.svg"
-                className="h-8 me-3"
-                alt="FlowBite Logo"
-              /> */}
               <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                 ProcureSwift
               </span>
@@ -83,7 +90,7 @@ function AdminHeader() {
                     <Menu.Item>
                       {({ active }) => (
                         <a
-                          href="#"
+                          href="/dashboard/settings"
                           className={classNames(
                             active ? "bg-gray-100" : "",
                             "block px-4 py-2 text-sm text-gray-700"
@@ -95,8 +102,10 @@ function AdminHeader() {
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
+                       
                         <a
                           href="#"
+                          onClick={handleLogout} // Call handleLogout when the "Sign out" option is clicked
                           className={classNames(
                             active ? "bg-gray-100" : "",
                             "block px-4 py-2 text-sm text-gray-700"

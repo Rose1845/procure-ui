@@ -9,7 +9,7 @@ type Props = {
 const FAQs = ({ title }: Props) => {
   return (
     <section className="flex justify-center items-center">
-      <div className="drop-shadow-xl rounded-2xl bg-white w-full">
+      <div className="  rounded-2xl bg-white w-full">
         <div className="text-black  text-5xl flex items-center">
           <span className="px-6"></span>
           {title}

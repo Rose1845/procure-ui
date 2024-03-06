@@ -2,8 +2,8 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export type TUser = {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 };
 
 export const useAuth = () => useContext(AuthContext);
@@ -33,26 +33,26 @@ export function clearUserData(): void {
 
 export const getRefreshToken = () => {
   if (typeof Storage === "undefined") return false;
-  return JSON.parse(localStorage.getItem("user") || "{}")?.refreshToken;
+  return JSON.parse(localStorage.getItem("user") || "{}")?.refresh_token;
 };
 
 export const getAccessToken = () => {
   if (typeof Storage === "undefined") {
     return new Error("Storage type not valid");
   }
-  return JSON.parse(localStorage.getItem("user") || "{}")?.accessToken;
+  return JSON.parse(localStorage.getItem("user") || "{}")?.access_token;
 };
 
 export const updateAccessToken = (token: string): void => {
   if (typeof Storage === "undefined") return;
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  user.accessToken = token;
+  user.access_token = token;
   localStorage.setItem("user", JSON.stringify(user));
 };
 
 export const isAuthenticated = () => {
-  const accessToken = getAccessToken();
-  if (!accessToken) return false;
+  const access_token = getAccessToken();
+  if (!access_token) return false;
   return true;
 };
 

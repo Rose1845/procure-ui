@@ -47,6 +47,7 @@ export interface PurchaseOrder {
   paymentType: string;
   approvalStatus: string;
   items: Item[];
+  totalAmount: number;
   vendorId: string;
   createdAt: Date;
   updatedAt: Date;

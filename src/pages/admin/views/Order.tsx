@@ -128,6 +128,7 @@ const OrderView = () => {
                 </tbody>
               </table>
             </div>
+            <div className="flex justify-end">Total Amount: {order?.totalAmount}</div>
           </div>
         </div>
       </div>
