@@ -1,50 +1,35 @@
 import React from "react";
-import { Item, PurchaseOrderData, Supplier } from "../../types";
-import { axiosApi } from "../../../../api";
+
+import { Contract} from "../../types";
+import { axiosApi } from "@/api";
 import { toast } from "react-toastify";
 
-const CreateOrder = () => {
-  const [orderData, setOrderData] = React.useState<PurchaseOrderData>({
+const CreateOrderFromContract = () => {
+  const [orderData, setOrderData] = React.useState({
     purchaseOrderTitle: "",
     deliveryDate: "",
     termsAndConditions: "",
     paymentType: "MPESA" || "PAYPAL",
     items: [],
+    contractId: "",
     vendorId: "",
   });
-  
-  const [items, setItems] = React.useState<Item[]>([]);
-  const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
+
+  const [contracts, setContract] = React.useState<Contract[]>([]);
 
   React.useEffect(() => {
-    fetchItems()
-      .then((data) => setItems(data))
-      .catch((error) => console.error("Error fetching items:", error));
-
-    fetchSuppliers()
-      .then((data) => setSuppliers(data))
-      .catch((error) => console.error("Error fetching suppliers:", error));
+    const fetchContractData = async () => {
+      try {
+        const response = await axiosApi.get("/contract/status-open");
+        const existingContract = response.data;
+        console.log(existingContract, "contract");
+        setContract(existingContract);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchContractData();
   }, []);
-
-  const fetchItems = async () => {
-    const response = await axiosApi.get("/items");
-    const items = response.data;
-    return items;
-  };
-
-  const fetchSuppliers = async () => {
-    try {
-      const response = await axiosApi.get("/suppliers");
-      const suppliers = response.data;
-
-      console.log("Suppliers:", suppliers);
-
-      return suppliers;
-    } catch (error) {
-      console.error("Error fetching suppliers:", error);
-      throw error;
-    }
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -52,36 +37,28 @@ const CreateOrder = () => {
     >
   ) => {
     const { name, value } = e.target;
-    if (name === "items") {
-      const selectElement = e.target as HTMLSelectElement;
-      const selectedItems = Array.from(
-        selectElement.selectedOptions,
-        (option) => option.value
-      );
-      setOrderData((prevData) => ({ ...prevData, items: selectedItems }));
-    } else {
-      setOrderData((prevData) => ({ ...prevData, [name]: value }));
-    }
+    setOrderData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const createOrder = async () => {
-    const itemsArray = orderData.items.map((itemId) => ({ itemId }));
     const dataToSend = {
       ...orderData,
-      items: itemsArray,
     };
 
     try {
-      const response = await axiosApi.post("/purchase-order", dataToSend);
-
+      const response = await axiosApi.post(
+        `/purchase-order/create-from-contract/${orderData.contractId}`,
+        dataToSend
+      );
       const responseData = response.data;
-      toast.success(response.data.message);
+      toast.success("order created successfully");
       setOrderData({
         purchaseOrderTitle: "",
         deliveryDate: "",
         termsAndConditions: "",
         paymentType: "MPESA" || "PAYPAL",
         items: [],
+        contractId: "",
         vendorId: "",
       });
       console.log("Response from backend:", responseData);
@@ -128,24 +105,6 @@ const CreateOrder = () => {
         onChange={handleInputChange}
       />
 
-      <label className="block mb-2" htmlFor="items">
-        Select items:
-      </label>
-      <select
-        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-        id="items"
-        name="items"
-        onChange={handleInputChange}
-        value={orderData.items}
-        multiple
-      >
-        {items.map((item: any, i) => (
-          <option key={i} value={item.itemId}>
-            {item.itemName}
-          </option>
-        ))}
-      </select>
-
       <label className="block mb-2" htmlFor="paymentType">
         Payment Type:
       </label>
@@ -162,19 +121,19 @@ const CreateOrder = () => {
       </select>
 
       <label className="block mb-2" htmlFor="vendorId">
-        Select Supplier:
+        Choose a contract
       </label>
       <select
         className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-        id="vendorId"
-        name="vendorId"
+        id="contractId"
+        name="contractId"
+        value={orderData.contractId}
         onChange={handleInputChange}
-        value={orderData.vendorId}
       >
-        <option value="">Select a supplier</option>
-        {suppliers.map((supplier: any, i) => (
-          <option key={i} value={supplier.vendorId}>
-            {supplier.name}
+        <option value="contractId">Choose a contract</option>
+        {contracts.map((contract: any, i) => (
+          <option key={i} value={contract.contractId}>
+            {contract.contractTitle}
           </option>
         ))}
       </select>
@@ -184,11 +143,11 @@ const CreateOrder = () => {
           onClick={createOrder}
           className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
         >
-          Create Order
+          Create Order From Contract
         </button>
       </div>
     </div>
   );
 };
 
-export default CreateOrder;
+export default CreateOrderFromContract;

@@ -80,7 +80,6 @@ const UpdateSupplier = () => {
     <div className="py-16 max-w-7xl  m-auto">
       <form onSubmit={handleSubmit}>
         <h2 className="text-2xl font-semibold mb-6">Update Supplier</h2>
-
         {/* Company Information */}
         <div className="flex flex-row space-x-5">
           <div className="mb-4">

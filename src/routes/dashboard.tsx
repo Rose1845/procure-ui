@@ -36,6 +36,7 @@ import InvoiceView from "../pages/admin/views/Invoice";
 import CsvCategoryUploader from "../pages/admin/components/category/CsvCategoryUploader";
 import RequestView from "@/pages/admin/views/RequestView";
 import OfferManagement from "@/pages/admin/components/request/OfferManagement";
+import CreateOrderFromContract from "@/pages/admin/components/order/CreateOrderFromContract";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -91,8 +92,12 @@ export const DashboardRoutes: RouteObject = {
       element: <UpdateOrder />,
     },
     {
-      path: "/dashboard/items/add_order",
+      path: "/dashboard/order/add_order",
       element: <CreateOrder />,
+    },
+    {
+      path: "/dashboard/order/add_order_from_contract",
+      element: <CreateOrderFromContract />,
     },
     {
       path: "/dashboard/order",

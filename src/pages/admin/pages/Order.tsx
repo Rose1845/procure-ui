@@ -43,9 +43,36 @@ function Order() {
   return (
     <div className="max-w-7xl mx-auto pt-16 ">
       <div className="flex justify-end">
-        <button className="px-4 py-2 bg-blue-600 text-white">
-          <Link to={"/dashboard/items/add_order"}> Add Order</Link>
-        </button>
+        <div className="relative inline-block text-left">
+          <button className="px-4 py-2 bg-blue-600 text-white">
+            Create Purchase Order
+          </button>
+          <div
+            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+            role="menu"
+            aria-orientation="vertical"
+            aria-labelledby="menu-button"
+          >
+            <div className="py-1" role="none">
+              <Link
+                to="/dashboard/order/add_order"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                role="menuitem"
+                id="menu-item-0"
+              >
+                Standard Purchase Order
+              </Link>
+              <Link
+                to="/dashboard/order/add_order_from_contract"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                role="menuitem"
+                id="menu-item-1"
+              >
+                Create Order From Contract
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto pt-16 ">
