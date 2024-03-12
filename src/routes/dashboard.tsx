@@ -1,7 +1,6 @@
 import React from "react";
 import { RouteObject } from "react-router-dom";
 import Category from "../pages/admin/pages/Category";
-
 import Items from "../pages/admin/pages/Items";
 import Supplier from "../pages/admin/pages/Supplier";
 import Contract from "../pages/admin/pages/Contract";
@@ -36,6 +35,7 @@ import CsvCategoryUploader from "../pages/admin/components/category/CsvCategoryU
 import RequestView from "@/pages/admin/views/RequestView";
 import CreateOrderFromContract from "@/pages/admin/components/order/CreateOrderFromContract";
 import CreateOffer from "@/pages/admin/components/request/CreateOffer";
+import ApproveContract from "@/pages/admin/components/contract/ApproveContract";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -89,6 +89,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/order/edit/:id",
       element: <UpdateOrder />,
+    },
+    {
+      path: "/dashboard/contract/approve/:id",
+      element: <ApproveContract />,
     },
     {
       path: "/dashboard/order/add_order",

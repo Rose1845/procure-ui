@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { toast } from "react-toastify";
 import { axiosApi } from "../../../../api";
@@ -12,6 +13,8 @@ function Approve() {
     setIsLoading(true);
 
     try {
+      const accessToken = localStorage.getItem("accessToken");
+
       const response = await axiosApi.patch(
         `/contract/edit-contract/${id}`,
         null,
@@ -19,6 +22,9 @@ function Approve() {
           params: {
             contractStatus: `${approvalAction}`,
           },
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
         }
       );
 

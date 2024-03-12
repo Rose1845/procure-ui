@@ -40,7 +40,6 @@ const OrderView = () => {
           Authorization: `Bearer ${accessToken}`
         }
       });
-
       console.log(response.data);
       toast.success(response.data.message);
       console.log("Response from backend:", response.data);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";

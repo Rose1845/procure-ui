@@ -2,7 +2,7 @@ import React from "react";
 import { PurchaseOrder } from "../types";
 import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 function Order() {

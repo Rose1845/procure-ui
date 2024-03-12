@@ -31,8 +31,19 @@ const ApproveOrder = () => {
 
   const ApproveContract = async () => {
     try {
+      const accessToken = localStorage.getItem("access_token");
+
       const response = await axiosApi.patch(
-        `/purchase-order/approve/${id}?approvalStatus=${approvalAction}`
+        `/purchase-order/approve/${id}`,
+        null,
+        {
+          params: {
+            approvalStatus: `${approvalAction}`,
+          },
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        },
       );
 
       if (!response.data) {

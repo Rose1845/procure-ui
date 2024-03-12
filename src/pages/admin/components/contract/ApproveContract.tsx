@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Contract } from "../../types";
-import { axiosApi, publicApi } from "../../../../api";
+import { axiosApi } from "../../../../api";
 
 const ApproveContract = () => {
   const { id } = useParams();
@@ -29,6 +30,8 @@ const ApproveContract = () => {
 
   const ApproveContract = async () => {
     try {
+      const accessToken = localStorage.getItem("accessToken");
+
       const response = await axiosApi.patch(
         `/contract/edit-contract/${id}`,
         null,
@@ -36,6 +39,9 @@ const ApproveContract = () => {
           params: {
             contractStatus: `${approvalAction}`,
           },
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
         }
       );
 

@@ -22,23 +22,23 @@ function Contract() {
     return contract;
   };
   
-  const handleEdit = (id: number) => {
-    // Redirect or open a modal for editing based on the id
-    navigate(`/dashboard/contract/edit/${id}`);
-    console.log(`Editing contract with ID: ${id}`);
-  };
-  const handleDelete = async (id: number) => {
-    try {
-      // Send a DELETE contuest to delete the supplier with the given ID
-      await axiosApi.delete(`/suppliers/${id}`);
-      console.log(`contract with ID ${id} deleted successfully`);
+  // const handleEdit = (id: number) => {
+  //   // Redirect or open a modal for editing based on the id
+  //   navigate(`/dashboard/contract/edit/${id}`);
+  //   console.log(`Editing contract with ID: ${id}`);
+  // };
+  // const handleDelete = async (id: number) => {
+  //   try {
+  //     // Send a DELETE contuest to delete the supplier with the given ID
+  //     await axiosApi.delete(`/suppliers/${id}`);
+  //     console.log(`contract with ID ${id} deleted successfully`);
 
-      // Refresh the list of contract after deletion
-      // fetchsuppliers();
-    } catch (error) {
-      console.error(`Error deleting contract with ID ${id}:`, error);
-    }
-  };
+  //     // Refresh the list of contract after deletion
+  //     // fetchsuppliers();
+  //   } catch (error) {
+  //     console.error(`Error deleting contract with ID ${id}:`, error);
+  //   }
+  // };
 
   const sendToSupplier = async (id: string) => {
     try {

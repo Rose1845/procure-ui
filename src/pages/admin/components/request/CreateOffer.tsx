@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { axiosApi } from "@/api";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
