@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { PurchaseOrder } from "../../types";
-import { axiosApi, publicApi } from "../../../../api";
+import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";
 
 const ApproveOrder = () => {

@@ -93,46 +93,49 @@ function Order() {
                     key={i}
                     className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
                   >
-                    <Link
-                      className="bg-gray-50  hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
-                      to={`/dashboard/order/view/${order.purchaseOrderId}`}
-                    >
-                      <td className="px-4 py-3">
-                        <div className="flex items-center text-sm">
-                          <div>
-                            <p className="font-semibold">
-                              {order.purchaseOrderTitle}
-                            </p>
-                          </div>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center text-sm">
+                        <div>
+                          <p className="font-semibold">
+                            {order.purchaseOrderTitle}
+                          </p>
                         </div>
-                      </td>
-                      <td className="px-4 py-3 text-sm">{order.paymentType}</td>
-                      <td className="px-4 py-3 text-xs">
-                        <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                          {order.approvalStatus}{" "}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-sm">
-                        {new Date(order.createdAt).toLocaleString()}
-                      </td>
-                      <td className="px-4 py-3 space-x-5 text-sm">
-                        <button
-                          className="text-blue-600 hover:underline"
-                          onClick={() => handleEdit(order.purchaseOrderId)}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-sm">{order.paymentType}</td>
+                    <td className="px-4 py-3 text-xs">
+                      <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                        {order.approvalStatus}{" "}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-sm">
+                      {new Date(order.createdAt).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3 space-x-5 text-sm">
+                      <button
+                        className="text-blue-600 hover:underline"
+                        onClick={() => handleEdit(order.purchaseOrderId)}
+                      >
+                        Edit
+                        <FaEdit className="text-xl text-gray-900" />
+                      </button>
+                      {" | "}
+                      <button
+                        className="text-red-600 hover:underline"
+                        onClick={() => handleDelete(order.purchaseOrderId)}
+                      >
+                        Delete
+                        <FaTrashAlt />
+                      </button>
+                      <button>
+                        <Link
+                          className="bg-gray-50  hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
+                          to={`/dashboard/order/view/${order.purchaseOrderId}`}
                         >
-                          Edit
-                          <FaEdit className="text-xl text-gray-900" />
-                        </button>
-                        {" | "}
-                        <button
-                          className="text-red-600 hover:underline"
-                          onClick={() => handleDelete(order.purchaseOrderId)}
-                        >
-                          Delete
-                          <FaTrashAlt />
-                        </button>
-                      </td>
-                    </Link>
+                          View
+                        </Link>
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

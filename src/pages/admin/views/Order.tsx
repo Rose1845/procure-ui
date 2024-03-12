@@ -34,9 +34,12 @@ const OrderView = () => {
   const sendToSupplier = async () => {
     setIsLoading(true);
     try {
-      const response = await axiosApi.post(
-        `/purchase-order/send-order-to-supplier/${id}`
-      );
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axiosApi.post(`/purchase-order/send-order-to-supplier/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
 
       console.log(response.data);
       toast.success(response.data.message);

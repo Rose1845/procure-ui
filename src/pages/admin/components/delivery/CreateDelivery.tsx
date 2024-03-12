@@ -1,7 +1,7 @@
 import React from "react";
 import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
-import { DeliveryDTo, PurchaseOrder, PurchaseOrderData } from "../../types";
+import { DeliveryDTo, PurchaseOrder } from "../../types";
 import { toast } from "react-toastify";
 
 function CreateDelivery() {
@@ -61,7 +61,7 @@ function CreateDelivery() {
   ) => {
     const { name, value } = e.target;
 
-    const [property, itemIndex] = name.split("-");
+    const [property] = name.split("-");
 
     setFormData((prevData) => ({
       ...prevData,
@@ -70,28 +70,6 @@ function CreateDelivery() {
       ),
     }));
   };
-
-  const addItem = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      itemDToSet: [
-        ...prevData.itemDToSet,
-        {
-          itemId: "",
-          quantityDelivered: 0,
-          quantityReceived: 0,
-        },
-      ],
-    }));
-  };
-
-  const removeItem = (index: number) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      itemDToSet: prevData.itemDToSet.filter((_, i) => i !== index),
-    }));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {

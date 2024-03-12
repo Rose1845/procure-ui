@@ -1,5 +1,5 @@
-import React, { Profiler } from "react";
-import { Navigate, RouteObject } from "react-router-dom";
+import React from "react";
+import { RouteObject } from "react-router-dom";
 import Category from "../pages/admin/pages/Category";
 
 import Items from "../pages/admin/pages/Items";
@@ -18,7 +18,6 @@ import CreateRequest from "../pages/admin/components/request/CreateRequest";
 import CreateRequisition from "../pages/admin/components/requisition/CreateRequisition";
 import PurchaseRequisition from "../pages/admin/pages/PurchaseRequisition";
 import ProtectedRoute from "./ProtectedRoute";
-import InvoiceDetails from "../pages/admin/pages/Invoice";
 import UpdateSupplier from "../pages/admin/components/supplier/UpdateSupplier";
 import EditCategory from "../pages/admin/components/category/UpdateCategories";
 import UpdateOrder from "../pages/admin/components/order/UpdateOrder";
@@ -35,8 +34,8 @@ import Invoice from "../pages/admin/pages/Invoice";
 import InvoiceView from "../pages/admin/views/Invoice";
 import CsvCategoryUploader from "../pages/admin/components/category/CsvCategoryUploader";
 import RequestView from "@/pages/admin/views/RequestView";
-import OfferManagement from "@/pages/admin/components/request/OfferManagement";
 import CreateOrderFromContract from "@/pages/admin/components/order/CreateOrderFromContract";
+import CreateOffer from "@/pages/admin/components/request/CreateOffer";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -112,8 +111,8 @@ export const DashboardRoutes: RouteObject = {
       element: <RequestView />,
     },
     {
-      path: "/dashboard/offer/create/:id",
-      element: <OfferManagement />,
+      path: "/dashboard/suppliers_offers/view/:id",
+      element: <CreateOffer />,
     },
     {
       path: "/dashboard/purchase-request",

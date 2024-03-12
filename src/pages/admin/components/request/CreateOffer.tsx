@@ -3,68 +3,110 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { PurchaseRequest } from "../../types";
 
+
+type OfferItem = {
+  item: {
+    itemId: string;
+  };
+  offerUnitPrice: number;
+}
 const CreateOffer = () => {
   const { id } = useParams();
-  const [request, setrequest] = React.useState<PurchaseRequest>();
+  const [isLoading] = React.useState(false);
+  const [request, setRequest] = React.useState<PurchaseRequest>();
+  const [offers, setOffers] = React.useState<OfferItem[]>([]);
+  const handleItemChange = (index: number, update: OfferItem) => {
+
+    const item = offers[index]
+    console.log({ original: offers });
+
+    if (item) {
+
+      const temp = { ...item, ...update }
+      const arrayTemp = offers
+      arrayTemp[index] = temp
+      setOffers(_ => [...arrayTemp])
+    }
+  }
 
   useEffect(() => {
     const abortController = new AbortController();
+
     const fetchCategory = async () => {
       try {
         const response = await axiosApi.get(`/purchase-request/${id}`, {
           signal: abortController.signal,
         });
         const categoryData = response.data;
-        setrequest(categoryData);
-        console.log("request retrived successfully");
+        setRequest(categoryData);
+        console.log("request retrieved successfully");
       } catch (error) {
         console.error("Error updating request:", error);
       }
     };
-     
+
     fetchCategory();
+
     return () => {
       abortController.abort();
     };
   }, [id]);
 
-  const fetchOfferItems = async (supplierId: string) => {
-    try {
-      const response = await axiosApi.patch(
-        `/purchase-request/${id}/suppliers/${supplierId}/offer-items`,
-        [{ offerUnitPrice: 0 }]
-      );
-      const offerItems = response.data;
-      console.log("Offer Items retrieved successfully", offerItems);
-      // Handle the offerItems data as needed
-    } catch (error) {
-      console.error("Error fetching offer items:", error);
-    }
+  const OfferBid = async (supplierId: string) => {
+    console.log(supplierId, "suplier");
+
+    const purchaseRequestId = id;
+    const url = `/purchase-request/${purchaseRequestId}/edit2-offer-unit-prices2?supplierId=${supplierId}`;
+    // const url2 =
+    //   "/purchase-request/552/edit2-offer-unit-prices2?supplierId=9d3e28cc-d5db-4398-a24a-b7e6a881ec1d";
+    const response = await axiosApi.patch(url, offers);
+    const offer1 = response.data;
+    console.log(offer1, "offer request");
+    return offer1;
+
   };
+
+  const handleSubmit = async (supplierIds: string[]) => {
+    const promises = supplierIds.map((id) => (
+      OfferBid(id)
+    ))
+    const result = await Promise.allSettled(promises)
+    console.log({ result: result });
+
+  }
+
+  useEffect(() => {
+    const updatedItemDetails =
+      request?.items.map((item) => ({
+        item: {
+          itemId: item.itemId,
+        },
+        offerUnitPrice: 0,
+      })) || [];
+    setOffers(prev => [...prev, ...updatedItemDetails]);
+  }, [request?.items]);
 
   return (
     <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
       <div>
-        <div>
+        <div className="flex flex-col space-y-3">
           <td className="px-4 py-3 text-xs">
             <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
               {request?.approvalStatus}
             </span>
           </td>
-          <h2>request Name: {request?.purchaseRequestTitle}</h2>
-          <h2>CreatedOn:{request?.dueDate}</h2>
-          <h2>request PaymentType: {request?.termsAndConditions}</h2>
+          <h2>Request Name: {request?.purchaseRequestTitle}</h2>
+          <h2>Created On:{request?.dueDate}</h2>
+          <h2>Request PaymentType: {request?.termsAndConditions}</h2>
           <h2>Expires On: {request?.dueDate}</h2>
         </div>
       </div>
-      <div>
-        {request?.suppliers.map((request, i) => (
-          <div key={i}>
-            <h2>{request.name}</h2>
-          </div>
-        ))}
-      </div>
-      <div>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          await handleSubmit(request!.suppliers.map(s => s.vendorId))
+        }}
+      >
         <div className="max-w-7xl mx-auto pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
             <div className="w-full overflow-x-auto">
@@ -75,29 +117,48 @@ const CreateOffer = () => {
                     <th className="px-4 py-3">Quantity</th>
                     <th className="px-4 py-3">Unit Price</th>
                     <th className="px-4 py-3">Total Price</th>
+                    <th className="px-4 py-3">Offer Unit Price</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y dark:divide-gray-500">
-                  {request?.items.map((request, i) => (
+                  {request?.items.map((item, idx) => (
                     <tr
-                      key={i}
+                      key={idx}
                       className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
                     >
                       <td className="px-4 py-3">
                         <div className="flex items-center text-sm">
                           <div>
-                            <p className="font-semibold">{request.itemName}</p>
+                            <p className="font-semibold">{item.itemName}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-sm">{request.quantity}</td>
+                      <td className="px-4 py-3 text-sm">{item.quantity}</td>
                       <td className="px-4 py-3 text-xs">
                         <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                          {request.unitPrice}{" "}
+                          {item.unitPrice}{" "}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm">
-                        {request.totalPrice}
+                        {item.totalPrice}
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        <input
+                          type="number"
+                          value={offers[idx]?.offerUnitPrice || ""}
+                          onChange={(e) => {
+                            // console.log({ "Before:": offer[idx] });
+
+                            // const updatedOffer = { ...offer };
+                            // updatedoffer[i].offerUnitPrice =
+                            //   +e.target.value;
+
+                            // setOffer(updatedOffer);
+                            handleItemChange(idx, { ...offers[idx], offerUnitPrice: Number(e.target.value) })
+                            // console.log({ "After:": offer[idx] });
+                          }}
+                          className="px-2 py-1 w-full border rounded-md"
+                        />
                       </td>
                     </tr>
                   ))}
@@ -106,7 +167,16 @@ const CreateOffer = () => {
             </div>
           </div>
         </div>
-      </div>
+        <button
+          disabled={isLoading}
+          type="submit"
+          className={`bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none ${isLoading ? "bg-opacity-45 bg-red-900 cursor-not-allowed" : ""
+            }`}
+        >
+          {" "}
+          Make Offer
+        </button>
+      </form>
     </div>
   );
 };

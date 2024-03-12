@@ -11,7 +11,7 @@ const UpdateOrder = () => {
     termsAndConditions: "",
     paymentType: "MPESA" || "PAYPAL",
     items: [],
-    vendorId: 0,
+    vendorId: '',
   });
 
   const [items, setItems] = React.useState([]);
@@ -37,7 +37,7 @@ const UpdateOrder = () => {
       }
     };
     fetchOrderData();
-  }, []);
+  }, [id]);
 
   const fetchItems = async () => {
     const response = await axiosApi.get("/items");
