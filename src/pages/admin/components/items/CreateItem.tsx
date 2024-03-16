@@ -11,7 +11,7 @@ const CreateItem = () => {
     quantity: 1,
     unitPrice: 0,
     categoryId: 0,
-    vendorId: 0,
+    vendorId: "",
   });
 
   const [categories, setCategories] = React.useState<Category[]>([]);
@@ -44,7 +44,7 @@ const CreateItem = () => {
 
   const createItem = async () => {
     try {
-      const response = await axiosApi.post("/items", contractData);
+      const response = await axiosApi.post("/items/create", contractData);
       if (!response.data) {
         toast.error("please try again later");
       }

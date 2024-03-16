@@ -57,13 +57,22 @@ const CreateOffer = () => {
     console.log(supplierId, "suplier");
 
     const purchaseRequestId = id;
-    const url = `/purchase-request/${purchaseRequestId}/edit2-offer-unit-prices2?supplierId=${supplierId}`;
-    // const url2 =
-    //   "/purchase-request/552/edit2-offer-unit-prices2?supplierId=9d3e28cc-d5db-4398-a24a-b7e6a881ec1d";
-    const response = await axiosApi.patch(url, offers);
-    const offer1 = response.data;
-    console.log(offer1, "offer request");
-    return offer1;
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const url = `/purchase-request/${purchaseRequestId}/edit2-offer-unit-prices2?supplierId=${supplierId}`;
+      const response = await axiosApi.patch(url, offers, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
+      const offer1 = response.data;
+      console.log(offer1, "offer request");
+      return offer1;
+    } catch (error) {
+      console.log(error);
+
+    }
+
 
   };
 
@@ -86,7 +95,7 @@ const CreateOffer = () => {
       })) || [];
     setOffers(prev => [...prev, ...updatedItemDetails]);
   }, [request?.items]);
-
+  
   return (
     <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
       <div>
@@ -108,7 +117,7 @@ const CreateOffer = () => {
           await handleSubmit(request!.suppliers.map(s => s.vendorId))
         }}
       >
-        <div className="max-w-7xl mx-auto pt-16 ">
+        <div className="pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
             <div className="w-full overflow-x-auto">
               <table className="w-full">
@@ -148,15 +157,7 @@ const CreateOffer = () => {
                           type="number"
                           value={offers[idx]?.offerUnitPrice || ""}
                           onChange={(e) => {
-                            // console.log({ "Before:": offer[idx] });
-
-                            // const updatedOffer = { ...offer };
-                            // updatedoffer[i].offerUnitPrice =
-                            //   +e.target.value;
-
-                            // setOffer(updatedOffer);
                             handleItemChange(idx, { ...offers[idx], offerUnitPrice: Number(e.target.value) })
-                            // console.log({ "After:": offer[idx] });
                           }}
                           className="px-2 py-1 w-full border rounded-md"
                         />
@@ -181,5 +182,7 @@ const CreateOffer = () => {
     </div>
   );
 };
+
+
 
 export default CreateOffer;

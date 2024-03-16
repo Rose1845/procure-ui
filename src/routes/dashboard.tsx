@@ -36,6 +36,8 @@ import RequestView from "@/pages/admin/views/RequestView";
 import CreateOrderFromContract from "@/pages/admin/components/order/CreateOrderFromContract";
 import CreateOffer from "@/pages/admin/components/request/CreateOffer";
 import ApproveContract from "@/pages/admin/components/contract/ApproveContract";
+import CompareOffers from "@/pages/admin/views/CompareOffers";
+import TotalCostEvaluation from "@/pages/admin/views/TotalCostEvaluation";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -44,7 +46,6 @@ export const DashboardRoutes: RouteObject = {
       <DashboardLayout />
     </ProtectedRoute>
   ),
-
   children: [
     {
       path: "/dashboard",
@@ -63,7 +64,7 @@ export const DashboardRoutes: RouteObject = {
       element: <CsvCategoryUploader />,
     },
     {
-      path: "/dashboard/category/import",
+      path: "/dashboard/suppliers/import",
       element: <CsvUploader />,
     },
     {
@@ -115,8 +116,16 @@ export const DashboardRoutes: RouteObject = {
       element: <RequestView />,
     },
     {
-      path: "/dashboard/suppliers_offers/view/:id",
+      path: "/dashboard/offer/view/:id",
       element: <CreateOffer />,
+    },
+    {
+      path: "/dashboard/quotes/compare_offers/:id",
+      element: <CompareOffers />,
+    },
+    {
+      path: "/dashboard/quotes/tco_evaluation/:id",
+      element: <TotalCostEvaluation />,
     },
     {
       path: "/dashboard/purchase-request",
@@ -170,7 +179,6 @@ export const DashboardRoutes: RouteObject = {
       path: "/dashboard/invoice",
       element: <Invoice />,
     },
-
     {
       path: "/dashboard/deliveries",
       element: <Deliveries />,

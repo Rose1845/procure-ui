@@ -1,11 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const API_HOST = "http://localhost:8081";
 
 export const endpoints = {
-  login: "/api/v1/auth/authenticate",
+  login: "/api/v1/auth/login",
   logout: "/api/v1/auth/logout",
   signup: "/api/v1/auth/register",
-  token: "/api/v1/auth/token",
-  user: "/api/users/me",
 };
 
 export async function fetchWrapper(

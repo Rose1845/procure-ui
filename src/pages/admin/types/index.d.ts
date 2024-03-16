@@ -67,6 +67,7 @@ export interface PurchaseRequest {
   termsAndConditions: string;
   items: Item[];
   suppliers: Supplier[];
+  itemDetails: ItemDetail[];
   multiOfferDto: [];
   createdAt: Date;
   updatedAt: Date;
@@ -89,6 +90,14 @@ export type PurchaseRequisition = {
   updatedAt: Date;
   createdBy: number;
 };
+interface ItemDetail {
+  id: number;
+  item: Item;
+  supplier: Supplier;
+  offerUnitPrice: number;
+  offerTotalPrice: number;
+  quoteStatus: string;
+}
 export interface PurchaseOrderData {
   purchaseOrderTitle: string;
   deliveryDate: string;
@@ -110,6 +119,7 @@ export interface Item {
   createdAt: Date;
   updatedAt: Date;
 }
+
 export interface ItemData {
   itemName: string;
   itemNumber: string;
@@ -157,4 +167,36 @@ type DeliveryDTo = {
   deliveredOn: string;
   expectedOn: string;
   receivedOn: string;
+};
+
+export type Role = {
+  id: number;
+  name: string;
+  description: string;
+  isDefault: boolean;
+};
+
+export type Authority = {
+  authority: string;
+};
+
+export type User = {
+  id: number;
+  organization: string | null;
+  email: string;
+  username: string;
+  firstname: string;
+  lastname: string;
+  avatar: string;
+  roles: Role[];
+  enabled: boolean;
+  authorities: Authority[];
+  accountNonExpired: boolean;
+  accountNonLocked: boolean;
+  credentialsNonExpired: boolean;
+};
+
+export type LoginResponse = {
+  token: string;
+  user: User;
 };

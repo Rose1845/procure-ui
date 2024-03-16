@@ -2,8 +2,8 @@ import React from 'react'
 
 function Public() {
   return (
-    <div className='py-16'>
-
+    <div className='flex flex-col space-x-3'>
+      hi
     </div>
   )
 }

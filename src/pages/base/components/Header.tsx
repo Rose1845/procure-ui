@@ -1,7 +1,5 @@
-import { Fragment } from "react";
 import { Disclosure } from "@headlessui/react";
 // import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { TbMathXMinusX, TbBell } from "react-icons/tb";
 import { FaBars } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -39,11 +37,10 @@ export default function Header() {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
-                </div>
+                    src=""
+                    alt="User Avatar"
+                    className="h-8 w-8 rounded-full"
+                  />               </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (

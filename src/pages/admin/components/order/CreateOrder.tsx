@@ -73,7 +73,7 @@ const CreateOrder = () => {
     };
 
     try {
-      const response = await axiosApi.post("/purchase-order", dataToSend);
+      const response = await axiosApi.post("/purchase-order/create", dataToSend);
 
       const responseData = response.data;
       toast.success(response.data.message);

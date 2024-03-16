@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
 import React, { useState } from "react";
@@ -5,7 +6,7 @@ import { publicApi } from "../../../api/index";
 import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const [credentials, setCredentials] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const navigate = useNavigate();
@@ -17,22 +18,22 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    console.log("...");
     e.preventDefault();
-
     try {
-      const response = await publicApi.post("/auth/authenticate", credentials);
-      const { access_token, refresh_token } = response.data;
+      const response = await publicApi.post("/auth/login", credentials);
 
-      // Store the tokens in localStorage or secure cookie for later use
-      localStorage.setItem("token", access_token);
-      localStorage.setItem("refreshToken", refresh_token);
-      navigate("/dashboard");
-      // Redirect or perform other actions upon successful login
+      const { token, user } = response.data;
+      console.log(token, "response ui", user);
+
+      // Set token in localStorage or use a more secure storage method
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user))
+      navigate("/dashboard")
+    
     } catch (error) {
-      console.log(error);
-
-      // Handle login error
+      console.error(error);
     }
   };
 
@@ -244,7 +245,6 @@ const Login = () => {
       >
         <div className="w-full py-6 z-20">
           <h1 className="my-6 py-6 space-x-2 text-4xl">Login</h1>
-
           <form
             onSubmit={handleSubmit}
             action=""
@@ -252,15 +252,16 @@ const Login = () => {
           >
             <div className="pb-2 pt-4">
               <input
-                type="email"
-                name="email"
-                id="email"
+                type="text"
+                name="username"
+                id="username"
                 onChange={handleChange}
-                value={credentials.email}
-                placeholder="Email"
+                value={credentials.username}
+                placeholder="Username"
                 className="block w-full p-4 text-lg rounded-sm bg-black"
               />
             </div>
+
             <div className="pb-2 pt-4">
               <input
                 className="block w-full p-4 text-lg rounded-sm bg-black"
@@ -272,6 +273,7 @@ const Login = () => {
                 placeholder="Password"
               />
             </div>
+
             <div className="text-right text-gray-400 hover:underline hover:text-gray-100">
               <a href="#">Forgot your password?</a>
             </div>

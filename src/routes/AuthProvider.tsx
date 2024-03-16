@@ -1,94 +1,42 @@
-import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { AuthContext, IAuthContext } from "../context/AuthContext";
-import {
-  TUser,
-  clearUserData,
-  getAccessToken,
-  getRefreshToken,
-  setUserData,
-  updateAccessToken,
-} from "../utils/auth";
-import { endpoints, fetchWrapper } from "../utils/api";
+import React, { useMemo, useState, ReactNode } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext, IAuthContext } from '../context/AuthContext';
+import { TUser, clearUserData, getUserData, setUserData } from '../utils/auth';
 
 interface LocationState {
-  from: {
-    pathname: string;
-  };
+  from: { pathname: string };
 }
 
-const ACCESS_TOKEN_EXPIRES_TIME = 1000 * 60 * 9; // 9 min
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
-function AuthProvider({ children }: any) {
-  const localAccessToken = getAccessToken() || null;
-  const refreshToken = getRefreshToken() || null;
+const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isFirstMounted, setIsFirstMounted] = useState(true);
+  const [user, setUser] = useState<TUser | null>(getUserData);
 
   const handleLogin = (userData: Partial<TUser>) => {
     setUserData(userData);
-    const origin = (location.state as LocationState)?.from?.pathname || "/dashboard";    
+    setUser(userData as TUser);
+    const origin = (location.state as LocationState)?.from?.pathname || '/dashboard';
     navigate(origin);
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     clearUserData();
-    // Also remove user's refresh token from server
-    await fetchWrapper(endpoints.logout, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: { refreshToken },
-    });
-    navigate("/login");
+    setUser(null);
+    navigate('/login');
   };
 
-  async function updateRefreshtoken() {
-    const response = await fetchWrapper(endpoints.token, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: { refreshToken },
-    });
-
-    if (response.ok) {
-      const { accessToken } = await response.json();
-      updateAccessToken(accessToken);
-    } else {
-      clearUserData();
-      navigate("/login");
-      window.location.reload();
-    }
-    if (isFirstMounted) {
-      setIsFirstMounted(false);
-    }
-  }
-
-  useEffect(() => {
-    if (refreshToken) {
-      // Check on the first render
-      if (isFirstMounted) {
-        updateRefreshtoken();
-      }
-
-      // Keep checking after a certain time
-      const intervalId = setInterval(() => {
-        updateRefreshtoken();
-      }, ACCESS_TOKEN_EXPIRES_TIME);
-      return () => clearInterval(intervalId);
-    }
-    return undefined;
-  }, [localAccessToken]);
-
-  const value = useMemo(
-    () => ({
-      token: localAccessToken,
-      onLogin: handleLogin,
-      onLogout: handleLogout,
-    }),
-    [localAccessToken]
-  ) as IAuthContext;
+  const value: IAuthContext = useMemo(() => ({
+    user,
+    token: user?.token,
+    onLogin: handleLogin,
+    onLogout: handleLogout,
+  }), [user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
+};
 
 export default AuthProvider;

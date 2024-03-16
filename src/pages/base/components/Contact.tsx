@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { ContactData } from "../types";
 
@@ -27,7 +28,6 @@ function Contact() {
           body: JSON.stringify(contact),
         }
       );
-
       console.log("mesage sent successfully:", response);
       setContact({
         email: "",

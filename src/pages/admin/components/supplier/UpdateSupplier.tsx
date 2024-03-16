@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
@@ -210,7 +211,7 @@ const UpdateSupplier = () => {
             Email
           </label>
           <input
-            type="text"
+            type="email"
             id="email"
             name="email"
             value={supplierData.email}

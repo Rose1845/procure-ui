@@ -40,7 +40,6 @@ const OrderView = () => {
           Authorization: `Bearer ${accessToken}`
         }
       });
-      console.log(response.data);
       toast.success(response.data.message);
       console.log("Response from backend:", response.data);
     } catch (error) {
@@ -53,16 +52,7 @@ const OrderView = () => {
 
   return (
     <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
-      <div className="flex flex-col space-y-2 items-center">
-        {/* <button
-          onClick={markAsPaid}
-          disabled={isLoadig}
-          className={`bg-green-500 mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 ${
-            isLoadig ? "bg-opacity-35 cursor-not-allowed" : ""
-          }`}
-        >
-          Mark as FULLY RECEIVED{" "}
-        </button> */}
+      <div className="flex flex-col border justify-center border-gray-300 space-y-2 items-center">
         <MarkPaid />
         <button
           type="submit"
@@ -75,25 +65,26 @@ const OrderView = () => {
           Send to Supplier
         </button>
       </div>{" "}
-      <div>
-        <div>
+      <div className="min-w-full ml-64">
+        <div className="flex flex-col space-y-3">
           <td className="px-4 py-3 text-xs">
             <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
-              {order?.approvalStatus}
+             Status: {order?.approvalStatus}
             </span>
           </td>
-          <h2>Order Name: {order?.purchaseOrderTitle}</h2>
-          <h2>CreatedOn:</h2>
-          <h2>Order PaymentType: {order?.paymentType}</h2>
-          <h2>Expires On: {order?.deliveryDate}</h2>
+          <h2 className="text-xl">Order Name: {order?.purchaseOrderTitle}</h2>
+          <h2 className="text-xl">CreatedOn:</h2>
+          <h2 className="text-xl">Order PaymentType: {order?.paymentType}</h2>
+          <h2 className="text-xl">Expires On: {order?.deliveryDate}</h2>
         </div>
-        <div>
-          order Terms and Condition:
+        <div className="text-xl">
+          Terms and Condition:
           {order?.termsAndConditions}
         </div>
       </div>
-      <div>
-        <div className="max-w-7xl mx-auto pt-16 ">
+     
+      <div className="min-w-full ml-64">
+        <div className="w-full  pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
             <div className="w-full overflow-x-auto">
               <table className="w-full">
@@ -134,6 +125,7 @@ const OrderView = () => {
           </div>
         </div>
       </div>
+      
     </div>
   );
 };

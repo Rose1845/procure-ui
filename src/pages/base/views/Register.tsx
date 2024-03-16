@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from "react";
 
 import { publicApi } from "../../../api/index";
 import { toast } from "react-toastify";
@@ -6,9 +7,10 @@ import { useNavigate } from "react-router-dom";
 function Register() {
   const navigate = useNavigate()
   const [register, setRegister] = React.useState({
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
+    username: "",
     password: "",
   });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,10 +25,11 @@ function Register() {
       if (response.data) {
         toast.success("registered successfully");
         setRegister({
-          firstname: "",
-          lastname: "",
+          firstName: "",
+          lastName: "",
           email: "",
           password: "",
+          username: ""
         });
         navigate("/login")
       } else {
@@ -270,9 +273,9 @@ function Register() {
                       </div>
                       <input
                         type="text"
-                        id="firstname"
-                        name="firstname"
-                        value={register.firstname}
+                        id="firstName"
+                        name="firstName"
+                        value={register.firstName}
                         onChange={handleInputChange}
                         className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
                         placeholder="John"
@@ -292,12 +295,32 @@ function Register() {
                       </div>
                       <input
                         type="text"
-                        name="lastname"
-                        id="lastname"
-                        value={register.lastname}
+                        name="lastName"
+                        id="lastName"
+                        value={register.lastName}
                         onChange={handleInputChange}
                         className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
                         placeholder="Smith"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex -mx-3">
+                  <div className="w-full px-3 mb-5">
+                    <label htmlFor="" className="text-xs font-semibold px-1">
+                      Username                    </label>
+                    <div className="flex">
+                      <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+                        <i className="mdi mdi-email-outline text-gray-400 text-lg"></i>
+                      </div>
+                      <input
+                        type="username"
+                        id="username"
+                        name="username"
+                        value={register.username}
+                        onChange={handleInputChange}
+                        className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                        placeholder="procure@example.com"
                       />
                     </div>
                   </div>

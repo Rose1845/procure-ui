@@ -1,66 +1,80 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { Role, User } from "@/pages/admin/types";
 
 export type TUser = {
-  access_token: string;
-  refresh_token: string;
+  token: string;
+  user: User;
 };
 
 export const useAuth = () => useContext(AuthContext);
 
 export const getUserData = () => {
-  if (typeof Storage === "undefined") return {};
-  return JSON.parse(localStorage.getItem("user") || "{}");
+  if (typeof Storage === "undefined") {
+    console.error("Storage is not supported by this browser.");
+    return null;
+  }
+  const userData = localStorage.getItem("user");
+
+  try {
+    return userData ? JSON.parse(userData) : null;
+  } catch (error) {
+    console.error("Failed to parse user data from localStorage:", error);
+    return null;
+  }
 };
 
 export const setUserData = (user: Partial<TUser>) => {
-  if (user?.constructor.name !== "Object") {
-    throw new Error("No valid data found");
+  if (
+    !user ||
+    typeof user !== "object" ||
+    Array.isArray(user) ||
+    Object.keys(user).length === 0
+  ) {
+    throw new Error("No valid user data provided");
   }
-  if (Object.keys(user).length === 0) {
-    throw new Error("No data found");
+
+  try {
+    const userDataString = JSON.stringify(user);
+    if (typeof Storage !== "undefined") {
+      localStorage.setItem("user", userDataString);
+    } else {
+      throw new Error("LocalStorage is not supported");
+    }
+  } catch (error) {
+    console.error("Error setting user data:", error);
+    throw new Error("Failed to serialize or store user data");
   }
-  if (typeof Storage === "undefined") {
-    throw new Error("No valid storage type found");
-  }
-  localStorage.setItem("user", JSON.stringify(user));
 };
 
-export function clearUserData(): void {
+export const clearUserData = () => {
   if (typeof Storage === "undefined") return;
   localStorage.removeItem("user");
-}
-
-export const getRefreshToken = () => {
-  if (typeof Storage === "undefined") return false;
-  return JSON.parse(localStorage.getItem("user") || "{}")?.refresh_token;
 };
 
 export const getAccessToken = () => {
-  if (typeof Storage === "undefined") {
-    return new Error("Storage type not valid");
-  }
-  return JSON.parse(localStorage.getItem("user") || "{}")?.access_token;
-};
-
-export const updateAccessToken = (token: string): void => {
-  if (typeof Storage === "undefined") return;
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  user.access_token = token;
-  localStorage.setItem("user", JSON.stringify(user));
+  const user = getUserData();
+  return user?.token;
 };
 
 export const isAuthenticated = () => {
-  const access_token = getAccessToken();
-  if (!access_token) return false;
-  return true;
+  const user = getUserData();
+  if (!user || !user.token) {
+    return { authenticated: false, role: null };
+  }
+  
+  // Optionally, validate the token's expiration here
+  const payload = getPayloadFromToken(user.token);
+  console.log(payload, "payload");
+  const roles = user.user.roles.map((role: Role) => role.name); // Assuming roles is an array of {name: string}
+  return { authenticated: true, roles };
 };
 
-export function getPayloadFromToken(token: string) {
+export const getPayloadFromToken = (token: string) => {
   if (!token) {
     return {};
   }
-  const base64Url = token.split(".")[1] as string;
-  const base64 = base64Url.replace("-", "+").replace("_", "/");
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
   return JSON.parse(window.atob(base64));
-}
+};
