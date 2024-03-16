@@ -15,8 +15,13 @@ function Requisition() {
         console.log(error);
       }
     };
+    fetchRequisition()
   }, [id]);
-  return <div>Requisition</div>;
+  return <div>
+    {
+      requisition
+    }
+  </div>;
 }
 
 export default Requisition;

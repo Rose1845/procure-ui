@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { Contract } from "../types";
@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 const ContractView = () => {
   const { id } = useParams();
   const [contract, setContract] = React.useState<Contract>();
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchContract = async () => {
       try {
         const response = await axiosApi.get(`/contract/contract-items/${id}`);

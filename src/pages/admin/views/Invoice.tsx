@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { Invoice } from "../types";
@@ -6,7 +6,7 @@ import { Invoice } from "../types";
 const InvoiceView = () => {
   const { id } = useParams();
   const [invoice, setInvoice] = React.useState<Invoice>();
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchInvoice = async () => {
       try {
         const response = await axiosApi.get(`/invoices/${id}`);

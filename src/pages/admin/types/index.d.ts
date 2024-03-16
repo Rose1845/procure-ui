@@ -152,6 +152,9 @@ export interface ContractData {
   vendorId: string;
 }
 export type Invoice = {
+  invoiceStatus: ReactNode;
+  createdAt: ReactNode;
+  purchaseOrder: any;
   invoiceId: string;
   invoiceNumber: string;
   dueDate: string;

@@ -21,7 +21,6 @@ const CreateInvoice = () => {
       toast.error("Error creating invoice");
     },
     onSettled: () => {
-      // Refetch the list of purchase orders after creating the invoice
       queryClient.invalidateQueries("purchaseOrders");
     },
   });
@@ -111,7 +110,7 @@ const CreateInvoice = () => {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      stroke-width="2"
+                      strokeWidth="2"
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                     ></path>
                   </svg>
@@ -139,9 +138,9 @@ const CreateInvoice = () => {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      stroke-Linecap="round"
+                      stroke-Linejoin="round"
+                      stroke-Width="2"
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                     ></path>
                   </svg>

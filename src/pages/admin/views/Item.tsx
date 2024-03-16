@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { axiosApi } from "../../../api";
-import { Category, Item } from "../types";
+import {  Item } from "../types";
 
 const ItemView = () => {
   const { id } = useParams();

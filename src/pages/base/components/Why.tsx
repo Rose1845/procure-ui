@@ -1,5 +1,4 @@
 import React from "react";
-import { FaArrowTurnDown } from "react-icons/fa6";
 import { FaSatellite, FaUserFriends } from "react-icons/fa";
 import { MdOutlineSecurity } from "react-icons/md";
 

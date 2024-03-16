@@ -4,6 +4,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { PurchaseOrder } from "../types";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
+import JSZip from "jszip";
 type Invoice = {
   invoiceId: string;
   invoiceNumber: string;
@@ -36,6 +37,60 @@ const Invoice: React.FC = () => {
     // } catch (error) {
     //   console.error("Error fetching invoice details:", error);
     // }
+  };
+  const generatePDFForOrder = async (invoiceId: string) => {
+    try {
+      const response = await axiosApi.get(`/invoices/${invoiceId}/report`, {
+        responseType: "arraybuffer",
+      });
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+
+      // Create a temporary URL for the blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link element to trigger the download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `invoice_report.pdf`;
+
+      // Append the link to the document and trigger the download
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up by revoking the URL and removing the link from the document
+      // window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      // Handle error
+    }
+  };
+
+  const generateAndDownloadZip = async (invoices: Invoice[]) => {
+    const zip = new JSZip();
+
+    // Iterate over each order and generate PDF report
+    for (const invoice of invoices) {
+      try {
+        const response = await axiosApi.get(`/invoices/${invoice.invoiceId}/report`, {
+          responseType: 'arraybuffer',
+        });
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        zip.file(`invoice_report.pdf`, blob);
+      } catch (error) {
+        console.error(`Error generating PDF for order ${invoice.invoiceId}:`, error);
+      }
+    }
+
+    // Generate and download the zip folder
+    zip.generateAsync({ type: 'blob' }).then((content: Blob | MediaSource) => {
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(content);
+      link.download = 'order_reports.zip';
+      link.click();
+    });
   };
 
   const handleDelete = async (id: string) => {
@@ -116,11 +171,29 @@ const Invoice: React.FC = () => {
                         {order.purchaseOrder?.approvalStatus}
                       </span>
                     </div>
+                    <td className="px-4 mb-4 py-3 text-sm">
+                      <button
+                        className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                        onClick={() => generatePDFForOrder(order.invoiceId)}
+                      >
+                        Generate Report
+                      </button>
+                    </td>
                   </div>
                 ))}
               </tbody>
             </table>
           </div>
+          <div className="flex justify-end flex-row sapce-x-3 mb-4">
+            <div>
+              <button
+                className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                onClick={() => generateAndDownloadZip(invoices)}
+              >
+                EXPORT TO PDF
+              </button>
+            </div>
+            </div>
         </div>
       </div>
     </div>

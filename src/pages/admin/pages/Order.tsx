@@ -4,11 +4,12 @@ import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
+import JSZip from 'jszip';
 
 function Order() {
   const navigate = useNavigate();
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
-
+   
   React.useEffect(() => {
     fetchOrders()
       .then((data) => setOrders(data))
@@ -21,6 +22,64 @@ function Order() {
     console.log(order, "orders");
     return order;
   };
+
+  const generatePDFForOrder = async (orderId: number) => {
+    try {
+      const response = await axiosApi.get(`/purchase-order/${orderId}/report`, {
+
+        responseType: "arraybuffer",
+        // Set the response type to blob to receive binary data (PDF)
+      });
+      
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+
+      // Create a temporary URL for the blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link element to trigger the download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `order_${orderId}_report.pdf`;
+
+      // Append the link to the document and trigger the download
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up by revoking the URL and removing the link from the document
+      // window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      // Handle error
+    }
+  };
+
+  const generateAndDownloadZip = async (orders: PurchaseOrder[]) => {
+    const zip = new JSZip();
+
+    // Iterate over each order and generate PDF report
+    for (const order of orders) {
+      try {
+        const response = await axiosApi.get(`/purchase-order/${order.purchaseOrderId}/report`, {
+          responseType: 'arraybuffer',
+        });
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        zip.file(`order_${order.purchaseOrderId}_report.pdf`, blob);
+      } catch (error) {
+        console.error(`Error generating PDF for order ${order.purchaseOrderId}:`, error);
+      }
+    }
+
+    // Generate and download the zip folder
+    zip.generateAsync({ type: 'blob' }).then((content: Blob | MediaSource) => {
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(content);
+      link.download = 'order_reports.zip';
+      link.click();
+    });
+  };
+
   const handleEdit = async (id: number) => {
     // Redirect or open a modal for editing based on the id
     navigate(`/dashboard/order/edit/${id}`);
@@ -39,7 +98,6 @@ function Order() {
       console.error(`Error deleting supplier with ID ${id}:`, error);
     }
   };
-
   return (
     <div className="max-w-7xl mx-auto pt-16 ">
       <div className="flex justify-end">
@@ -89,7 +147,7 @@ function Order() {
               </thead>
               <tbody className="bg-white divide-y dark:divide-gray-500">
                 {orders.map((order, i) => (
-                  <tr
+                  <><tr
                     key={i}
                     className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
                   >
@@ -136,12 +194,23 @@ function Order() {
                         </Link>
                       </button>
                     </td>
+                    <td className="px-4 mb-4 py-3 text-sm">
+                      <button
+                        className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                        onClick={() => generatePDFForOrder(order.purchaseOrderId)}
+                      >
+                        Generate Report
+                      </button>
+                    </td>
                   </tr>
+                   
+                  </>
                 ))}
               </tbody>
             </table>
           </div>
-          {/* <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 ">
+
+          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 ">
             <span className="flex items-center col-span-3">
               {" "}
               Showing 21-30 of 100{" "}
@@ -223,7 +292,17 @@ function Order() {
                 </ul>
               </nav>
             </span>
-          </div> */}
+          </div> 
+        </div>
+        <div className="flex justify-end flex-row sapce-x-3 mb-4">
+          <div>
+            <button
+              className="bg-blue-600 text-white px-4 py-2 rounded-md"
+              onClick={() => generateAndDownloadZip(orders)}
+            >
+              EXPORT TO PDF
+            </button>
+          </div>
         </div>
       </div>
     </div>

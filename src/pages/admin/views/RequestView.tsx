@@ -7,7 +7,7 @@ import { PurchaseRequest } from "../types";
 const RequestView = () => {
   const { id } = useParams();
   const [request, setRequest] = React.useState<PurchaseRequest>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const abortController = new AbortController();

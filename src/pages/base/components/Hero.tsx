@@ -1,5 +1,4 @@
 import React from "react";
-import { BsBoxArrowUpLeft } from "react-icons/bs";
 
 function Hero() {
   return (

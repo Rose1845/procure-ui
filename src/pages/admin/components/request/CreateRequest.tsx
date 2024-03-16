@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 
 import { toast } from "react-toastify";
@@ -16,7 +17,6 @@ const CreateRequest = () => {
 
   const [items, setItems] = React.useState([]);
   const [suppliers, setSuppliers] = React.useState([]);
-  const controller = new AbortController();
   React.useEffect(() => {
     const controller = new AbortController();
 
