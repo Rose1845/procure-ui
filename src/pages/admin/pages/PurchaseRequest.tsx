@@ -35,6 +35,7 @@ function PurchaseRequestComponent() {
       fetchItemDetails(requestId);
     }
   };
+  
   return (
     <div className="py-16">
       <div className="flex justify-end">

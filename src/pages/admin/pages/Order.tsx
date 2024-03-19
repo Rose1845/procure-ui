@@ -9,18 +9,24 @@ import JSZip from 'jszip';
 function Order() {
   const navigate = useNavigate();
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
-   
+  const [page, setPage] = React.useState<number>(0);
+  const [totalPages, setTotalPages] = React.useState<number>(0);
+  const [totalItems, setTotalItems] = React.useState<number>(0);
+  const pageSize = 5;
   React.useEffect(() => {
-    fetchOrders()
-      .then((data) => setOrders(data))
-      .catch((error) => console.error("Error fetching orders:", error));
-  }, []);
+    fetchOrders();
+  }, [page]);
 
   const fetchOrders = async () => {
-    const response = await axiosApi.get("/purchase-order");
-    const order = response.data;
-    console.log(order, "orders");
-    return order;
+    try {
+      const response = await axiosApi.get(`/purchase-order/paginations?page=${page}&size=${pageSize}`);
+      const { content, totalPages: total, totalElements: totalItems } = response.data;
+      setOrders(content);
+      setTotalPages(total);
+      setTotalItems(totalItems);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   };
 
   const generatePDFForOrder = async (orderId: number) => {
@@ -30,7 +36,7 @@ function Order() {
         responseType: "arraybuffer",
         // Set the response type to blob to receive binary data (PDF)
       });
-      
+
       const blob = new Blob([response.data], { type: 'application/pdf' });
 
       // Create a temporary URL for the blob
@@ -98,6 +104,12 @@ function Order() {
       console.error(`Error deleting supplier with ID ${id}:`, error);
     }
   };
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+  const startIndex = page * pageSize + 1;
+  const endIndex = Math.min((page + 1) * pageSize, totalItems);
+
   return (
     <div className="max-w-7xl mx-auto pt-16 ">
       <div className="flex justify-end">
@@ -203,26 +215,27 @@ function Order() {
                       </button>
                     </td>
                   </tr>
-                   
+
                   </>
                 ))}
               </tbody>
             </table>
           </div>
 
-          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 ">
-            <span className="flex items-center col-span-3">
-              {" "}
-              Showing 21-30 of 100{" "}
+          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400">
+            <span className="flex suppliers-center col-span-3">
+              Showing {startIndex}-{endIndex} of {totalItems}
             </span>
             <span className="col-span-2"></span>
             <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
               <nav aria-label="Table navigation">
-                <ul className="inline-flex items-center">
+                <ul className="inline-flex suppliers-center">
                   <li>
                     <button
                       className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                       aria-label="Previous"
+                      onClick={() => handlePageChange(page - 1)}
+                      disabled={page === 0}
                     >
                       <svg
                         aria-hidden="true"
@@ -234,47 +247,28 @@ function Order() {
                           clip-rule="evenodd"
                           fill-rule="evenodd"
                         ></path>
-                      </svg>
-                    </button>
+                      </svg>                      </button>
                   </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      1
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      2
-                    </button>
-                  </li>
-                  Order
-                  <li>
-                    <button className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      3
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      4
-                    </button>
-                  </li>
-                  <li>
-                    <span className="px-3 py-1">...</span>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      8
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      9
-                    </button>
-                  </li>
+                  {/* Render page numbers */}
+                  {/* Example: */}
+                  {[1, 2, 3, 4, 5].map((pageNumber) => (
+                    <li key={pageNumber}>
+                      <button
+                        className={`px-3 py-1 rounded-md ${page + 1 === pageNumber ? "bg-blue-600 text-white" : ""
+                          } focus:outline-none focus:shadow-outline-purple`}
+                        onClick={() => handlePageChange(pageNumber - 1)}
+                      >
+                        {pageNumber}
+                      </button>
+                    </li>
+                  ))}
+                  {/* Next button */}
                   <li>
                     <button
                       className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                       aria-label="Next"
+                      onClick={() => handlePageChange(page + 1)}
+                      disabled={page === totalPages - 1}
                     >
                       <svg
                         className="w-4 h-4 fill-current"
@@ -283,8 +277,8 @@ function Order() {
                       >
                         <path
                           d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clipRule="evenodd"
-                          fillRule="evenodd"
+                          clip-rule="evenodd"
+                          fill-rule="evenodd"
                         ></path>
                       </svg>
                     </button>
@@ -292,7 +286,7 @@ function Order() {
                 </ul>
               </nav>
             </span>
-          </div> 
+          </div>
         </div>
         <div className="flex justify-end flex-row sapce-x-3 mb-4">
           <div>

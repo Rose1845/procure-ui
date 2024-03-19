@@ -2,45 +2,58 @@ import React, { useEffect } from "react";
 import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { Item } from "../types";
 interface Category {
   categoryId: number;
   categoryName: string | null;
-  items: any[]; // Adjust the type based on the actual type of 'items'
+  items: Item[]; // Adjust the type based on the actual type of 'items'
   createdAt: string;
   updatedAt: string;
 }
 function Category() {
   const navigate = useNavigate();
   const [categories, setCategories] = React.useState<Category[]>([]);
+  const [page, setPage] = React.useState<number>(0);
+  const [totalPages, setTotalPages] = React.useState<number>(0);
+  const [totalItems, setTotalItems] = React.useState<number>(0);
+  const pageSize = 5; 
   useEffect(() => {
-    fetchCategories()
-      .then((data) => setCategories(data))
-      .catch((error) => console.error("Error fetching categries:", error));
-  }, []);
+    fetchCategories();
+  }, [page]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axiosApi.get(`/category/all?page=${page}&size=${pageSize}`);
+      const { content, totalPages: total, totalElements: totalItems } = response.data;
+      setCategories(content);
+      setTotalPages(total);
+      setTotalItems(totalItems);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   const handleEdit = (id: number) => {
     navigate(`/dashboard/category/edit/${id}`);
     console.log(`Editing Category with ID: ${id}`);
   };
+
   const handleDelete = async (id: number) => {
     try {
-      // Send a DELETE request to delete the supplier with the given ID
       await axiosApi.delete(`/category/${id}`);
       console.log(`Category with ID ${id} deleted successfully`);
-
-      // Refresh the list of suppliers after deletion
-      fetchCategories();
+      fetchCategories(); // Refresh the list of categories after deletion
     } catch (error) {
       console.error(`Error deleting category with ID ${id}:`, error);
     }
   };
-  const fetchCategories = async () => {
-    // Replace with your actual API endpoint for fetching items
-    const response = await axiosApi.get("/category");
-    const category = await response.data;
-    console.log(category, "categories");
-    return category;
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
   };
+  const startIndex = page * pageSize + 1;
+  const endIndex = Math.min((page + 1) * pageSize, totalItems);
+
   return (
     <div className="max-w-7xl mx-auto pt-16 flex flex-col">
       <div className="flex justify-end">
@@ -114,10 +127,9 @@ function Category() {
                 </tbody>
               </table>
             </div>
-            <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 ">
+            <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400">
               <span className="flex suppliers-center col-span-3">
-                {" "}
-                Showing 21-30 of 100{" "}
+                Showing {startIndex}-{endIndex} of {totalItems}
               </span>
               <span className="col-span-2"></span>
               <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
@@ -127,6 +139,8 @@ function Category() {
                       <button
                         className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                         aria-label="Previous"
+                        onClick={() => handlePageChange(page - 1)}
+                        disabled={page === 0}
                       >
                         <svg
                           aria-hidden="true"
@@ -138,46 +152,28 @@ function Category() {
                             clip-rule="evenodd"
                             fill-rule="evenodd"
                           ></path>
-                        </svg>
-                      </button>
+                        </svg>                      </button>
                     </li>
-                    <li>
-                      <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                        1
-                      </button>
-                    </li>
-                    <li>
-                      <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                        2
-                      </button>
-                    </li>
-                    <li>
-                      <button className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple">
-                        3
-                      </button>
-                    </li>
-                    <li>
-                      <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                        4
-                      </button>
-                    </li>
-                    <li>
-                      <span className="px-3 py-1">...</span>
-                    </li>
-                    <li>
-                      <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                        8
-                      </button>
-                    </li>
-                    <li>
-                      <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                        9
-                      </button>
-                    </li>
+                    {/* Render page numbers */}
+                    {/* Example: */}
+                    {[1, 2, 3, 4, 5].map((pageNumber) => (
+                      <li key={pageNumber}>
+                        <button
+                          className={`px-3 py-1 rounded-md ${page + 1 === pageNumber ? "bg-blue-600 text-white" : ""
+                            } focus:outline-none focus:shadow-outline-purple`}
+                          onClick={() => handlePageChange(pageNumber - 1)}
+                        >
+                          {pageNumber}
+                        </button>
+                      </li>
+                    ))}
+                    {/* Next button */}
                     <li>
                       <button
                         className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                         aria-label="Next"
+                        onClick={() => handlePageChange(page + 1)}
+                        disabled={page === totalPages - 1}
                       >
                         <svg
                           className="w-4 h-4 fill-current"

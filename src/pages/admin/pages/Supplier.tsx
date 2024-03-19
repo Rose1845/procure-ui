@@ -7,17 +7,26 @@ import { FaEdit, FaPlus, FaTrashAlt } from "react-icons/fa";
 function Supplier() {
   const navigate = useNavigate();
   const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
+  const [page, setPage] = React.useState<number>(0);
+  const [totalPages, setTotalPages] = React.useState<number>(0);
+  const [totalItems, setTotalItems] = React.useState<number>(0);
+  const pageSize = 5;
   React.useEffect(() => {
-    fetchsuppliers()
-      .then((data) => setSuppliers(data))
-      .catch((error) => console.error("Error fetching categries:", error));
-  }, []);
-  const fetchsuppliers = async () => {
-    const response = await axiosApi.get("/suppliers");
-    const supplier = response.data;
-    console.log(supplier, "suppliers");
-    return supplier;
+    fetchSuppliers();
+  }, [page]);
+
+  const fetchSuppliers = async () => {
+    try {
+      const response = await axiosApi.get(`/suppliers/all?page=${page}&size=${pageSize}`);
+      const { content, totalPages: total, totalElements: totalItems } = response.data;
+      setSuppliers(content);
+      setTotalPages(total);
+      setTotalItems(totalItems);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   };
+
   const handleEdit = (id: string) => {
     // Redirect or open a modal for editing based on the id
     navigate(`/dashboard/update_supplier/${id}`);
@@ -30,11 +39,17 @@ function Supplier() {
       console.log(`Supplier with ID ${id} deleted successfully`);
 
       // Refresh the list of suppliers after deletion
-      fetchsuppliers();
+      fetchSuppliers();
     } catch (error) {
       console.error(`Error deleting supplier with ID ${id}:`, error);
     }
   };
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+  const startIndex = page * pageSize + 1;
+  const endIndex = Math.min((page + 1) * pageSize, totalItems);
+
   return (
     <div className="pt-16">
       <div className="flex justify-end">
@@ -109,10 +124,9 @@ function Supplier() {
               </tbody>
             </table>
           </div>
-          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 ">
+          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400">
             <span className="flex suppliers-center col-span-3">
-              {" "}
-              Showing 21-30 of 100{" "}
+              Showing {startIndex}-{endIndex} of {totalItems}
             </span>
             <span className="col-span-2"></span>
             <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
@@ -122,6 +136,8 @@ function Supplier() {
                     <button
                       className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                       aria-label="Previous"
+                      onClick={() => handlePageChange(page - 1)}
+                      disabled={page === 0}
                     >
                       <svg
                         aria-hidden="true"
@@ -133,46 +149,28 @@ function Supplier() {
                           clip-rule="evenodd"
                           fill-rule="evenodd"
                         ></path>
-                      </svg>
-                    </button>
+                      </svg>                      </button>
                   </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      1
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      2
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      3
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      4
-                    </button>
-                  </li>
-                  <li>
-                    <span className="px-3 py-1">...</span>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      8
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      9
-                    </button>
-                  </li>
+                  {/* Render page numbers */}
+                  {/* Example: */}
+                  {[1, 2, 3, 4, 5].map((pageNumber) => (
+                    <li key={pageNumber}>
+                      <button
+                        className={`px-3 py-1 rounded-md ${page + 1 === pageNumber ? "bg-blue-600 text-white" : ""
+                          } focus:outline-none focus:shadow-outline-purple`}
+                        onClick={() => handlePageChange(pageNumber - 1)}
+                      >
+                        {pageNumber}
+                      </button>
+                    </li>
+                  ))}
+                  {/* Next button */}
                   <li>
                     <button
                       className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                       aria-label="Next"
+                      onClick={() => handlePageChange(page + 1)}
+                      disabled={page === totalPages - 1}
                     >
                       <svg
                         className="w-4 h-4 fill-current"

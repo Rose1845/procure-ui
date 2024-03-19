@@ -51,7 +51,7 @@ const CreateItem = () => {
       toast.success("item creasted successfuly");
       console.log("Item created successfully:", response.data);
     } catch (error) {
-      toast.error("an error occureds");
+      toast.error("An error occured!");
       console.error("Error creating item:", error);
     }
   };

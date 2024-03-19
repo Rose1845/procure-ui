@@ -6,35 +6,47 @@ import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 
 function Items() {
   const navigate = useNavigate()
-  const [items, setitems] = React.useState<Item[]>([]);
+  const [items, setItems] = React.useState<Item[]>([]);
+  const [page, setPage] = React.useState<number>(0);
+  const [totalPages, setTotalPages] = React.useState<number>(0);
+  const [totalItems, setTotalItems] = React.useState<number>(0);
+  const pageSize = 5;
   React.useEffect(() => {
-    fetchItems()
-      .then((data) => setitems(data))
-      .catch((error) => console.error("Error fetching items:", error));
-  }, []);
+    fetchItems();
+  }, [page]);
   const fetchItems = async () => {
-    const response = await axiosApi.get("/items");
-    const category = await response.data;
-    console.log(category, "items");
-
-    return category;
+    try {
+      const response = await axiosApi.get(`/items/all-by-pagination?page=${page}&size=${pageSize}`);
+      const { content, totalPages: total, totalElements: totalItems } = response.data;
+      setItems(content);
+      setTotalPages(total);
+      setTotalItems(totalItems);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   };
-   const handleEdit = (id: string) => {
-     navigate(`/dashboard/items/update_item/${id}`);
-     console.log(`Editing item with ID: ${id}`);
-   };
-   const handleDelete = async (id: string) => {
-     try {
-       // Send a DELETE request to delete the supplier with the given ID
-       await axiosApi.delete(`/items/${id}`);
-       console.log(`item with ID ${id} deleted successfully`);
+  const handleEdit = (id: string) => {
+    navigate(`/dashboard/items/update_item/${id}`);
+    console.log(`Editing item with ID: ${id}`);
+  };
+  const handleDelete = async (id: string) => {
+    try {
+      // Send a DELETE request to delete the supplier with the given ID
+      await axiosApi.delete(`/items/${id}`);
+      console.log(`item with ID ${id} deleted successfully`);
 
-       // Refresh the list of suppliers after deletion
-       fetchItems();
-     } catch (error) {
-       console.error(`Error deleting item with ID ${id}:`, error);
-     }
-   };
+      // Refresh the list of suppliers after deletion
+      fetchItems();
+    } catch (error) {
+      console.error(`Error deleting item with ID ${id}:`, error);
+    }
+  };
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+  const startIndex = page * pageSize + 1;
+  const endIndex = Math.min((page + 1) * pageSize, totalItems);
+
   return (
     <div className="max-w-7xl mx-auto pt-16 flex-row gap-8">
       <div className="flex justify-end">
@@ -97,19 +109,21 @@ function Items() {
               </tbody>
             </table>
           </div>
-          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 ">
-            <span className="flex items-center col-span-3">
-              {" "}
-              Showing 21-30 of 100{" "}
+
+          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400">
+            <span className="flex suppliers-center col-span-3">
+              Showing {startIndex}-{endIndex} of {totalItems}
             </span>
             <span className="col-span-2"></span>
             <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
               <nav aria-label="Table navigation">
-                <ul className="inline-flex items-center">
+                <ul className="inline-flex suppliers-center">
                   <li>
                     <button
                       className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                       aria-label="Previous"
+                      onClick={() => handlePageChange(page - 1)}
+                      disabled={page === 0}
                     >
                       <svg
                         aria-hidden="true"
@@ -118,49 +132,29 @@ function Items() {
                       >
                         <path
                           d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                          fillRule="evenodd"
+                          clip-rule="evenodd"
+                          fill-rule="evenodd"
                         ></path>
-                      </svg>
-                    </button>
+                      </svg>                      </button>
                   </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      1
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      2
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      3
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      4
-                    </button>
-                  </li>
-                  <li>
-                    <span className="px-3 py-1">...</span>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      8
-                    </button>
-                  </li>
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      9
-                    </button>
-                  </li>
+                  {[1, 2, 3, 4, 5].map((pageNumber) => (
+                    <li key={pageNumber}>
+                      <button
+                        className={`px-3 py-1 rounded-md ${page + 1 === pageNumber ? "bg-blue-600 text-white" : ""
+                          } focus:outline-none focus:shadow-outline-purple`}
+                        onClick={() => handlePageChange(pageNumber - 1)}
+                      >
+                        {pageNumber}
+                      </button>
+                    </li>
+                  ))}
+                  {/* Next button */}
                   <li>
                     <button
                       className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                       aria-label="Next"
+                      onClick={() => handlePageChange(page + 1)}
+                      disabled={page === totalPages - 1}
                     >
                       <svg
                         className="w-4 h-4 fill-current"
