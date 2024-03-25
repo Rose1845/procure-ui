@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { ContactData } from "../types";
+import axios from "axios";
 
 function Contact() {
   const [contact, setContact] = React.useState<ContactData>({
@@ -9,35 +10,35 @@ function Contact() {
     email: "",
     message: "",
   });
-  const handleChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
+  
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setContact((prevData) => ({ ...prevData, [name]: value }));
+    setContact((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setContact((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "http://localhost:8081/api/contact/message",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(contact),
-        }
-      );
-      console.log("mesage sent successfully:", response);
+      const response = await axios.post("http://localhost:8081/api/contact/message", contact);
+      console.log("mesage sent successfully:", response.data);
       setContact({
         email: "",
         message: "",
         name: "",
         title: "",
       });
-      if (!response.ok) {
-        throw new Error(`Failed to send message: ${response.statusText}`);
-      }
+
     } catch (error) {
       console.log(error, "Error sending message");
     }
@@ -65,8 +66,9 @@ function Contact() {
               <input
                 type="text"
                 id="name"
-                // value={contact.name}
-                // onChange={handleChange}
+                name="name"
+                value={contact.name}
+                onChange={handleChange}
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                 placeholder="procureswift"
                 required
@@ -81,9 +83,10 @@ function Contact() {
               </label>
               <input
                 type="email"
+                name="email"
                 id="email"
-                // value={contact.email}
-                // onChange={handleChange}
+                value={contact.email}
+                onChange={handleChange}
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                 placeholder="procureswift@gmail.com"
                 required
@@ -98,9 +101,10 @@ function Contact() {
               </label>
               <input
                 type="text"
-                // value={contact.title}
-                // onChange={handleChange}
+                value={contact.title}
+                onChange={handleChange}
                 id="title"
+                name="title"
                 className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500"
                 placeholder="Let us know how we can help you"
                 required
@@ -116,8 +120,9 @@ function Contact() {
               <textarea
                 id="message"
                 rows={6}
-                // value={contact.message}
-                // onChange={handleChange}
+                name="message"
+                value={contact.message}
+                onChange={handleTextareaChange}
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500   "
                 placeholder="Leave a comment..."
               ></textarea>

@@ -1,5 +1,5 @@
 import React from "react";
-import { ContractData } from "../../types";
+import { ContractData, Item, Supplier } from "../../types";
 import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";
 
@@ -11,7 +11,7 @@ const CreateContract = () => {
     contractEndDate: "",
     termsAndConditions: "",
     items: [],
-    vendorId: 0,
+    vendorId: "",
   });
 
   const [items, setItems] = React.useState([]);
@@ -82,7 +82,7 @@ const CreateContract = () => {
         contractEndDate: "",
         termsAndConditions: "",
         items: [],
-        vendorId: 0,
+        vendorId: "",
       });
       console.log("Response from backend:", response.data);
     } catch (error) {
@@ -222,7 +222,7 @@ const CreateContract = () => {
           multiple
           className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         >
-          {items.map((item: any, i) => (
+          {items.map((item: Item, i) => (
             <option key={i} value={item.itemId}>
               {item.itemName}
             </option>
@@ -244,7 +244,7 @@ const CreateContract = () => {
           value={contractData.vendorId}
         >
           <option value="">Select a supplier</option>
-          {suppliers.map((supplier: any) => (
+          {suppliers.map((supplier: Supplier) => (
             <option key={supplier.vendorId} value={supplier.vendorId}>
               {supplier.name}
             </option>
