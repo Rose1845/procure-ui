@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { axiosApi } from "../../../../api";
@@ -7,12 +8,11 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 function CreateCategory() {
-  // const [categoryData, setCategoryData] = React.useState({
-  //   categoryName: "",
-  // });
   const categorySchema = z.object({
     categoryName: z.string().min(4),
   });
+  const [error, setError] = React.useState<string>("");
+
   type categoryData = z.infer<typeof categorySchema>;
   const {
     handleSubmit,
@@ -22,6 +22,7 @@ function CreateCategory() {
   } = useForm<categoryData>({
     resolver: zodResolver(categorySchema),
   });
+
   const onSubmit = async (data: categoryData) => {
     try {
       const response = await axiosApi.post("/category", data);
@@ -32,13 +33,24 @@ function CreateCategory() {
       console.log(createdCategory, "categor");
       reset();
       console.log("Category created successfully:", createdCategory);
-    } catch (error) {
-      toast.error("an error occured");
-      console.error("Error creating contract:", error);
+    } catch (error:any) {
+      if (error.response && error.response.status === 400) {
+        const { errorMessage } = error.response.data;
+        if (errorMessage) {
+          setError(errorMessage);
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An unexpected error occurred.");
+      }
+      toast.error(error.message || "An error occurred.");
+      console.error("Error creating category:", error);
     }
   };
+
   return (
-    <div className="px-4 py-16 bg-white mx-8 rounded-3xl">
+    <div className="py-16 ml-20 bg-white  rounded-3xl">
       <div className="max-w-7xl m-auto">
         <div className="flex items-center space-x-5">
           <div className="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">
@@ -65,6 +77,7 @@ function CreateCategory() {
               {errors.categoryName && (
                 <span>{errors.categoryName.message}</span>
               )}
+              {error && <p className="text-red-600">{error}</p>}
             </div>
           </div>
           <div className="pt-4 flex items-center space-x-4">

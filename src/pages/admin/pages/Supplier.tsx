@@ -51,7 +51,7 @@ function Supplier() {
   const endIndex = Math.min((page + 1) * pageSize, totalItems);
 
   return (
-    <div className="pt-16">
+    <div className="pt-16 mr-11">
       <div className="flex justify-end">
         <button className="px-4 py-2 bg-blue-600 text-white">
           <Link
@@ -66,7 +66,7 @@ function Supplier() {
           </Link>
         </button>
       </div>
-      <div className="mt-4 mx-4">
+      <div className="mt-4 mx-4 mr-11">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
             <table className="w-full">

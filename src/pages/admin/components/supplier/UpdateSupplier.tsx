@@ -18,9 +18,10 @@ const UpdateSupplier = () => {
     },
     email: "",
     phoneNumber: "",
-    paymentType: "",
+    paymentType: "MPESA" || "PAYPAL",
     termsAndConditions: "",
   });
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   React.useEffect(() => {
     const fetchSupplierData = async () => {
@@ -40,16 +41,17 @@ const UpdateSupplier = () => {
     fetchSupplierData();
   }, []);
 
-  const handleInputChange = (e: { target: { name: any; value: any } }) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    if (name.includes(".")) {
-      const [parent, child] = name.split(".");
+    if (name.startsWith("address.")) {
+      // Handle address fields separately
+      const addressField = name.split(".")[1]; // Get the specific address field (box, country, city, location)
       setSupplierData({
         ...supplierData,
-        [parent]: {
-          ...supplierData[parent],
-          [child]: value,
+        address: {
+          ...supplierData.address,
+          [addressField]: value,
         },
       });
     } else {
@@ -58,12 +60,73 @@ const UpdateSupplier = () => {
         [name]: value,
       });
     }
+
+    // Clear the error message for the input field being edited
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (validateForm()) {
+      updateSupplier();
+    }
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    updateSupplier();
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors: Record<string, string> = {};
+
+    if (!supplierData.name) {
+      newErrors.name = "Company Name is required";
+      isValid = false;
+    }
+    if (!supplierData.contactPerson) {
+      newErrors.contactPerson = "Contact Person is required";
+      isValid = false;
+    }
+    if (!supplierData.contactInformation) {
+      newErrors.contactInformation = "Contact Information is required";
+      isValid = false;
+    }
+    if (!supplierData.email) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    }
+    if (!supplierData.phoneNumber) {
+      newErrors.phoneNumber = "Phone Number is required";
+      isValid = false;
+    }
+    if (!supplierData.termsAndConditions) {
+      newErrors.termsAndConditions = "Terms and Conditions is required";
+      isValid = false;
+    }
+    if (!supplierData.paymentType) {
+      newErrors.paymentType = "Payment Type is required";
+      isValid = false;
+    }
+    if (!supplierData.address.box) {
+      newErrors.box = "P.O.BOX  is required";
+      isValid = false;
+    }
+    if (!supplierData.address.city) {
+      newErrors.city = "City  is required";
+      isValid = false;
+    }
+    if (!supplierData.address.country) {
+      newErrors.country = "Country  is required";
+      isValid = false;
+    }
+    if (!supplierData.address.location) {
+      newErrors.location = "Location  is required";
+      isValid = false;
+    }
+    setErrors(newErrors);
+    return isValid;
   };
+
+  
 
   const updateSupplier = async () => {
     try {
@@ -98,6 +161,8 @@ const UpdateSupplier = () => {
               onChange={handleInputChange}
               className="mt-1 p-2 border rounded-md w-full"
             />
+            {errors.name && <div className="text-red-600">{errors.name}</div>}
+
           </div>
 
           <div className="mb-4">
@@ -115,6 +180,8 @@ const UpdateSupplier = () => {
               onChange={handleInputChange}
               className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
             />
+            {errors.contactPerson && <div className="text-red-600">{errors.contactPerson}</div>}
+
           </div>
         </div>
 
@@ -133,6 +200,8 @@ const UpdateSupplier = () => {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.contactInformation && <div className="text-red-600">{errors.contactInformation}</div>}
+
         </div>
 
         <div className="mb-4">
@@ -150,6 +219,8 @@ const UpdateSupplier = () => {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.box && <div className="text-red-600">{errors.box}</div>}
+
         </div>
 
         <div className="mb-4">
@@ -167,6 +238,8 @@ const UpdateSupplier = () => {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.country && <div className="text-red-600">{errors.country}</div>}
+
         </div>
 
         <div className="mb-4">
@@ -184,6 +257,7 @@ const UpdateSupplier = () => {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.city && <div className="text-red-600">{errors.city}</div>}
         </div>
 
         <div className="mb-4">
@@ -201,6 +275,8 @@ const UpdateSupplier = () => {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.location && <div className="text-red-600">{errors.location}</div>}
+
         </div>
 
         <div className="mb-4">
@@ -218,6 +294,8 @@ const UpdateSupplier = () => {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.email && <div className="text-red-600">{errors.email}</div>}
+
         </div>
 
         <div className="mb-4">
@@ -235,6 +313,8 @@ const UpdateSupplier = () => {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.phoneNumber && <div className="text-red-600">{errors.phoneNumber}</div>}
+
         </div>
 
         <div className="mb-4">
@@ -249,9 +329,26 @@ const UpdateSupplier = () => {
             id="paymentType"
             name="paymentType"
             value={supplierData.paymentType}
-            onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+        </div>
+        <div className="flex flex-col">
+          <label 
+            className="block text-sm font-medium text-gray-600"
+>Payment Type</label>
+          <select
+            id="paymentType"
+            name="paymentType"
+            value={supplierData.paymentType}
+            // onChange={handleInputChange}
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+          >
+            <option value="">Select Payment Type</option>
+            <option value="MPESA">MPESA</option>
+            <option value="PAYPAL">PAYPAL</option>
+          </select>
+          {errors.paymentType && <div className="text-red-600">{errors.paymentType}</div>}
+
         </div>
 
         <div className="mb-4">

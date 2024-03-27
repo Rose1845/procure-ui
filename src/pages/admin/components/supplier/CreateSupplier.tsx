@@ -1,10 +1,12 @@
-import React from "react";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
 import { axiosApi } from "../../../../api";
 import { SupplierData } from "../../types";
 import { toast } from "react-toastify";
 
 function CreateSupplier() {
-  const [supplierData, setSupplierData] = React.useState<SupplierData>({
+  const [supplierData, setSupplierData] = useState<SupplierData>({
     name: "",
     contactPerson: "",
     contactInformation: "",
@@ -16,20 +18,22 @@ function CreateSupplier() {
     },
     email: "",
     phoneNumber: "",
-    paymentType: "",
+    paymentType: "MPESA" || "PAYPAL",
     termsAndConditions: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    if (name.includes(".")) {
-      const [parent, child] = name.split(".");
+    if (name.startsWith("address.")) {
+      // Handle address fields separately
+      const addressField = name.split(".")[1]; // Get the specific address field (box, country, city, location)
       setSupplierData({
         ...supplierData,
-        [parent]: {
-          ...supplierData[parent],
-          [child]: value,
+        address: {
+          ...supplierData.address,
+          [addressField]: value,
         },
       });
     } else {
@@ -38,29 +42,94 @@ function CreateSupplier() {
         [name]: value,
       });
     }
+
+    // Clear the error message for the input field being edited
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createSupplier();
+    if (validateForm()) {
+      createSupplier();
+    }
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors: Record<string, string> = {};
+
+    if (!supplierData.name) {
+      newErrors.name = "Company Name is required";
+      isValid = false;
+    }
+    if (!supplierData.contactPerson) {
+      newErrors.contactPerson = "Contact Person is required";
+      isValid = false;
+    }
+    if (!supplierData.contactInformation) {
+      newErrors.contactInformation = "Contact Information is required";
+      isValid = false;
+    }
+    if (!supplierData.email) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    }
+    if (!supplierData.phoneNumber) {
+      newErrors.phoneNumber = "Phone Number is required";
+      isValid = false;
+    }
+    if (!supplierData.termsAndConditions) {
+      newErrors.termsAndConditions = "Terms and Conditions is required";
+      isValid = false;
+    }
+    if (!supplierData.paymentType) {
+      newErrors.paymentType = "Payment Type is required";
+      isValid = false;
+    }
+    if (!supplierData.address.box) {
+      newErrors.box = "P.O.BOX  is required";
+      isValid = false;
+    }
+    if (!supplierData.address.city) {
+      newErrors.city = "City  is required";
+      isValid = false;
+    }
+    if (!supplierData.address.country) {
+      newErrors.country = "Country  is required";
+      isValid = false;
+    }
+    if (!supplierData.address.location) {
+      newErrors.location = "Location  is required";
+      isValid = false;
+    }
+    setErrors(newErrors);
+    return isValid;
   };
 
   const createSupplier = async () => {
-    console.log(supplierData, "test data");
-
     try {
       const response = await axiosApi.post("/suppliers", supplierData);
-
       const createdContract = response.data;
-      toast.success("supplier added succesfuly!");
+      toast.success("Supplier added successfully!");
       console.log("Supplier created successfully:", createdContract);
-    } catch (error) {
-      toast.error("error occured!");
-      console.error("Error creating contract:", error);
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        const { errorMessage, errors } = error.response.data;
+        if (errors) {
+          setErrors(errors);
+        } else {
+          toast.error(errorMessage);
+        }
+      } else {
+        toast.error("Error occurred!");
+      }
     }
   };
 
   return (
-    <div className="py-16 max-w-7xl m-auto">
+    <div className="py-16 max-w-7xl mr-11 m-auto">
       <form onSubmit={handleSubmit}>
         <h2 className="text-2xl font-semibold mb-6">Create Supplier</h2>
         <div className="flex items-center space-x-6">
@@ -75,6 +144,8 @@ function CreateSupplier() {
                 onChange={handleInputChange}
                 className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
               />
+              {errors.name && <div className="text-red-600">{errors.name}</div>}
+
             </div>
           </div>
           <div className="flex flex-col">
@@ -89,6 +160,8 @@ function CreateSupplier() {
                 className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
               />
             </div>
+            {errors.contactPerson && <div className="text-red-600">{errors.contactPerson}</div>}
+
           </div>
         </div>
 
@@ -107,6 +180,8 @@ function CreateSupplier() {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.contactInformation && <div className="text-red-600">{errors.contactInformation}</div>}
+
         </div>
 
         <div className="mb-4">
@@ -124,8 +199,9 @@ function CreateSupplier() {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
-        </div>
+          {errors.box && <p className="text-red-600">{errors.box}</p>}
 
+        </div>
         <div className="mb-4">
           <label
             htmlFor="address.country"
@@ -141,6 +217,7 @@ function CreateSupplier() {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.country && <div className="text-red-600">{errors.country}</div>}
         </div>
 
         <div className="mb-4">
@@ -158,6 +235,7 @@ function CreateSupplier() {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.city && <p className="text-red-600">{errors.city}</p>}
         </div>
 
         <div className="mb-4">
@@ -175,6 +253,8 @@ function CreateSupplier() {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.location && <p className="text-red-600">{errors.location}</p>}
+
         </div>
 
         <div className="mb-4">
@@ -192,6 +272,8 @@ function CreateSupplier() {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.email && <p className="text-red-600">{errors.email}</p>}
+
         </div>
 
         <div className="mb-4">
@@ -209,23 +291,23 @@ function CreateSupplier() {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.phoneNumber && <p className="text-red-600">{errors.phoneNumber}</p>}
         </div>
-
-        <div className="mb-4">
-          <label
-            htmlFor="paymentType"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Payment Type
-          </label>
-          <input
-            type="text"
+        <div className="flex flex-col">
+          <label className="leading-loose">Payment Type</label>
+          <select
             id="paymentType"
             name="paymentType"
             value={supplierData.paymentType}
-            onChange={handleInputChange}
+            // onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-          />
+          >
+            <option value="">Select Payment Type</option>
+            <option value="MPESA">MPESA</option>
+            <option value="PAYPAL">PAYPAL</option>
+          </select>
+          {errors.paymentType && <div className="text-red-600">{errors.paymentType}</div>}
+
         </div>
 
         <div className="mb-4">
@@ -243,6 +325,7 @@ function CreateSupplier() {
             onChange={handleInputChange}
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
+          {errors.termsAndConditions && <p className="text-red-600">{errors.termsAndConditions}</p>}
         </div>
 
         <div className="pt-4 flex items-center space-x-4">
