@@ -1,24 +1,41 @@
-import { accordionType } from "../types";
+export const faqs = [
+  {
+    question: "What is ProcureSwift?",
+    id: 1,
+    answer:
+      "ProcureSwift is a comprehensive procurement management system designed to streamline and automate the procurement process for businesses of all sizes.",
+  },
+  {
+    question: "What are the key features of ProcureSwift?",
+    id: 2,
 
-export const accordions: Array<accordionType> = [
-  {
-    titles: "What is Frontend Mentor, and how will it help me?",
-    details:
-      "Frontend Mentor offers realistic coding challenges to help developers improve their frontend coding skills with projects in HTML, CSS, and JavaScript. It's suitable for all levels and ideal for portfolio building.",
+    answer:
+      "ProcureSwift offers features such as purchase requisition management, supplier management, purchase order processing,  invoice management, reporting and analytics and request management",
   },
   {
-    titles: "Is Frontend Mentor free?",
-    details:
-      "Yes, Frontend Mentor offers both free and premium coding challenges, with the free option providing access to a range of projects suitable for all skill levels.",
+    question: "How does ProcureSwift benefit businesses?",
+    id: 3,
+    answer:
+      "ProcureSwift helps businesses achieve cost savings, improve efficiency, ensure compliance and risk management, enhance supplier collaboration, and enable data-driven decision making.",
   },
   {
-    titles: "Can I use Frontend Mentor projects in my portfolio?",
-    details:
-      "Yes, you can use projects completed on Frontend Mentor in your portfolio. It's an excellent way to showcase your skills to potential employers!",
+    question: "Is ProcureSwift customizable to suit specific business needs?",
+    id: 4,
+    answer:
+      "Yes, ProcureSwift is highly customizable and configurable to meet the unique requirements of different industries and organizations.",
   },
   {
-    titles: "How can I get help if I'm stuck on a Frontend Mentor challenge?",
-    details:
-      "The best place to get help is inside Frontend Mentor's Discord community. There's a help channel where you can ask questions and seek support from other community members.",
+    question: "Can ProcureSwift be deployed on-premises or in the cloud?",
+    id: 5,
+
+    answer:
+      "ProcureSwift provides deployment options both on-premises and in the cloud, allowing organizations to choose the deployment model that best suits their IT infrastructure and requirements.",
+  },
+  {
+    question: "What kind of support and training does ProcureSwift offer?",
+    id: 6,
+
+    answer:
+      "ProcureSwift offers comprehensive support services, including implementation assistance, training sessions, ongoing technical support, and regular updates.",
   },
 ];

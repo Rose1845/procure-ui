@@ -1,28 +1,50 @@
-import Accordion from "./Accordion";
-import { accordionType } from "../../types/index.js";
-import { accordions } from "../../data/accordion.js";
-
-type Props = {
-  title: string;
-};
-
-const FAQs = ({ title }: Props) => {
+import React from "react";
+import {
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
+} from "@material-tailwind/react";
+interface IconProps {
+  id: number;
+  open: number;
+}
+import { faqs } from "../../data/accordion";
+function Icon({ id, open }:IconProps) {
   return (
-    <section className="flex justify-center items-center">
-      <div className="  rounded-2xl bg-white w-full">
-        <div className="text-black  text-5xl flex items-center">
-          <span className="px-6"></span>
-          {title}
-        </div>
-        <div className="px-10">
-          {accordions.map((accordion: accordionType, index: number) => {
-            const { titles, details } = accordion;
-            return <Accordion key={index} titles={titles} details={details} />;
-          })}
-        </div>
-      </div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className={`${id === open ? "rotate-180" : ""} h-5 w-5 transition-transform`}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+    </svg>
+  );
+}
+
+function FAQS() {
+  const [open, setOpen] = React.useState(0);
+
+  const handleOpen = (value: React.SetStateAction<number>) => setOpen(open === value ? 0 : value);
+
+  return (
+    <section className="max-w-7xl mx-auto">
+      <h1 className="text-center text-3xl font-black m-4">Frequently Asked Questions(FAQS)</h1>
+      {
+        faqs.map((faq,i)=>(
+          <Accordion key={1} placeholder={""} open={open === i} icon={<Icon id={1} open={open} />}>
+            <AccordionHeader placeholder={
+              ""
+            } onClick={() => handleOpen(i)}>{faq.question}</AccordionHeader>
+            <AccordionBody>
+              {faq.answer}
+            </AccordionBody>
+          </Accordion>
+        ))
+      }
     </section>
   );
-};
-
-export default FAQs;
+}
+export default FAQS;

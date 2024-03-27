@@ -12,7 +12,7 @@ function Home() {
       <Hero />
       <Why />
       <Purchasing/>
-      <FAQs title="FAQS"/>
+      <FAQs/>
       <Contact />
       <Footer />
     </div>
