@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { ContractData, Item, Supplier } from "../../types";
 import { axiosApi } from "../../../../api";
@@ -16,6 +17,9 @@ const CreateContract = () => {
 
   const [items, setItems] = React.useState([]);
   const [suppliers, setSuppliers] = React.useState([]);
+  const [startDateError, setStartDateError] = React.useState<string>("");
+  const [dueDateError, setDueDateError] = React.useState<string>("");
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   React.useEffect(() => {
     // Fetch items from the API
@@ -55,11 +59,38 @@ const CreateContract = () => {
       setContractData((prevData) => ({ ...prevData, items: selectedItems }));
     } else {
       setContractData((prevData) => ({ ...prevData, [name]: value }));
+      if (name === "contractStartDate" || name === "contractEndDate") {
+        const startDate = name === "contractStartDate" ? value : contractData.contractStartDate;
+        const dueDate = name === "contractEndDate" ? value : contractData.contractEndDate;
+
+        const today = new Date();
+        const startDateObj = new Date(startDate);
+        const dueDateObj = new Date(dueDate);
+
+        if (startDateObj > today && name === "contractStartDate") {
+          setStartDateError("Start date should be in the past or present.");
+        } else {
+          setStartDateError("");
+        }
+
+        if (dueDateObj < today && name === "contractEndDate") {
+          setDueDateError("Due date should be in the present or future.");
+        } else {
+          setDueDateError("");
+        }
+      }
+
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: "",
+      }));
     }
   };
 
   const createContract = async () => {
-    console.log(contractData, "test co");
+    if (!validateForm()) {
+      return;
+    }
 
     const itemsArray = contractData.items.map((itemId) => ({ itemId }));
 
@@ -74,7 +105,7 @@ const CreateContract = () => {
       if (!response.data) {
         throw new Error(`Failed to create contract: ${response.statusText}`);
       }
-      toast.success("contract created successfully");
+      toast.success("Contract created successfully");
       setContractData({
         contractTitle: "",
         contractType: "",
@@ -85,11 +116,51 @@ const CreateContract = () => {
         vendorId: "",
       });
       console.log("Response from backend:", response.data);
-    } catch (error) {
-      toast.error("An error occured!Please try again later  ");
-      console.error("Error creating contract:", error);
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        const { errorMessage, errors } = error.response.data;
+        if (errors) {
+          setErrors(errors);
+        } else {
+          toast.error(errorMessage);
+        }
+      } else {
+        toast.error("Error occurred!");
+      }
     }
   };
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors: Record<string, string> = {};
+
+    if (!contractData.contractTitle) {
+      newErrors.contractTitle = "Contract title is required";
+      isValid = false;
+    }
+    if (!contractData.contractType) {
+      newErrors.contractType = "Contract type is required";
+      isValid = false;
+    }
+    if (!contractData.termsAndConditions) {
+      newErrors.termsAndConditions = "Terms and conditions are required";
+      isValid = false;
+    }
+    if (contractData.items.length === 0) {
+      newErrors.items = "At least one item must be selected";
+      isValid = false;
+    }
+    if (!contractData.vendorId) {
+      newErrors.vendorId = "Supplier must be selected";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+
+
 
   return (
     <div className="py-16">
@@ -116,6 +187,7 @@ const CreateContract = () => {
           onChange={handleInputChange}
           className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
+        {errors.contractTitle && <div className="text-red-600">{errors.contractTitle}</div>}
 
         <label
           htmlFor="contractType"
@@ -131,6 +203,7 @@ const CreateContract = () => {
           onChange={handleInputChange}
           className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
+        {errors.contractType && <div className="text-red-600">{errors.contractType}</div>}
 
         <div className="flex flex-col">
           <label className="leading-loose">Start Date</label>
@@ -160,6 +233,8 @@ const CreateContract = () => {
                 ></path>
               </svg>
             </div>
+            {startDateError && <p className="text-red-500">{startDateError}</p>}
+
           </div>
         </div>
 
@@ -191,6 +266,8 @@ const CreateContract = () => {
                 ></path>
               </svg>
             </div>
+            {dueDateError && <p className="text-red-500">{dueDateError}</p>}
+
           </div>
         </div>
 
@@ -207,6 +284,7 @@ const CreateContract = () => {
           onChange={handleInputChange}
           className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         />
+        {errors.termsAndConditions && <div className="text-red-600">{errors.termsAndConditions}</div>}
 
         <label
           htmlFor="items"
@@ -228,6 +306,7 @@ const CreateContract = () => {
             </option>
           ))}
         </select>
+        {errors.items && <div className="text-red-600">{errors.items}</div>}
 
         {/* Suppliers dropdown */}
         <label
@@ -250,6 +329,8 @@ const CreateContract = () => {
             </option>
           ))}
         </select>
+        {errors.vendorId && <div className="text-red-600">{errors.vendorId}</div>}
+
 
         <div className="pt-4 flex items-center space-x-4">
           <button

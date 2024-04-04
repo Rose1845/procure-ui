@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { Category, ItemData, Supplier } from "../../types";
+import { Category, ItemData } from "../../types";
 import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";
 
@@ -12,11 +12,11 @@ const CreateItem = () => {
     quantity: 1,
     unitPrice: 0,
     categoryId: 0,
-    vendorId: "",
+    // vendorId: "",
   });
-  
+
   const [categories, setCategories] = React.useState<Category[]>([]);
-  const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
+  // const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
   const [errors, setErrors] = React.useState<{ [key: string]: string }>({});
 
   React.useEffect(() => {
@@ -24,9 +24,9 @@ const CreateItem = () => {
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
 
-    fetchSuppliers()
-      .then((data) => setSuppliers(data))
-      .catch((error) => console.error("Error fetching suppliers:", error));
+    // fetchSuppliers()
+    //   .then((data) => setSuppliers(data))
+    //   .catch((error) => console.error("Error fetching suppliers:", error));
   }, []);
 
   const fetchItems = async () => {
@@ -34,10 +34,10 @@ const CreateItem = () => {
     return response.data;
   };
 
-  const fetchSuppliers = async () => {
-    const response = await axiosApi.get("/suppliers");
-    return response.data;
-  };
+  // const fetchSuppliers = async () => {
+  //   const response = await axiosApi.get("/suppliers");
+  //   return response.data;
+  // };
 
   const handleInputChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -194,7 +194,7 @@ const CreateItem = () => {
         )}
       </div>
 
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <label
           htmlFor="vendorId"
           className="block text-sm font-medium text-gray-700 mb-2"
@@ -215,7 +215,7 @@ const CreateItem = () => {
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
 
       <div className="mb-4">
         <label

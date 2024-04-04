@@ -7,17 +7,14 @@ function Why() {
     <div className="max-w-7xl mx-auto mb-10">
       <div className="container">
         <div className="flex flex-row space-x-3 justify-center items-center -tracking-normal text-2xl font-bold text-center">
-          {/* <span className="text-2xl uppercase text-orange font-medium">
-            Why choose us
-          </span> */}
           <header className="text-center mx-auto mb-3">
             <h2 className="text-2xl leading-normal mb-2 font-bold text-gray-800 dark:text-gray-300">
               <span className="font-light">Why Choose</span> Us
             </h2>
             <hr className="block w-12 h-0.5 mx-auto my-5 bg-indigo-500 border-indigo-500" />
-            {/* <p className="text-gray-500 leading-relaxed font-light text-xl mx-auto pb-2">Clean and well commented code allows easy customization of the theme even for beginners.</p> */}
           </header>
         </div>
+        
         <div className="flex flex-col mb-10 justify-center text-center items-center">
           <div className="flex flex-col mx-auto bg-white">
             <div className="w-full">

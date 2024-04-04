@@ -50,6 +50,7 @@ export const setUserData = (user: Partial<TUser>) => {
 export const clearUserData = () => {
   if (typeof Storage === "undefined") return;
   localStorage.removeItem("user");
+  localStorage.removeItem("token")
 };
 
 export const getAccessToken = () => {

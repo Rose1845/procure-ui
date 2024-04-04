@@ -77,7 +77,6 @@ function PurchaseRequestComponent() {
                     <td className="px-4 py-3 text-sm">
                       {new Date(req.dueDate).toLocaleString()}
                     </td>
-
                     <div className="py-4">
                       <h2 className="text-lg font-semibold">Item Details Status</h2>
                       <ul>

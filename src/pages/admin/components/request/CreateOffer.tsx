@@ -47,7 +47,6 @@ const CreateOffer = () => {
     };
 
     fetchCategory();
-
     return () => {
       abortController.abort();
     };

@@ -1,4 +1,4 @@
-import { TbBook, TbCurrencyDollar, TbLock } from "react-icons/tb";
+import { TbBook, TbCurrencyDollar } from "react-icons/tb";
 import {
   TfiDashboard,
   TfiShoppingCart,
@@ -10,6 +10,7 @@ export interface SidebarLink {
   LinkIcon?: typeof TfiDashboard;
   label: string;
   path: string;
+  children?: SidebarLink[];
 }
 
 export const sidebarLinks: SidebarLink[] = [
@@ -17,21 +18,6 @@ export const sidebarLinks: SidebarLink[] = [
     LinkIcon: TfiDashboard,
     label: "Dashboard",
     path: "/dashboard",
-  },
-  {
-    label: "Purchase Order",
-    path: "/dashboard/order",
-    LinkIcon: TfiShoppingCart,
-  },
-  {
-    label: "Purchase Request",
-    path: "/dashboard/purchase-request",
-    LinkIcon: TfiShoppingCart,
-  },
-  {
-    label: "Purchase Requisition",
-    path: "/dashboard/purchase-requisition",
-    LinkIcon: TfiShoppingCart,
   },
   {
     label: "Category",
@@ -43,29 +29,51 @@ export const sidebarLinks: SidebarLink[] = [
     path: "/dashboard/suppliers",
     LinkIcon: TfiUser,
   },
-  {
-    label: "Settings",
-    path: "/dashboard/settings",
-    LinkIcon: TfiSettings,
-  },
-  {
-    label: "Deliveries",
-    path: "/dashboard/deliveries",
-    LinkIcon: TbCurrencyDollar,
-  },
+
   {
     label: "Products",
     path: "/dashboard/items",
     LinkIcon: TfiShoppingCart,
   },
   {
-    label: "Contract",
-    path: "/dashboard/contract",
-    LinkIcon: TbBook,
+    label: "Transaction",
+    path: "",
+    children: [
+      {
+        label: "Purchase Requisition",
+        path: "/dashboard/purchase-requisition",
+        LinkIcon: TfiShoppingCart,
+      },
+      {
+        label: "Purchase Request",
+        path: "/dashboard/purchase-request",
+        LinkIcon: TfiShoppingCart,
+      },
+      {
+        label: "Purchase Order",
+        path: "/dashboard/order",
+        LinkIcon: TfiShoppingCart,
+      },
+      {
+        label: "Contract",
+        path: "/dashboard/contract",
+        LinkIcon: TbBook,
+      },
+      {
+        label: "Invoice",
+        path: "/dashboard/invoice",
+        LinkIcon: TbCurrencyDollar,
+      },
+      {
+        label: "Deliveries",
+        path: "/dashboard/deliveries",
+        LinkIcon: TbCurrencyDollar,
+      },
+    ],
   },
   {
-    label: "Invoice",
-    path: "/dashboard/invoice",
-    LinkIcon: TbCurrencyDollar,
+    label: "Settings",
+    path: "/dashboard/settings",
+    LinkIcon: TfiSettings,
   },
 ];

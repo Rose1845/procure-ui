@@ -54,6 +54,7 @@ export interface PurchaseOrder {
 }
 export interface PurchaseRequestData {
   purchaseRequestTitle: string;
+  deliveryDate: string;
   dueDate: string;
   termsAndConditions: string;
   items: string[];
@@ -62,6 +63,7 @@ export interface PurchaseRequestData {
 export interface PurchaseRequest {
   purchaseRequestId: number;
   purchaseRequestTitle: string;
+  deliveryDate: string;
   dueDate: string;
   approvalStatus: string;
   termsAndConditions: string;
@@ -127,7 +129,7 @@ export interface ItemData {
   quantity: number;
   unitPrice: number;
   categoryId: number;
-  vendorId: string;
+  // vendorId: string;
 }
 export interface Contract {
   contractId: string;
@@ -154,7 +156,7 @@ export interface ContractData {
 export type Invoice = {
   invoiceStatus: ReactNode;
   createdAt: ReactNode;
-  purchaseOrder: any;
+  purchaseOrder: PurchaseOrder;
   invoiceId: string;
   invoiceNumber: string;
   dueDate: string;
@@ -190,6 +192,7 @@ export type User = {
   username: string;
   firstname: string;
   lastname: string;
+  phoneNumber:string;
   avatar: string;
   roles: Role[];
   enabled: boolean;
@@ -201,5 +204,9 @@ export type User = {
 
 export type LoginResponse = {
   token: string;
+  user: User;
+};
+export type RegistrationResponse = {
+  auth: LoginResponse;
   user: User;
 };

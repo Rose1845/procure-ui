@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { PurchaseRequest } from "../types";
+
 function TotalCostEvaluation() {
     const { id } = useParams();
     const [request, setRequest] = useState<PurchaseRequest>();
@@ -28,7 +29,15 @@ function TotalCostEvaluation() {
         };
     }, [id]);
 
-    // Calculate subtotals for each supplier
+    const handleAcceptOffer = async (supplierId: string) => {
+        try {
+            const response = await axiosApi.post(`/purchase-request/${id}/accept-offer?supplierId=${supplierId}`);
+            console.log("Offer accepted:", response.data);
+        } catch (error) {
+            console.error("Error accepting offer:", error);
+        }
+    };
+
     const subtotals: { [key: string]: number } = {};
     request?.itemDetails.forEach(itemDetail => {
         const supplierId = itemDetail.supplier.vendorId;
@@ -63,6 +72,7 @@ function TotalCostEvaluation() {
                                                     <th className="border border-gray-300 px-4 py-2">Quantity</th>
                                                     <th className="border border-gray-300 px-4 py-2">Unit Price</th>
                                                     <th className="border border-gray-300 px-4 py-2">Total Price</th>
+                                                    <th className="border border-gray-300 px-4 py-2">Actions</th> {/* New column for actions */}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -74,13 +84,21 @@ function TotalCostEvaluation() {
                                                             <td className="border border-gray-300 px-4 py-2">{itemDetail.item.quantity}</td>
                                                             <td className="border border-gray-300 px-4 py-2">{itemDetail.offerUnitPrice}</td>
                                                             <td className="border border-gray-300 px-4 py-2">{itemDetail.item.quantity * itemDetail.offerUnitPrice}</td>
+                                                            <td className="border border-gray-300 px-4 py-2">
+                                                                {itemDetail.quoteStatus !== "BUYER_ACCEPTED" && itemDetail.quoteStatus !== "Waiting_for_offer" ? (
+                                                                    <button
+                                                                        onClick={() => handleAcceptOffer(supplierId)}
+                                                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                                        Accept Offer
+                                                                    </button>
+                                                                ) : null}
+                                                            </td>
                                                         </tr>
                                                     ))}
                                                 <tr>
-                                                    <td className="border border-gray-300 px-4 py-2 font-semibold">Subtotal</td>
-                                                    <td className="border border-gray-300 px-4 py-2"></td>
-                                                    <td className="border border-gray-300 px-4 py-2"></td>
+                                                    <td colSpan={3} className="border border-gray-300 px-4 py-2 font-semibold">Subtotal</td>
                                                     <td className="border border-gray-300 px-4 py-2 font-semibold">{subtotals[supplierId]}</td>
+                                                    <td></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -95,4 +113,4 @@ function TotalCostEvaluation() {
     );
 }
 
-export default TotalCostEvaluation
+export default TotalCostEvaluation;

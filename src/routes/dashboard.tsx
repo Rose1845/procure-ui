@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React from "react";
 import { RouteObject } from "react-router-dom";
 import Category from "../pages/admin/pages/Category";
@@ -38,6 +39,7 @@ import CreateOffer from "@/pages/admin/components/request/CreateOffer";
 import ApproveContract from "@/pages/admin/components/contract/ApproveContract";
 import CompareOffers from "@/pages/admin/views/CompareOffers";
 import TotalCostEvaluation from "@/pages/admin/views/TotalCostEvaluation";
+import Profile from "@/pages/admin/components/user/Profile";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -94,6 +96,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/contract/approve/:id",
       element: <ApproveContract />,
+    },
+    {
+      path: "/dashboard/profile/user/:id",
+      element: <Profile />,
     },
     {
       path: "/dashboard/order/add_order",

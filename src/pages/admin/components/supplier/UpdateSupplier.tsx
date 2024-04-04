@@ -126,14 +126,28 @@ const UpdateSupplier = () => {
     return isValid;
   };
 
-  
+
 
   const updateSupplier = async () => {
     try {
       const response = await axiosApi.put(`/suppliers/${id}`, supplierData);
       const updatedSupplierData = response.data;
+      setSupplierData({
+        name: "",
+        contactPerson: "",
+        contactInformation: "",
+        address: {
+          box: "",
+          country: "",
+          city: "",
+          location: "",
+        },
+        email: "",
+        phoneNumber: "",
+        paymentType: "MPESA",
+        termsAndConditions: "",
+      });
       console.log(updatedSupplierData, "edit supplier");
-
       console.log(`Supplier with ID ${id} updated successfully`);
     } catch (error) {
       console.error(`Error updating supplier with ID ${id}:`, error);
@@ -314,7 +328,6 @@ const UpdateSupplier = () => {
             className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
           />
           {errors.phoneNumber && <div className="text-red-600">{errors.phoneNumber}</div>}
-
         </div>
 
         <div className="mb-4">
@@ -333,9 +346,9 @@ const UpdateSupplier = () => {
           />
         </div>
         <div className="flex flex-col">
-          <label 
+          <label
             className="block text-sm font-medium text-gray-600"
->Payment Type</label>
+          >Payment Type</label>
           <select
             id="paymentType"
             name="paymentType"

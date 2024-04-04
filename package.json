@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@hookform/resolvers": "^3.3.4",
+    "@kommunicate/kommunicate-chatbot-plugin": "^0.0.7",
     "@material-tailwind/react": "^2.1.9",
     "autoprefixer": "^10.4.16",
     "axios": "^1.6.3",

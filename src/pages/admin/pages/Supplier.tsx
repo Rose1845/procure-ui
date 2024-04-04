@@ -66,7 +66,7 @@ function Supplier() {
           </Link>
         </button>
       </div>
-      <div className="mt-4 mx-4 mr-11">
+      <div className="max-w-7xl mx-auto mr-11 pt-16 flex flex-col">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
             <table className="w-full">
@@ -75,6 +75,7 @@ function Supplier() {
                   <th className="px-4 py-3">Supplier Name</th>
                   <th className="px-4 py-3">Contact Person</th>
                   <th className="px-4 py-3">Phone Number</th>
+                  <th className="px-4 py-3">Email Address</th>
                   <th className="px-4 py-3">City</th>
                   <th className="px-4 py-3">Last Edited</th>
                 </tr>
@@ -95,6 +96,9 @@ function Supplier() {
 
                     <td className="px-4 py-3 text-sm">
                       {supplier.phoneNumber}
+                    </td>
+                    <td className="px-4 py-3 text-sm">
+                      {supplier.email}
                     </td>
                     <td className="px-4 py-3 text-sm">
                       {supplier.address.city}

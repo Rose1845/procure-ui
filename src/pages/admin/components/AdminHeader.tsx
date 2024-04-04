@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { clearUserData, useAuth } from "@/utils/auth";
+import { AuthContext } from "@/context/AuthContext";
+import { clearUserData } from "@/utils/auth";
 import { Menu, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "../types";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-function AdminHeader(user:User) {
+function AdminHeader() {
+  const { user } = useContext(AuthContext);
+  console.log(user, "user");
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -56,14 +59,14 @@ function AdminHeader(user:User) {
                   <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">Open user menu</span>
-                   
-                    {user && (
+
+                     {user && (
                       <img
                         className="h-8 w-8 rounded-full"
-                        src={user.avatar}
+                        src={user.user?.avatar}
                         alt=""
                       />
-                    )}
+                    )} 
                   </Menu.Button>
                 </div>
                 <Transition
@@ -79,7 +82,7 @@ function AdminHeader(user:User) {
                     <Menu.Item>
                       {({ active }) => (
                         <a
-                          href="#"
+                          href={`/dashboard/profile/user/${user?.user.id}`} // Modify the href attribute
                           className={classNames(
                             active ? "bg-gray-100" : "",
                             "block px-4 py-2 text-sm text-gray-700"

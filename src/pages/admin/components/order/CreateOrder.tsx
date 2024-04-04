@@ -16,7 +16,8 @@ const CreateOrder = () => {
   
   const [items, setItems] = React.useState<Item[]>([]);
   const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
-
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
+  const [deliveyDateError, setDeliveyDateError] = React.useState<string>("");
   React.useEffect(() => {
     fetchItems()
       .then((data) => setItems(data))
@@ -62,10 +63,32 @@ const CreateOrder = () => {
       setOrderData((prevData) => ({ ...prevData, items: selectedItems }));
     } else {
       setOrderData((prevData) => ({ ...prevData, [name]: value }));
+      if (name === "deliveryDate" || name === "dueDate") {
+        const deliveryDate = name === "deliveryDate" ? value : orderData.deliveryDate;
+
+        const today = new Date();
+        const deliveryDateObj = new Date(deliveryDate);
+
+
+
+        if (deliveryDateObj < today && name === "deliveryDate") {
+          setDeliveyDateError("Delivery date should be in the present or future.");
+        } else {
+          setDeliveyDateError("");
+        }
+        
+      }
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: "",
+      }));
     }
   };
 
   const createOrder = async () => {
+    if(!validateForm()){
+      return
+    }
     const itemsArray = orderData.items.map((itemId) => ({ itemId }));
     const dataToSend = {
       ...orderData,
@@ -91,6 +114,36 @@ const CreateOrder = () => {
       console.error("Error creating order:", error);
     }
   };
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors: Record<string, string> = {};
+
+    if (!orderData.purchaseOrderTitle) {
+      newErrors.purchaseOrderTitle = "purchaseOrderTitle title is required";
+      isValid = false;
+    }
+    if (!orderData.termsAndConditions) {
+      newErrors.termsAndConditions = "Terms and conditions are required";
+      isValid = false;
+    }
+   
+    if (!orderData.deliveryDate) {
+      newErrors.deliveryDate = "delivery Date are required";
+      isValid = false;
+    }
+    
+    if (orderData.items.length === 0) {
+      newErrors.items = "At least one item must be selected";
+      isValid = false;
+    }
+
+    if (orderData.vendorId) {
+      newErrors.vendorId = "supplier must be selected";
+      isValid = false;
+    }
+    setErrors(newErrors);
+    return isValid;
+  };
 
   return (
     <div className="py-16 max-w-7xl m-auto">
@@ -105,7 +158,9 @@ const CreateOrder = () => {
         value={orderData.purchaseOrderTitle}
         onChange={handleInputChange}
       />
-
+      {errors.purchaseOrderTitle && (
+        <p className="text-red-500">{errors.purchaseOrderTitle}</p>
+      )}
       <label className="block mb-2" htmlFor="deliveryDate">
         Delivery Date:
       </label>
@@ -117,7 +172,10 @@ const CreateOrder = () => {
         value={orderData.deliveryDate}
         onChange={handleInputChange}
       />
-
+      {deliveyDateError && <p className="text-red-500">{deliveyDateError}</p>}
+      {errors.deliveryDate && (
+        <p className="text-red-500">{errors.deliveryDate}</p>
+      )}
       <label className="block mb-2" htmlFor="termsAndConditions">
         Terms and Conditions:
       </label>
@@ -128,7 +186,9 @@ const CreateOrder = () => {
         value={orderData.termsAndConditions}
         onChange={handleInputChange}
       />
-
+      {errors.termsAndConditions && (
+        <p className="text-red-500">{errors.termsAndConditions}</p>
+      )}
       <label className="block mb-2" htmlFor="items">
         Select items:
       </label>
@@ -146,7 +206,9 @@ const CreateOrder = () => {
           </option>
         ))}
       </select>
-
+      {errors.items && (
+        <p className="text-red-500">{errors.items}</p>
+      )}
       <label className="block mb-2" htmlFor="paymentType">
         Payment Type:
       </label>
@@ -179,7 +241,9 @@ const CreateOrder = () => {
           </option>
         ))}
       </select>
-
+      {errors.vendorId && (
+        <p className="text-red-500">{errors.vendorId}</p>
+      )}
       <div className="pt-4 flex items-center space-x-4">
         <button
           onClick={createOrder}

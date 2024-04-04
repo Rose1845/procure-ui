@@ -113,6 +113,21 @@ function CreateSupplier() {
       const response = await axiosApi.post("/suppliers", supplierData);
       const createdContract = response.data;
       toast.success("Supplier added successfully!");
+      setSupplierData({
+        name: "",
+        contactPerson: "",
+        contactInformation: "",
+        address: {
+          box: "",
+          country: "",
+          city: "",
+          location: "",
+        },
+        email: "",
+        phoneNumber: "",
+        paymentType: "MPESA",
+        termsAndConditions: "",
+      });
       console.log("Supplier created successfully:", createdContract);
     } catch (error: any) {
       if (error.response && error.response.data) {

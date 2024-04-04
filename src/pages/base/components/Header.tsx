@@ -37,10 +37,11 @@ export default function Header() {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
-                    src=""
-                    alt="User Avatar"
-                    className="h-8 w-8 rounded-full"
-                  />               </div>
+                    src="/android-chrome-512x512.png"
+                    alt="Logo Procurement"
+                    className="h-12 w-12 rounded-full"
+                  />
+                </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (

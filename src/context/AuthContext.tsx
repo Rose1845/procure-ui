@@ -9,7 +9,7 @@ export interface IAuthContext {
 
 // Providing a default context value matching the IAuthContext interface
 export const AuthContext = createContext<IAuthContext>({
-  user: null, // Default to null since no user is logged in initially
-  onLogin: () => { }, // Placeholder function
-  onLogout: () => { }, // Placeholder function
+  user: null, 
+  onLogin: () => { },
+  onLogout: () => { }, 
 });

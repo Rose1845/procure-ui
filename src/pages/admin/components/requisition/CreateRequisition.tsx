@@ -85,7 +85,7 @@ const CreateRequisition = () => {
   return (
     <div className="py-16 max-w-7xl m-auto">
       <label className="block mb-2" htmlFor="purchaseOrderTitle">
-        Purchase Request Title:
+        Purchase Requisition Title:
       </label>
       <input
         className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
@@ -122,7 +122,7 @@ const CreateRequisition = () => {
       <label className="block mb-2" htmlFor="items">
         Select items:
       </label>
-      {items.map((item: any, i) => (
+      {items.map((item: Item, i) => (
         <div key={i} className="mb-2">
           <input
             type="checkbox"
@@ -153,7 +153,7 @@ const CreateRequisition = () => {
               </tr>
             </thead>
             <tbody>
-              {selectedItemsDetails.map((itemDetails: any, index) => (
+              {selectedItemsDetails.map((itemDetails: Item, index) => (
                 <tr key={index}>
                   <td>{itemDetails.itemName}</td>
                   <td>{itemDetails.quantity}</td>

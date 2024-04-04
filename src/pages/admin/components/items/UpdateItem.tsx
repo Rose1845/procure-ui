@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { Category, ItemData, Supplier } from "../../types";
+import { Category, ItemData } from "../../types";
 import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
 
@@ -12,20 +13,20 @@ const UpdateItem = () => {
     quantity: 1,
     unitPrice: 0,
     categoryId: 0,
-    vendorId: 0,
+    // vendorId: "",
   });
 
   const [categories, setCategories] = React.useState<Category[]>([]);
-  const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
+  // const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
 
   React.useEffect(() => {
     fetchItems()
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
 
-    fetchSuppliers()
-      .then((data) => setSuppliers(data))
-      .catch((error) => console.error("Error fetching suppliers:", error));
+    // fetchSuppliers()
+    //   .then((data) => setSuppliers(data))
+    //   .catch((error) => console.error("Error fetching suppliers:", error));
     const fetchItemData = async () => {
       try {
         const response = await axiosApi.get(`/items/${id}`);
@@ -44,11 +45,10 @@ const UpdateItem = () => {
     return response.data;
   };
 
-  const fetchSuppliers = async () => {
-    const response = await axiosApi.get("/suppliers");
-    return response.data;
-  };
-
+  // const fetchSuppliers = async () => {
+  //   const response = await axiosApi.get("/suppliers");
+  //   return response.data;
+  // };
   const handleInputChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setContractData((prevData) => ({ ...prevData, [name]: value }));
@@ -152,7 +152,7 @@ const UpdateItem = () => {
         />
       </div>
 
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <label
           htmlFor="vendorId"
           className="block text-sm font-medium text-gray-700 mb-2"
@@ -173,8 +173,7 @@ const UpdateItem = () => {
             </option>
           ))}
         </select>
-      </div>
-
+      </div> */}
       <div className="mb-4">
         <label
           htmlFor="categoryId"
