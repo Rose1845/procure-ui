@@ -5,7 +5,7 @@ import { PurchaseRequest } from "../types";
 
 function TotalCostEvaluation() {
     const { id } = useParams();
-    const [request, setRequest] = useState<PurchaseRequest>();
+    const [request, setRequest] = React.useState<PurchaseRequest>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {

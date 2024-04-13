@@ -2,7 +2,7 @@
 import { AuthContext } from "@/context/AuthContext";
 import { clearUserData } from "@/utils/auth";
 import { Menu, Transition } from "@headlessui/react";
-import React, { Fragment, useContext } from "react";
+import  { Fragment, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

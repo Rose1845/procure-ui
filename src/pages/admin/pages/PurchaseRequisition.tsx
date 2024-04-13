@@ -1,10 +1,9 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { PurchaseRequisition } from "../types";
 
 function PurchaseRequisition() {
-  const navigate = useNavigate();
   const [requisitions, setRequisitions] = React.useState<PurchaseRequisition[]>(
     []
   );

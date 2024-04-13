@@ -1,25 +1,40 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { axiosApi } from "../../../api";
-import { Contract } from "../types";
+import { Contract, Supplier } from "../types";
 import { toast } from "react-toastify";
 
 const ContractView = () => {
   const { id } = useParams();
   const [contract, setContract] = React.useState<Contract>();
+  const [supplierDetails, setSupplierDetails] = React.useState<Supplier>();
+
   React.useEffect(() => {
     const fetchContract = async () => {
       try {
         const response = await axiosApi.get(`/contract/contract-items/${id}`);
         setContract(response.data);
-        console.log("Contract retrived successfully");
+        console.log("Contract retrieved successfully");
       } catch (error) {
         console.error("Error fetching Contract:", error);
       }
     };
+
+    const fetchSupplierDetails = async () => {
+      try {
+        const response = await axiosApi.get(`/suppliers/supplier/${contract?.vendorId}`);
+        console.log(response.data,"supplier de");
+        
+        setSupplierDetails(response.data);
+        console.log("Supplier details retrieved successfully");
+      } catch (error) {
+        console.error("Error fetching Supplier details:", error);
+      }
+    };
+
     fetchContract();
-    // sendToSupplier();
-  }, [id]);
+    fetchSupplierDetails();
+  }, [contract?.vendorId, id]);
 
   const sendToSupplier = async () => {
     try {
@@ -56,13 +71,24 @@ const ContractView = () => {
             </span>
           </td>
           <h2>Contract Name: {contract?.contractTitle}</h2>
-          {/* <h2>CreatedOn: {new Date(contract?.createdAt).toLocaleString()}</h2> */}
+          
           <h2>Contract Type: {contract?.contractType}</h2>
           <h2>Expires On: {contract?.contractEndDate}</h2>
         </div>
         <div>
           Contract Terms and Condition:
           {contract?.termsAndConditions}
+        </div>
+        <div className="pt-3">
+          <h1>Supplier Details</h1>
+          {supplierDetails && (
+            <div>
+              <h2>Supplier Name: {supplierDetails.name}</h2>
+              <h2>Supplier Email: {supplierDetails.email}</h2>
+              <h2>Address:{supplierDetails.address.box}{supplierDetails.address.city},{ supplierDetails.address.country }</h2>
+              <h2>Location:{supplierDetails.address.location}</h2>
+            </div>
+          )}
         </div>
         <div className="max-w-7xl mx-auto pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
@@ -96,12 +122,6 @@ const ContractView = () => {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm">{order.totalPrice}</td>
-                      {/* <button
-                        onClick={() => sendToSupplier(contract?.contractId)} // Pass the 'id' to the function
-                        className="bg-green-500 mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
-                      >
-                        Send Contract to Supplier
-                      </button> */}
                     </tr>
                   ))}
                 </tbody>

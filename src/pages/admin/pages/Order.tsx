@@ -98,7 +98,6 @@ function Order() {
       await axiosApi.delete(`/purchase-order/${id}`);
       toast.success("deleted succesfuly");
       console.log(`Order with ID ${id} deleted successfully`);
-      // Refresh the list of suppliers after deletion
       fetchOrders();
     } catch (error) {
       console.error(`Error deleting supplier with ID ${id}:`, error);

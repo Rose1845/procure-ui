@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { axiosApi } from "@/api";
-import React, { useState } from "react";
+import React from "react";
 import { toast } from "react-toastify";
 
 const CreateOrganizationForm = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = React.useState({
     name: "",
     phoneNumber: "",
     address: {

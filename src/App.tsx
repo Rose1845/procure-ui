@@ -9,17 +9,16 @@ import {
 } from "react-query";
 // import { RouterProvider } from "react-router-dom";
 // import router from "./router";
-import AuthProvider from "./routes/AuthProvider";
+import { RouterProvider } from "react-router-dom";
+import router from "./router";
 function App() {
   const queryClient = new QueryClient();
 
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        {/* <RouterProvider router={router} /> */}
-        <AuthProvider>
+        <RouterProvider router={router} />
           <ToastContainer />
-        </AuthProvider>
       </QueryClientProvider>
 
     </>

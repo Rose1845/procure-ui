@@ -4,7 +4,7 @@ import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";
 
 const CsvUploader: React.FC = () => {
-  const [template, setTemplate] = useState<string | null>(null);
+  const [, setTemplate] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

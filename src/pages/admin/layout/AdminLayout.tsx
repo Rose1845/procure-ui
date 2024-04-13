@@ -5,7 +5,7 @@ import AdminSidebar from "../components/AdminSidebar";
 function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
-      <AdminHeader id={0} organization={null} email={""} username={""} firstname={""} lastname={""} avatar={""} roles={[]} enabled={false} authorities={[]} accountNonExpired={false} accountNonLocked={false} credentialsNonExpired={false} />
+      <AdminHeader />
       <div className="">
         {children}
       </div>

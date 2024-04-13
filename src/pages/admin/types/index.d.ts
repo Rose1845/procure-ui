@@ -92,6 +92,7 @@ export type PurchaseRequisition = {
   updatedAt: Date;
   createdBy: number;
 };
+
 interface ItemDetail {
   id: number;
   item: Item;

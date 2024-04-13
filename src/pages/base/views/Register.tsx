@@ -13,6 +13,15 @@ function Register() {
     email: '',
     username: '',
     password: '',
+    phoneNumber: ''
+  });
+  const [errors, setErrors] = React.useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    username: '',
+    password: '',
+    phoneNumber: ''
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +31,7 @@ function Register() {
 
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
-  const handleTogglePassword = (e: { preventDefault: () => void; }) => {
+  const handleTogglePassword = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setShowPassword(!showPassword);
   };
@@ -31,14 +40,40 @@ function Register() {
     e.preventDefault();
 
     // Validate input fields
-    if (!register.firstName || !register.lastName || !register.email || !register.username || !register.password) {
-      toast.error('Please fill in all fields.');
+    if (!register.firstName) {
+      setErrors({ ...errors, firstName: 'Please enter your first name.' });
+      return;
+    }
+    if (!register.lastName) {
+      setErrors({ ...errors, lastName: 'Please enter your last name.' });
+      return;
+    }
+    if (!register.email) {
+      setErrors({ ...errors, email: 'Please enter your email address.' });
+      return;
+    }
+    if (!register.username) {
+      setErrors({ ...errors, username: 'Please enter a username.' });
+      return;
+    }
+    if (!register.password) {
+      setErrors({ ...errors, password: 'Please enter a password.' });
       return;
     }
 
     // Validate password length
     if (register.password.length < 8) {
-      toast.error('Password must be at least 8 characters long.');
+      setErrors({ ...errors, password: 'Password must be at least 8 characters long.' });
+      return;
+    }
+
+    // Validate password pattern
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordPattern.test(register.password)) {
+      setErrors({
+        ...errors,
+        password: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+      });
       return;
     }
 
@@ -52,12 +87,13 @@ function Register() {
           email: '',
           password: '',
           username: '',
+          phoneNumber: ''
         });
         navigate('/login');
       } else {
         toast.error('Please try again later');
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.status === 409) {
         toast.error('Email already exists. Please use a different email.');
       } else {
@@ -65,7 +101,6 @@ function Register() {
       }
     }
   };
-
   return (
 
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-300">
@@ -88,6 +123,8 @@ function Register() {
                     id="firstName"
                     onChange={handleInputChange}
                     value={register.firstName} className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" placeholder="username" />
+                  {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+
                 </div>
               </div>
               <div className="flex flex-col mb-6">
@@ -104,6 +141,8 @@ function Register() {
                     id="lastName"
                     onChange={handleInputChange}
                     value={register.lastName} className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" placeholder="username" />
+                  {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
+
                 </div>
               </div>
             </div>
@@ -121,6 +160,8 @@ function Register() {
                     id="email"
                     onChange={handleInputChange}
                     value={register.email} className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" placeholder="username" />
+                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+
                 </div>
               </div>
               <div className="flex flex-col mb-6">
@@ -136,7 +177,25 @@ function Register() {
                     id="username"
                     onChange={handleInputChange}
                     value={register.username} className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" placeholder="username" />
+                  {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
+
                 </div>
+              </div>
+            </div>
+            <div className="flex flex-col mb-6">
+              <label htmlFor="phoneNumber" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">Phone Number:</label>
+              <div className="relative">
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  onChange={handleInputChange}
+                  value={register.phoneNumber}
+                  className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+                  placeholder="0757764865"
+                />
+                {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>}
+
               </div>
             </div>
             <div className="flex flex-col mb-6">
@@ -150,7 +209,11 @@ function Register() {
                   value={register.password}
                   className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                   placeholder="Password"
+                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                  title="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
                 />
+                {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+
                 <button
                   onClick={handleTogglePassword}
                   className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400"
@@ -172,7 +235,7 @@ function Register() {
           </form>
         </div>
         <div className="flex justify-center items-center mt-6">
-          <a href="/Register" target="_blank" className="inline-flex items-center font-bold text-blue-500 hover:text-blue-700 text-xs text-center">
+          <a href="/login" target="_blank" className="inline-flex items-center font-bold text-blue-500 hover:text-blue-700 text-xs text-center">
             <span>
               <svg className="h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                 <path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -185,4 +248,4 @@ function Register() {
     </div>)
 }
 
-export default Register
+export default Register;

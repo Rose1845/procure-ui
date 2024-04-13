@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 function MarkPaid() {
   const { id } = useParams();
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [, setIsLoading] = React.useState(false);
 
   const approvePurchaseOrder = async () => {
     setIsLoading(true);
@@ -16,11 +16,10 @@ function MarkPaid() {
         null,
         {
           params: {
-            approvalStatus: "ISSUED",
+            approvalStatus: "FULLY_RECEIVED",
           },
         }
       );
-
       const responseData = response.data;
       toast.success(responseData.message);
       console.log("Response from backend:", responseData);

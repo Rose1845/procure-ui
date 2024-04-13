@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { sidebarLinks } from "../data/links";
 import { NavLink, useLocation } from "react-router-dom";
 
 function AdminSidebar() {
   const routePath = useLocation().pathname;
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to manage dropdown visibility
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false); // State to manage dropdown visibility
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen((prev) => !prev); // Toggle dropdown visibility

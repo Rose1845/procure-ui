@@ -1,4 +1,3 @@
-import React from "react";
 import ChangePasswordForm from "../components/accounts/ChangePasswordForm";
 import Roles from "./Roles";
 

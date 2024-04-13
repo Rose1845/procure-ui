@@ -1,11 +1,10 @@
 import React from "react";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { PurchaseOrder } from "../types";
 
 function Deliveries() {
-  const navigate = useNavigate();
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
   React.useEffect(() => {
     fetchOrders()
@@ -19,21 +18,21 @@ function Deliveries() {
     console.log(order, "orders");
     return order;
   };
-  const handleEdit = (id: number) => {
-    navigate(`/dashboard/deliveries/add/${id}`);
-    console.log(`Editing Order with ID: ${id}`);
-  };
-  const handleDelete = async (id: number) => {
-    try {
-      // Send a DELETE request to delete the supplier with the given ID
-      await axiosApi.delete(`/purchase-order/${id}`);
-      console.log(`Order with ID ${id} deleted successfully`);
-      // Refresh the list of suppliers after deletion
-      fetchOrders();
-    } catch (error) {
-      console.error(`Error deleting supplier with ID ${id}:`, error);
-    }
-  };
+  // const handleEdit = (id: number) => {
+  //   navigate(`/dashboard/deliveries/add/${id}`);
+  //   console.log(`Editing Order with ID: ${id}`);
+  // };
+  // const handleDelete = async (id: number) => {
+  //   try {
+  //     // Send a DELETE request to delete the supplier with the given ID
+  //     await axiosApi.delete(`/purchase-order/${id}`);
+  //     console.log(`Order with ID ${id} deleted successfully`);
+  //     // Refresh the list of suppliers after deletion
+  //     fetchOrders();
+  //   } catch (error) {
+  //     console.error(`Error deleting supplier with ID ${id}:`, error);
+  //   }
+  // };
   return (
     <div className="max-w-7xl mx-auto pt-16 ">
       <div className="max-w-7xl mx-auto pt-16 ">

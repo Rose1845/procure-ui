@@ -1,4 +1,3 @@
-import React from "react";
 function SupplierImport() {
   return (
     <div className="flex w-full h-screen items-center justify-center bg-grey-lighter">

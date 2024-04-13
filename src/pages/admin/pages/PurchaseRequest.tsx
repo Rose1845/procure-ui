@@ -4,7 +4,7 @@ import { axiosApi } from "../../../api";
 import { ItemDetail, PurchaseRequest } from "../types";
 
 function PurchaseRequestComponent() {
-  const [requests, setRequests] = useState<PurchaseRequest[]>([]);
+  const [requests, setRequests] = React.useState<PurchaseRequest[]>([]);
   const [selectedRequestId, setSelectedRequestId] = useState<number | null>(null);
   const [itemDetails, setItemDetails] = useState<ItemDetail[]>([]);
 

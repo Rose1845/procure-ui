@@ -1,5 +1,4 @@
 /* eslint-disable react-refresh/only-export-components */
-import React from "react";
 import { RouteObject } from "react-router-dom";
 import Category from "../pages/admin/pages/Category";
 import Items from "../pages/admin/pages/Items";
@@ -40,6 +39,8 @@ import ApproveContract from "@/pages/admin/components/contract/ApproveContract";
 import CompareOffers from "@/pages/admin/views/CompareOffers";
 import TotalCostEvaluation from "@/pages/admin/views/TotalCostEvaluation";
 import Profile from "@/pages/admin/components/user/Profile";
+import Roles from "@/pages/admin/pages/Roles";
+import ItemView from "@/pages/admin/views/ItemView";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -84,6 +85,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/category/edit/:id",
       element: <EditCategory />,
+    },
+    {
+      path: "/dashboard/roles/add_role",
+      element: <Roles />,
     },
     {
       path: "/dashboard/category/view/:id",
@@ -160,6 +165,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/items/add_item",
       element: <CreateItem />,
+    },
+    {
+      path: "/dashboard/item/view/:id",
+      element: <ItemView />,
     },
     {
       path: "/dashboard/category/add_category",

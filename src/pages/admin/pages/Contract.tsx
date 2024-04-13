@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { Contract } from "../types";
 import { FaEye } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 function Contract() {
-  const navigate = useNavigate();
   const [contracts, setContracts] = React.useState<Contract[]>([]);
   React.useEffect(() => {
     fetchcontuisitions()

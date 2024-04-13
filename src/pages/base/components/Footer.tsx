@@ -9,12 +9,7 @@ function Footer() {
       const response = await axios.post(
         `http://localhost:8081/api/newsletter/subscribe?email=${email}`,
         { email }
-        // {
-        //   headers: {
-        //     Authorization:
-        //       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb3NlQGdtYWlsLmNvbSIsImlhdCI6MTcwNTg1MzA2OCwiZXhwIjoxNzA1OTM5NDY4fQ.THdR2xBG3fzOS5KuyYDOIVo_KqngBPlIatkq55mE5xo",
-        //   },
-        // }
+        
       );
       console.log(response.data, "dta");
       setEmail("");
@@ -136,12 +131,13 @@ function Footer() {
                   to your inbox!
                 </p>
                 <div className="mx-auto mb-7">
-                  <form id="subscribe" className="relative" action="#">
+                  <form onSubmit={handleSubmit} id="subscribe" className="relative" action="#">
                     <div className="flex flex-wrap items-stretch w-full relative">
                       <input
                         type="email"
                         className="flex-shrink flex-grow max-w-full leading-5 w-px flex-1 py-2 px-4 ltr:rounded-l rtl:rounded-r text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 relative"
                         name="email"
+                        value={email}
                         required
                         placeholder="Enter you email address"
                         aria-label="subcribe newsletter"

@@ -2,14 +2,15 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Contract } from "../../types";
+import { Contract, Supplier } from "../../types";
 import { axiosApi } from "../../../../api";
 
 const ApproveContract = () => {
   const { id } = useParams();
   const [contract, setContract] = React.useState<Contract>();
+  const [supplierDetails,setSupplierDetails] = React.useState<Supplier>();
   const [approvalAction, setApprovalAction] = React.useState<string>("");
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     const fetchContract = async () => {
@@ -21,8 +22,20 @@ const ApproveContract = () => {
         console.error("Error updating Contract:", error);
       }
     };
+    const fetchSupplierDetails = async () => {
+      try {
+        const response = await axiosApi.get(`/suppliers/supplier/${contract?.vendorId}`);
+        console.log(response.data, "supplier de");
+
+        setSupplierDetails(response.data);
+        console.log("Supplier details retrieved successfully");
+      } catch (error) {
+        console.error("Error fetching Supplier details:", error);
+      }
+    };
+    fetchSupplierDetails()
     fetchContract();
-  }, [id]);
+  }, [contract?.vendorId, id]);
   const handleApprovalAction = (action: string) => {
     setApprovalAction(action);
     ApproveContract();
@@ -30,7 +43,6 @@ const ApproveContract = () => {
 
   const ApproveContract = async () => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
 
       const response = await axiosApi.patch(
         `/contract/edit-contract/${id}`,
@@ -38,9 +50,6 @@ const ApproveContract = () => {
         {
           params: {
             contractStatus: `${approvalAction}`,
-          },
-          headers: {
-            Authorization: `Bearer ${accessToken}`
           }
         }
       );
@@ -59,24 +68,30 @@ const ApproveContract = () => {
   return (
     <div className="max-w-7xl mx-auto mt-8 py-16">
       <div className="flex items-center">
-        <button
-          onClick={() => handleApprovalAction("ACCEPTED")}
-          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 mr-2"
-        >
-          ACCEPTED{" "}
-        </button>
-        <button
-          onClick={() => handleApprovalAction("DECLINE")}
-          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300 mr-2"
-        >
-          DECLINE
-        </button>
-        <button
-          onClick={() => handleApprovalAction("TERMINATE")}
-          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300 mr-2"
-        >
-          TERMINATE{" "}
-        </button>
+        {contract?.contractStatus !== "ACCEPTED" &&
+          contract?.contractStatus !== "DECLINE" &&
+          contract?.contractStatus !== "TERMINATE" && (
+            <>
+              <button
+                onClick={() => handleApprovalAction("ACCEPTED")}
+                className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 mr-2"
+              >
+                ACCEPTED
+              </button>
+              <button
+                onClick={() => handleApprovalAction("DECLINE")}
+                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300 mr-2"
+              >
+                DECLINE
+              </button>
+              <button
+                onClick={() => handleApprovalAction("TERMINATE")}
+                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300 mr-2"
+              >
+                TERMINATE
+              </button>
+            </>
+          )}
       </div>
 
       <div>
@@ -87,13 +102,23 @@ const ApproveContract = () => {
             </span>
           </td>
           <h2>Contract Name: {contract?.contractTitle}</h2>
-          {/* <h2>CreatedOn: {new Date(contract?.createdAt).toLocaleString()}</h2> */}
           <h2>Contract Type: {contract?.contractType}</h2>
           <h2>Expires On: {contract?.contractEndDate}</h2>
         </div>
         <div>
           Contract Terms and Condition:
           {contract?.termsAndConditions}
+        </div>
+        <div className="pt-3">
+          <h1>Supplier Details</h1>
+          {supplierDetails && (
+            <div>
+              <h2>Supplier Name: {supplierDetails.name}</h2>
+              <h2>Supplier Email: {supplierDetails.email}</h2>
+              <h2>Address:{supplierDetails.address.box}{supplierDetails.address.city},{supplierDetails.address.country}</h2>
+              <h2>Location:{supplierDetails.address.location}</h2>
+            </div>
+          )}
         </div>
         <div className="max-w-7xl mx-auto pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">

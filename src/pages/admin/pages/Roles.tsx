@@ -21,7 +21,7 @@ function Roles() {
         <div className="max-w-7xl mx-auto pt-16 flex-row gap-8">
             <div className="flex justify-end">
                 <button className="px-4 py-2 bg-blue-600 text-white">
-                    <Link to={"/dashboard/roles/add_rol"}> Add Role</Link>
+                    <Link to={"/dashboard/roles/add_role"}> Add Role</Link>
                 </button>
             </div>
             <div className="mt-4 mx-4">

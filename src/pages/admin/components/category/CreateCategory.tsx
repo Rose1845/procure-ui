@@ -18,7 +18,7 @@ function CreateCategory() {
     handleSubmit,
     register,
     reset,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors },
   } = useForm<categoryData>({
     resolver: zodResolver(categorySchema),
   });

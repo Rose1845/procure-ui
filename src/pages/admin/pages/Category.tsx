@@ -55,7 +55,7 @@ function Category() {
   const endIndex = Math.min((page + 1) * pageSize, totalItems);
 
   return (
-    <div className="max-w-7xl mx-auto mr-11 pt-16 flex flex-col">
+    <div className="max-w-7xl mx-auto  pt-16 flex flex-col">
       <div className="flex justify-end">
         <button className="px-4 py-2 bg-blue-600 text-white">
           <Link to={"/dashboard/category/add_category"}> Add Category</Link>

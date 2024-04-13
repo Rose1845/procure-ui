@@ -26,14 +26,14 @@ function Login() {
     e.preventDefault();
     setShowPassword(!showPassword);
   };
-  const handleSubmit = async(e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    console.log(credentials,"CRED");
-    
+    console.log(credentials, "CRED");
+
     try {
       const response = await publicApi.post("/auth/login", credentials);
       const { token, user } = response.data;
-      
+
       // Set token in localStorage or use a more secure storage method
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
@@ -98,7 +98,7 @@ function Login() {
 
             <div className="flex items-center mb-6 -mt-4">
               <div className="flex ml-auto">
-                <a href="#" className="inline-flex text-xs sm:text-sm text-blue-500 hover:text-blue-700">Forgot Your Password?</a>
+                <a href="/verifyEmail" className="inline-flex text-xs sm:text-sm text-blue-500 hover:text-blue-700">Forgot Your Password?</a>
               </div>
             </div>
 
@@ -125,7 +125,8 @@ function Login() {
           </a>
         </div>
       </div>
-    </div>)
+    </div>
+  )
 }
 
 export default Login

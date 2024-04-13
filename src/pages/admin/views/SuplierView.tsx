@@ -21,7 +21,7 @@ const SupplierView: React.FC<SupplierViewProps> = ({ vendorId }) => {
     useEffect(() => {
         const fetchSupplierView = async () => {
             try {
-                const response = await axiosApi.get(`/api/v1/suppliers/${vendorId}`);
+                const response = await axiosApi.get(`/suppliers/supplier/${vendorId}`);
                 setSupplier(response.data);
             } catch (error) {
                 console.error('Error fetching supplier details:', error);

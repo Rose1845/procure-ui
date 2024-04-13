@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { axiosApi } from "../../../api";
-import { PurchaseOrder } from "../types";
+import { PurchaseOrder, Supplier } from "../types";
 import { toast } from "react-toastify";
 import MarkPaid from "../components/order/MarkPaid";
 
@@ -9,6 +9,7 @@ const OrderView = () => {
   const { id } = useParams();
   const [order, setOrder] = React.useState<PurchaseOrder>();
   const [isLoadig, setIsLoading] = useState<boolean>(false);
+  const [supplierDetails, setSupplierDetails] = React.useState<Supplier>();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -25,12 +26,25 @@ const OrderView = () => {
         console.error("Error updating order:", error);
       }
     };
+    const fetchSupplierDetails = async () => {
+      try {
+        const response = await axiosApi.get(`/suppliers/supplier/${order?.vendorId}`);
+        console.log(response.data, "supplier de");
+
+        setSupplierDetails(response.data);
+        console.log("Supplier details retrieved successfully");
+      } catch (error) {
+        console.error("Error fetching Supplier details:", error);
+      }
+    };
 
     fetchCategory();
+    fetchSupplierDetails()
     return () => {
       abortController.abort();
     };
-  }, [id]);
+  }, [id, order?.vendorId]);
+  
   const sendToSupplier = async () => {
     setIsLoading(true);
     try {
@@ -66,20 +80,33 @@ const OrderView = () => {
         </button>
       </div>{" "}
       <div className="min-w-full ml-64">
-        <div className="flex flex-col space-y-3">
+        <div className="flex flex-col space-y-2">
           <td className="px-4 py-3 text-xs">
             <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
              Status: {order?.approvalStatus}
             </span>
           </td>
-          <h2 className="text-xl">Order Name: {order?.purchaseOrderTitle}</h2>
-          <h2 className="text-xl">CreatedOn:</h2>
-          <h2 className="text-xl">Order PaymentType: {order?.paymentType}</h2>
-          <h2 className="text-xl">Expires On: {order?.deliveryDate}</h2>
+          <h2 className="text-[16px]">Order Name: {order?.purchaseOrderTitle}</h2>
+          <h2 className="text-[16px]">CreatedOn:</h2>
+          <h2 className="text-[16px]">Order PaymentType: {order?.paymentType}</h2>
+          <h2 className="text-[16px]">Expires On: {order?.deliveryDate}</h2>
         </div>
-        <div className="text-xl">
+        <div className="text-[16px]">
           Terms and Condition:
           {order?.termsAndConditions}
+        </div>
+
+        <div className="pt-3 space-y-2">
+          <h1 className="text-xl font-bold">Supplier Details</h1>
+          {supplierDetails && (
+            <div>
+              <h2 className="text-[16px]">Supplier Name: {supplierDetails.name}</h2>
+              <h2 className="text-[16px]">Supplier Email: {supplierDetails.email}</h2>
+              <h2 className="text-[16px]">Address:{supplierDetails.address.box}{supplierDetails.address.city},{supplierDetails.address.country}</h2>
+              <h2 className="text-[16px]">Location:{supplierDetails.address.location}</h2>
+              <p className="text-[16px]">Payment Terms: {supplierDetails.paymentType}</p>
+            </div>
+          )}
         </div>
       </div>
      

@@ -163,13 +163,13 @@ const CreateContract = () => {
 
 
   return (
-    <div className="py-16">
+    <div className="max-w-7xl mx-auto pt-16 py-16">
       <div className="flex items-center space-x-5">
         <div className="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">
           i
         </div>
         <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
-          <h2 className="leading-relaxed">Create Contract</h2>
+          <h2 className="leading-relaxed uppercase">Create Contract</h2>
         </div>
       </div>
       <div className=" max-w-7xl m-auto">
@@ -234,7 +234,6 @@ const CreateContract = () => {
               </svg>
             </div>
             {startDateError && <p className="text-red-500">{startDateError}</p>}
-
           </div>
         </div>
 

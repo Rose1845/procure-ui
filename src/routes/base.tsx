@@ -4,6 +4,9 @@ import Login from "../pages/base/views/Login";
 import Register from "../pages/base/views/Register";
 import HomeLayout from "../pages/base/layout/HomeLayout";
 import ApproveContract from "../pages/admin/components/contract/ApproveContract";
+import VerifyEmail from "@/pages/base/views/VerifyEmail";
+import Confirmation from "@/pages/base/views/Confirmation";
+import ChangePassword from "@/pages/base/views/ChangePassword";
 
 export const BaseRoutes: RouteObject = {
   path: "/",
@@ -16,6 +19,18 @@ export const BaseRoutes: RouteObject = {
     {
       path: "login",
       element: <Login />,
+    },
+    {
+      path: "verifyEmail",
+      element: <VerifyEmail />,
+    },
+    {
+      path: "verifyOtp/:email",
+      element: < Confirmation />,
+    },
+    {
+      path: "change-password/:email",
+      element: < ChangePassword />,
     },
     {
       path: "register",
