@@ -3,7 +3,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { Contract } from "../types";
-import { FaEye } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 function Contract() {
@@ -40,23 +39,23 @@ function Contract() {
   //   }
   // };
 
-  const sendToSupplier = async (id: string) => {
-    try {
-      const response = await axiosApi.post(`/contract/send-to-supplier/${id}`);
-      console.log(response.request);
+  // const sendToSupplier = async (id: string) => {
+  //   try {
+  //     const response = await axiosApi.post(`/contract/send-to-supplier/${id}`);
+  //     console.log(response.request);
 
-      if (!response.data) {
-        throw new Error(
-          `Failed to send contract to supplier: ${response.statusText}`
-        );
-      }
-      toast.success("Contract sent to supplier successfully");
-      console.log("Response from backend:", response.data);
-    } catch (error) {
-      toast.error("An error occurred while sending contract to supplier");
-      console.error("Error sending contract to supplier:", error);
-    }
-  };
+  //     if (!response.data) {
+  //       throw new Error(
+  //         `Failed to send contract to supplier: ${response.statusText}`
+  //       );
+  //     }
+  //     toast.success("Contract sent to supplier successfully");
+  //     console.log("Response from backend:", response.data);
+  //   } catch (error) {
+  //     toast.error("An error occurred while sending contract to supplier");
+  //     console.error("Error sending contract to supplier:", error);
+  //   }
+  // };
 
   return (
     <div className="max-w-7xl pt-16 mx-auto">
