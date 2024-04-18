@@ -21,7 +21,7 @@ function Contract() {
     console.log(contracts, "contesss");
     return contract;
   };
-  
+
   // const handleEdit = (id: number) => {
   //   // Redirect or open a modal for editing based on the id
   //   navigate(`/dashboard/contract/edit/${id}`);
@@ -72,9 +72,9 @@ function Contract() {
               <thead>
                 <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
                   <th className="px-4 py-3">Name</th>
-                  <th className="px-4 py-3">Date</th>
-                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3">Created At</th>
                   <th className="px-4 py-3">Due Date</th>
+                  <th className="px-4 py-3">Action</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y dark:divide-gray-500">
@@ -87,10 +87,19 @@ function Contract() {
                       <span> {cont.contractTitle}</span>
 
                       <div>
-                        <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                          {cont.contractStatus}{" "}
+                        <span className={`px-2 py-1 font-semibold leading-tight rounded-full ${cont.contractStatus === "Declined" ||
+                          cont.contractStatus === "EXPIRED" ||
+                          cont.contractStatus === "TERMINATED" ||
+                          cont.contractStatus === "DECLINE"
+
+                          ? "text-red-700 bg-red-100 dark:bg-red-700 dark:text-red-100"
+                          : "text-green-700 bg-green-100 dark:bg-green-700 dark:text-green-100"
+                          }`}
+                        >
+                          {cont.contractStatus}
                         </span>{" "}
                       </div>
+
                     </td>
                     <td className="px-4 py-3 text-sm">
                       {" "}
@@ -101,19 +110,10 @@ function Contract() {
                     </td>
                     <td className="px-4 py-3 text-sm">
                       <Link to={`/dashboard/contract/view/${cont.contractId}`}>
-                        <FaEye />
+                        View
                       </Link>
                     </td>
-                    <td className="px-4 py-3 text-sm">
-                      <button
-                        // type="submit"
-                        onClick={()=>sendToSupplier(cont.contractId)}
-                        className="bg-green-500 mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
-                      >
-                        {/* <SendApprovalEmail /> */}
-                        Send Contract to Supplier
-                      </button>
-                    </td>
+
                   </tr>
                 ))}
               </tbody>

@@ -54,7 +54,7 @@ const CreateRequest = () => {
     >
   ) => {
     const { name, value } = e.target;
-    if (name === "items" || name === "suppliers") {
+    if (name === "items") {
       const selectElement = e.target as HTMLSelectElement;
       const selectedItems = Array.from(
         selectElement.selectedOptions,
@@ -93,26 +93,29 @@ const CreateRequest = () => {
     }
   }
 
-  // const handleInputChange1 = (
-  //   e: React.ChangeEvent<
-  //     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-  //   >
-  // ) => {
-  //   const { name, value } = e.target;
-  //   if (name === "suppliers") {
-  //     const selectElement = e.target as HTMLSelectElement;
-  //     const selectedSuppliers = Array.from(
-  //       selectElement.selectedOptions,
-  //       (option) => option.value
-  //     );
-  //     setOrderData((prevData) => ({
-  //       ...prevData,
-  //       suppliers: selectedSuppliers,
-  //     }));
-  //   } else {
-  //     setOrderData((prevData) => ({ ...prevData, [name]: value }));
-  //   }
-  // };
+  const handleInputChange1 = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    if (name === "suppliers") {
+      const selectElement = e.target as HTMLSelectElement;
+      const selectedSuppliers = Array.from(
+        selectElement.selectedOptions,
+        (option) => option.value
+      );
+      setOrderData((prevData) => ({
+        ...prevData,
+        suppliers: selectedSuppliers,
+      }));
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: "",
+      }));
+      setOrderData((prevData) => ({ ...prevData, [name]: value }));    }
+  };
 
   const createRequest = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -137,7 +140,15 @@ const CreateRequest = () => {
         dataToSend
       );
       const responseData = response.data;
-      toast.success("Success");
+      toast.success("Created Request Successfully");
+      setOrderData({
+        purchaseRequestTitle: "",
+        deliveryDate: "",
+        dueDate: "",
+        termsAndConditions: "",
+        items: [],
+        suppliers: [],
+      })
       console.log("Response from backend:", responseData);
     } catch (error: any) {
       toast.error(error.message);
@@ -180,119 +191,130 @@ const CreateRequest = () => {
   };
 
   return (
-    <div className="py-16 max-w-7xl m-auto">
-      <form onSubmit={createRequest} action="">
-        <label className="block mb-2" htmlFor="purchaseRequestTitle">
-          Purchase Request Title:
-        </label>
-        <input
-          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-          type="text"
-          id="purchaseRequestTitle"
-          name="purchaseRequestTitle"
-          value={orderData.purchaseRequestTitle}
-          onChange={handleInputChange}
-        />
-        {errors.purchaseRequestTitle && (
-          <p className="text-red-500">{errors.purchaseRequestTitle}</p>
-        )}
-
-        <label className="block mb-2" htmlFor="deliveryDate">
-          Delivery Date:
-        </label>
-        <input
-          type="date"
-          id="deliveryDate"
-          name="deliveryDate"
-          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-          value={orderData.deliveryDate}
-          onChange={handleInputChange}
-        />
-        {deliveyDateError && <p className="text-red-500">{deliveyDateError}</p>}
-        {errors.deliveryDate && (
-          <p className="text-red-500">{errors.deliveryDate}</p>
-        )}
-        <label className="block mb-2" htmlFor="dueDate">
-          Due Date:
-        </label>
-        <input
-          type="date"
-          id="dueDate"
-          name="dueDate"
-          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-          value={orderData.dueDate}
-          onChange={handleInputChange}
-        />
-        {dueDateError && <p className="text-red-500">{dueDateError}</p>}
-        {errors.dueDate && (
-          <p className="text-red-500">{errors.dueDate}</p>
-        )}
-        <label className="block mb-2" htmlFor="termsAndConditions">
-          Terms and Conditions:
-        </label>
-        <input
-          id="termsAndConditions"
-          name="termsAndConditions"
-          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-          value={orderData.termsAndConditions}
-          onChange={handleInputChange}
-        />
-        {errors.termsAndConditions && (
-          <p className="text-red-500">{errors.termsAndConditions}</p>
-        )}
-
-        <label className="block mb-2" htmlFor="items">
-          Select items:
-        </label>
-        <select
-          className="w-full border p-2 mb-4"
-          id="items"
-          name="items"
-          onChange={handleInputChange}
-          value={orderData.items}
-          multiple
-        >
-          {items.map((item: any, i) => (
-            <option key={i} value={item.itemId}>
-              {item.itemName}
-            </option>
-          ))}
-        </select>
-        {errors.items && (
-          <p className="text-red-500">{errors.items}</p>
-        )}
-        <label className="block mb-2" htmlFor="suppliers">
-          Select Suppliers:
-        </label>
-        <select
-          className="w-full border p-2 mb-4"
-          id="suppliers"
-          name="suppliers"
-          onChange={handleInputChange}
-          value={orderData.suppliers}
-          multiple
-        >
-          {suppliers.map((supplier: any) => (
-            <option key={supplier.vendorId} value={supplier.vendorId}>
-              {supplier.name}
-            </option>
-          ))}
-        </select>
-        {errors.suppliers && (
-          <p className="text-red-500">{errors.suppliers}</p>
-        )}
-        <div className="pt-4 flex items-center space-x-4">
-          <button
-            disabled={isLoading}
-            type="submit"
-            className={`bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none ${isLoading ? "bg-opacity-45 bg-red-900 cursor-not-allowed" : ""
-              }`}
-          >
-            Create Purchase Request
-          </button>
+    <div className="max-w-7xl mx-auto pt-16 py-16">
+      <div className="flex items-center space-x-5">
+        <div className="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">
+          i
         </div>
-      </form>
+        <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
+          <h2 className="leading-relaxed uppercase">Create Purchase Request </h2>
+        </div>
+      </div>
+      <div className="max-w-7xl mx-auto pt-16 py-16">
+        <form onSubmit={createRequest} action="">
+          <label className="block mb-2" htmlFor="purchaseRequestTitle">
+            Purchase Request Title:
+          </label>
+          <input
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            type="text"
+            id="purchaseRequestTitle"
+            name="purchaseRequestTitle"
+            value={orderData.purchaseRequestTitle}
+            onChange={handleInputChange}
+          />
+          {errors.purchaseRequestTitle && (
+            <p className="text-red-500">{errors.purchaseRequestTitle}</p>
+          )}
+
+          <label className="block mb-2" htmlFor="deliveryDate">
+            Delivery Date:
+          </label>
+          <input
+            type="date"
+            id="deliveryDate"
+            name="deliveryDate"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            value={orderData.deliveryDate}
+            onChange={handleInputChange}
+          />
+          {deliveyDateError && <p className="text-red-500">{deliveyDateError}</p>}
+          {errors.deliveryDate && (
+            <p className="text-red-500">{errors.deliveryDate}</p>
+          )}
+          <label className="block mb-2" htmlFor="dueDate">
+            Due Date:
+          </label>
+          <input
+            type="date"
+            id="dueDate"
+            name="dueDate"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            value={orderData.dueDate}
+            onChange={handleInputChange}
+          />
+          {dueDateError && <p className="text-red-500">{dueDateError}</p>}
+          {errors.dueDate && (
+            <p className="text-red-500">{errors.dueDate}</p>
+          )}
+          <label className="block mb-2" htmlFor="termsAndConditions">
+            Terms and Conditions:
+          </label>
+          <input
+            id="termsAndConditions"
+            name="termsAndConditions"
+            className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            value={orderData.termsAndConditions}
+            onChange={handleInputChange}
+          />
+          {errors.termsAndConditions && (
+            <p className="text-red-500">{errors.termsAndConditions}</p>
+          )}
+
+          <label className="block mb-2" htmlFor="items">
+            Select items:
+          </label>
+          <select
+            className="w-full border p-2 mb-4"
+            id="items"
+            name="items"
+            onChange={handleInputChange}
+            value={orderData.items}
+            multiple
+          >
+            {items.map((item: any, i) => (
+              <option key={i} value={item.itemId}>
+                {item.itemName}
+              </option>
+            ))}
+          </select>
+          {errors.items && (
+            <p className="text-red-500">{errors.items}</p>
+          )}
+          <label className="block mb-2" htmlFor="suppliers">
+            Select Suppliers:
+          </label>
+          <select
+            className="w-full border p-2 mb-4"
+            id="suppliers"
+            name="suppliers"
+            onChange={handleInputChange1}
+            value={orderData.suppliers}
+            multiple
+          >
+            {suppliers.map((supplier: any) => (
+              <option key={supplier.vendorId} value={supplier.vendorId}>
+                {supplier.name}
+              </option>
+            ))}
+          </select>
+          {errors.suppliers && (
+            <p className="text-red-500">{errors.suppliers}</p>
+          )}
+          <div className="pt-4 flex items-center space-x-4">
+            <button
+              disabled={isLoading}
+              type="submit"
+              className={`bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none ${isLoading ? "bg-opacity-45 bg-red-900 cursor-not-allowed" : ""
+                }`}
+            >
+              Create Purchase Request
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+    
   );
 };
 

@@ -9,7 +9,7 @@ function classNames(...classes: string[]) {
 }
 
 function AdminHeader() {
-  const { user } = useContext(AuthContext);
+  const  user  = useContext(AuthContext);
   console.log(user, "user");
 
   const navigate = useNavigate();
@@ -63,7 +63,7 @@ function AdminHeader() {
                      {user && (
                       <img
                         className="h-8 w-8 rounded-full"
-                        src={user.user?.avatar}
+                        src={user?.user?.user?.avatar}
                         alt=""
                       />
                     )} 
@@ -82,7 +82,7 @@ function AdminHeader() {
                     <Menu.Item>
                       {({ active }) => (
                         <a
-                          href={`/dashboard/profile/user/${user?.user.id}`} // Modify the href attribute
+                          href={`/dashboard/profile/user/${user?.user?.user?.id}`} // Modify the href attribute
                           className={classNames(
                             active ? "bg-gray-100" : "",
                             "block px-4 py-2 text-sm text-gray-700"
@@ -110,7 +110,7 @@ function AdminHeader() {
                        
                         <a
                           href="#"
-                          onClick={handleLogout} // Call handleLogout when the "Sign out" option is clicked
+                          onClick={()=>handleLogout()} // Call handleLogout when the "Sign out" option is clicked
                           className={classNames(
                             active ? "bg-gray-100" : "",
                             "block px-4 py-2 text-sm text-gray-700"

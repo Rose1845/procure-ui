@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { axiosApi } from "@/api";
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { PurchaseRequest } from "../../types";
 
 
@@ -13,16 +13,17 @@ type OfferItem = {
 }
 const CreateOffer = () => {
   const { id } = useParams();
-  const [isLoading] = React.useState(false);
+  const [isLoading, setIsloading] = React.useState(false);
   const [request, setRequest] = React.useState<PurchaseRequest>();
   const [offers, setOffers] = React.useState<OfferItem[]>([]);
+  const [queryParams] = useSearchParams()
+  const supplierId = queryParams.get("supplierId")
   const handleItemChange = (index: number, update: OfferItem) => {
 
     const item = offers[index]
     console.log({ original: offers });
 
     if (item) {
-
       const temp = { ...item, ...update }
       const arrayTemp = offers
       arrayTemp[index] = temp
@@ -32,7 +33,6 @@ const CreateOffer = () => {
 
   useEffect(() => {
     const abortController = new AbortController();
-
     const fetchCategory = async () => {
       try {
         const response = await axiosApi.get(`/purchase-request/${id}`, {
@@ -52,38 +52,25 @@ const CreateOffer = () => {
     };
   }, [id]);
 
-  const OfferBid = async (supplierId: string) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log(supplierId, "suplier");
+    e.preventDefault()
 
     const purchaseRequestId = id;
+    setIsloading(true)
     try {
-      const accessToken = localStorage.getItem("accessToken");
       const url = `/purchase-request/${purchaseRequestId}/edit2-offer-unit-prices2?supplierId=${supplierId}`;
-      const response = await axiosApi.patch(url, offers, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      });
+      const response = await axiosApi.patch(url, offers);
       const offer1 = response.data;
       console.log(offer1, "offer request");
       return offer1;
     } catch (error) {
       console.log(error);
 
+    } finally {
+      setIsloading(false)
     }
-
-
-  };
-
-  const handleSubmit = async (supplierIds: string[]) => {
-    const promises = supplierIds.map((id) => (
-      OfferBid(id)
-    ))
-    const result = await Promise.allSettled(promises)
-    console.log({ result: result });
-
   }
-
   useEffect(() => {
     const updatedItemDetails =
       request?.items.map((item) => ({
@@ -94,9 +81,10 @@ const CreateOffer = () => {
       })) || [];
     setOffers(prev => [...prev, ...updatedItemDetails]);
   }, [request?.items]);
-  
+  console.log({ supplierId });
+
   return (
-    <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
+    <div className="flex flex-col  mt-8 py-16">
       <div>
         <div className="flex flex-col space-y-3">
           <td className="px-4 py-3 text-xs">
@@ -111,10 +99,7 @@ const CreateOffer = () => {
         </div>
       </div>
       <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          await handleSubmit(request!.suppliers.map(s => s.vendorId))
-        }}
+        onSubmit={handleSubmit}
       >
         <div className="pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
@@ -168,15 +153,17 @@ const CreateOffer = () => {
             </div>
           </div>
         </div>
-        <button
-          disabled={isLoading}
-          type="submit"
-          className={`bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none ${isLoading ? "bg-opacity-45 bg-red-900 cursor-not-allowed" : ""
-            }`}
-        >
-          {" "}
-          Make Offer
-        </button>
+        <div>
+          <button
+            disabled={isLoading}
+            type="submit"
+            className={`bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none ${isLoading ? "bg-opacity-45 bg-red-900 cursor-not-allowed" : ""
+              }`}
+          >
+            {isLoading ? "Submitting..." : 'Make Offer'}
+          </button>
+        </div>
+
       </form>
     </div>
   );

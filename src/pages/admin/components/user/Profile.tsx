@@ -41,7 +41,6 @@ const Profile = () => {
               </li>
               <li className="flex items-center py-3">
                 <span>Company Name</span>
-                {/* <span className="ml-auto">{user.organization.}</span> */}
               </li>
             </ul>
           </div>

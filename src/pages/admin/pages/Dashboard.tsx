@@ -1,7 +1,8 @@
 import React from "react";
 import { axiosApi } from "../../../api";
 import { PurchaseOrder } from "../types";
-import PurchaseOrderChart from "../components/order/PurchaseOrderChart";
+import PurchaseOrderBarGraph from "../components/order/PurchaseOrderBarGraph";
+import ContractsBarGraph from "../components/contract/ContractsBarGraph";
 
 function Dashboard() {
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
@@ -18,8 +19,9 @@ function Dashboard() {
     console.log(order, "orders");
     return order;
   };
+
   return (
-    <div className="py-16">
+    <div className="max-w-7xl mx-auto pt-16 ">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
         <div className="bg-white shadow-lg rounded-md flex items-center justify-between p-3 border-b-4 border-blue-600 text-neutral-950 font-medium group">
           <div className="flex justify-center items-center w-14 h-14 bg-white rounded-full transition-all duration-300 transform group-hover:rotate-12">
@@ -116,7 +118,15 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      <PurchaseOrderChart />
+      <div className="flex  justify-between flex-row space-x-4">
+        <div className="shadow">
+          <PurchaseOrderBarGraph />
+        </div>
+        <div className="shadow">
+          <ContractsBarGraph />
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto pt-16 ">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">

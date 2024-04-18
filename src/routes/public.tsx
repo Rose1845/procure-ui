@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { RouteObject } from "react-router-dom";
 import ApproveContract from "../pages/admin/components/contract/ApproveContract";
 import CreateOffer from "@/pages/admin/components/request/CreateOffer";

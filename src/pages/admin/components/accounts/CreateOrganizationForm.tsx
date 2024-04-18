@@ -14,7 +14,6 @@ const CreateOrganizationForm = () => {
       location: "",
     },
   });
-
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
 

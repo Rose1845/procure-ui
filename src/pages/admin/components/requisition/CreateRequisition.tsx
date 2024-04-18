@@ -41,7 +41,7 @@ const CreateRequisition = () => {
     const { name, value } = e.target;
     setOrderData((prevData) => ({ ...prevData, [name]: value }));
   };
-  
+
   const createRequisition = async () => {
     const itemsArray = orderData.items.map((itemId) => ({ itemId }));
     const dataToSend = {
@@ -74,7 +74,6 @@ const CreateRequisition = () => {
           return response.data;
         }
       );
-
       const details = await Promise.all(selectedItemsDetailsPromises);
       setSelectedItemsDetails(details);
     };
@@ -83,99 +82,110 @@ const CreateRequisition = () => {
   }, [orderData.items]);
 
   return (
-    <div className="py-16 max-w-7xl m-auto">
-      <label className="block mb-2" htmlFor="purchaseOrderTitle">
-        Purchase Requisition Title:
-      </label>
-      <input
-        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-        type="text"
-        id="requisitionTitle"
-        name="requisitionTitle"
-        value={orderData.requisitionTitle}
-        onChange={handleInputChange}
-      />
-
-      <label className="block mb-2" htmlFor="deliveryDate">
-        Date Needed:
-      </label>
-      <input
-        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-        type="date"
-        id="dateNeeded"
-        name="dateNeeded"
-        value={orderData.dateNeeded}
-        onChange={handleInputChange}
-      />
-
-      <label className="block mb-2" htmlFor="termsAndConditions">
-        Description
-      </label>
-      <input
-        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-        id="description"
-        name="description"
-        value={orderData.description}
-        onChange={handleInputChange}
-      />
-
-      <label className="block mb-2" htmlFor="items">
-        Select items:
-      </label>
-      {items.map((item: Item, i) => (
-        <div key={i} className="mb-2">
-          <input
-            type="checkbox"
-            id={`itemCheckbox-${i}`}
-            name="items"
-            value={item.itemId}
-            checked={orderData.items.includes(item.itemId)}
-            onChange={() => handleCheckboxChange(item.itemId)}
-          />
-          <label htmlFor={`itemCheckbox-${i}`} className="ml-2">
-            {item.itemName}
-          </label>
+    <div className="max-w-7xl mx-auto pt-16 py-16">
+      <div className="flex items-center space-x-5">
+        <div className="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">
+          i
         </div>
-      ))}
-      {selectedItemsDetails.length > 0 && (
-        <div className="mt-4">
-          <h2>Selected Items Details:</h2>
-          <table className="w-full border p-2">
-            <thead>
-              <tr>
-                <th>Item Name</th>
-                <th>Quantity</th>
-                <th>Item Number</th>
-                <th>Unit Price</th>
-                <th>TotalPrice</th>
+        <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
+          <h2 className="leading-relaxed uppercase">Create Purchase Requisition </h2>
+        </div>
+      </div>
+      <div className="max-w-7xl mx-auto pt-16 py-16">
+        <label className="block mb-2" htmlFor="purchaseOrderTitle">
+          Purchase Requisition Title:
+        </label>
+        <input
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+          type="text"
+          id="requisitionTitle"
+          name="requisitionTitle"
+          value={orderData.requisitionTitle}
+          onChange={handleInputChange}
+        />
 
-                {/* Add more columns as needed */}
-              </tr>
-            </thead>
-            <tbody>
-              {selectedItemsDetails.map((itemDetails: Item, index) => (
-                <tr key={index}>
-                  <td>{itemDetails.itemName}</td>
-                  <td>{itemDetails.quantity}</td>
-                  <td>{itemDetails.itemNumber}</td>
-                  <td>{itemDetails.unitPrice}</td>
-                  <td>{itemDetails.totalPrice}</td>
+        <label className="block mb-2" htmlFor="deliveryDate">
+          Date Needed:
+        </label>
+        <input
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+          type="date"
+          id="dateNeeded"
+          name="dateNeeded"
+          value={orderData.dateNeeded}
+          onChange={handleInputChange}
+        />
+
+        <label className="block mb-2" htmlFor="termsAndConditions">
+          Description
+        </label>
+        <input
+          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+          id="description"
+          name="description"
+          value={orderData.description}
+          onChange={handleInputChange}
+        />
+
+        <label className="block mb-2" htmlFor="items">
+          Select items:
+        </label>
+        {items.map((item: Item, i) => (
+          <div key={i} className="mb-2">
+            <input
+              type="checkbox"
+              id={`itemCheckbox-${i}`}
+              name="items"
+              value={item.itemId}
+              checked={orderData.items.includes(item.itemId)}
+              onChange={() => handleCheckboxChange(item.itemId)}
+            />
+            <label htmlFor={`itemCheckbox-${i}`} className="ml-2">
+              {item.itemName}
+            </label>
+          </div>
+        ))}
+        {selectedItemsDetails.length > 0 && (
+          <div className="mt-4">
+            <h2>Selected Items Details:</h2>
+            <table className="w-full border p-2">
+              <thead>
+                <tr>
+                  <th>Item Name</th>
+                  <th>Quantity</th>
+                  <th>Item Number</th>
+                  <th>Unit Price</th>
+                  <th>TotalPrice</th>
+
+                  {/* Add more columns as needed */}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody>
+                {selectedItemsDetails.map((itemDetails: Item, index) => (
+                  <tr key={index}>
+                    <td>{itemDetails.itemName}</td>
+                    <td>{itemDetails.quantity}</td>
+                    <td>{itemDetails.itemNumber}</td>
+                    <td>{itemDetails.unitPrice}</td>
+                    <td>{itemDetails.totalPrice}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-      <div className="pt-4 flex items-center space-x-4">
-        <button
-          onClick={createRequisition}
-          className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
-        >
-          Create Purchase Requisition
-        </button>
+        <div className="pt-4 flex items-center space-x-4">
+          <button
+            onClick={createRequisition}
+            className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+          >
+            Create Purchase Requisition
+          </button>
+        </div>
       </div>
     </div>
+
   );
 };
 

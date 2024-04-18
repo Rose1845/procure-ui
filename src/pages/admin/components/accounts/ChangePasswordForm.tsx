@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { axiosApi } from "@/api";
 import React, { useState } from "react";
 import { toast } from "react-toastify";

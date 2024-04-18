@@ -95,9 +95,11 @@ const CreateOrder = () => {
 
     try {
       const response = await axiosApi.post("/purchase-order/create", dataToSend);
-
       const responseData = response.data;
-      toast.success(response.data.message);
+      console.log(responseData,"data or");
+      
+      toast.success("Purchase order created successfully!");
+      
       setOrderData({
         purchaseOrderTitle: "",
         deliveryDate: "",
@@ -135,7 +137,7 @@ const CreateOrder = () => {
       isValid = false;
     }
 
-    if (orderData.vendorId) {
+    if (!orderData.vendorId) {
       newErrors.vendorId = "supplier must be selected";
       isValid = false;
     }

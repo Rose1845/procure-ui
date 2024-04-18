@@ -17,7 +17,7 @@ const ApproveContract = () => {
       try {
         const response = await axiosApi.get(`/contract/contract-items/${id}`);
         setContract(response.data);
-        console.log("Contract retrived successfully");
+        console.log("Contract retrived successfully",response.data.contractStatus);
       } catch (error) {
         console.error("Error updating Contract:", error);
       }
@@ -25,10 +25,7 @@ const ApproveContract = () => {
     const fetchSupplierDetails = async () => {
       try {
         const response = await axiosApi.get(`/suppliers/supplier/${contract?.vendorId}`);
-        console.log(response.data, "supplier de");
-
         setSupplierDetails(response.data);
-        console.log("Supplier details retrieved successfully");
       } catch (error) {
         console.error("Error fetching Supplier details:", error);
       }
@@ -43,7 +40,6 @@ const ApproveContract = () => {
 
   const ApproveContract = async () => {
     try {
-
       const response = await axiosApi.patch(
         `/contract/edit-contract/${id}`,
         null,
@@ -53,7 +49,6 @@ const ApproveContract = () => {
           }
         }
       );
-
       const responseData = response.data;
       toast.success(responseData.message);
       console.log("Response from backend:", responseData);
@@ -64,13 +59,14 @@ const ApproveContract = () => {
       setIsLoading(false);
     }
   };
+  console.log("Contract Status:", contract?.contractStatus); // Check contract status here
 
   return (
     <div className="max-w-7xl mx-auto mt-8 py-16">
       <div className="flex items-center">
-        {contract?.contractStatus !== "ACCEPTED" &&
+        {(contract?.contractStatus !== "ACCEPTED" &&
           contract?.contractStatus !== "DECLINE" &&
-          contract?.contractStatus !== "TERMINATE" && (
+          contract?.contractStatus !== "TERMINATE") && (
             <>
               <button
                 onClick={() => handleApprovalAction("ACCEPTED")}
@@ -104,6 +100,7 @@ const ApproveContract = () => {
           <h2>Contract Name: {contract?.contractTitle}</h2>
           <h2>Contract Type: {contract?.contractType}</h2>
           <h2>Expires On: {contract?.contractEndDate}</h2>
+          <h2>Status: {contract?.contractStatus}</h2>
         </div>
         <div>
           Contract Terms and Condition:

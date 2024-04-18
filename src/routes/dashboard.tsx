@@ -34,7 +34,6 @@ import InvoiceView from "../pages/admin/views/Invoice";
 import CsvCategoryUploader from "../pages/admin/components/category/CsvCategoryUploader";
 import RequestView from "@/pages/admin/views/RequestView";
 import CreateOrderFromContract from "@/pages/admin/components/order/CreateOrderFromContract";
-import CreateOffer from "@/pages/admin/components/request/CreateOffer";
 import ApproveContract from "@/pages/admin/components/contract/ApproveContract";
 import CompareOffers from "@/pages/admin/views/CompareOffers";
 import TotalCostEvaluation from "@/pages/admin/views/TotalCostEvaluation";
@@ -125,10 +124,6 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/request/view/:id",
       element: <RequestView />,
-    },
-    {
-      path: "/dashboard/offer/view/:id",
-      element: <CreateOffer />,
     },
     {
       path: "/dashboard/quotes/compare_offers/:id",

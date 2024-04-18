@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 const CreateItem = () => {
   const [contractData, setContractData] = React.useState<ItemData>({
     itemName: "",
-    itemNumber: "",
     itemDescription: "",
     quantity: 1,
     unitPrice: 0,
@@ -46,15 +45,13 @@ const CreateItem = () => {
   };
 
   const validateFields = () => {
-    const { itemName, itemNumber, itemDescription, unitPrice, quantity } = contractData;
+    const { itemName, itemDescription, unitPrice, quantity } = contractData;
     const errors: { [key: string]: string } = {};
 
     if (!itemName.trim()) {
       errors.itemName = "Item Name is required";
     }
-    if (!itemNumber.trim()) {
-      errors.itemNumber = "Item Number is required";
-    }
+   
     if (!itemDescription.trim()) {
       errors.itemDescription = "Item Description is required";
     }
@@ -80,6 +77,13 @@ const CreateItem = () => {
         toast.error("Please try again later");
       } else {
         toast.success("Item created successfully");
+        setContractData({
+          itemName: "",
+          itemDescription: "",
+          quantity: 1,
+          unitPrice: 0,
+          categoryId: 0,
+        })
         console.log("Item created successfully:", response.data);
       }
     } catch (error: any) {
@@ -95,7 +99,7 @@ const CreateItem = () => {
     }
   };
   return (
-    <div className="py-16 mr-11 max-w-7xl m-auto">
+    <div className="max-w-7xl mx-auto pt-16 py-16">
       <h1 className="text-2xl font-bold mb-8">Create Item</h1>
 
       <div className="mb-4">
@@ -174,26 +178,7 @@ const CreateItem = () => {
         )}
       </div>
 
-      <div className="mb-4">
-        <label
-          htmlFor="itemNumber"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Item Number:
-        </label>
-        <input
-          type="text"
-          id="itemNumber"
-          name="itemNumber"
-          value={contractData.itemNumber}
-          onChange={handleInputChange}
-          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-        />
-        {errors.itemNumber && (
-          <p className="text-red-500 text-sm mt-1">{errors.itemNumber}</p>
-        )}
-      </div>
-
+    
       {/* <div className="mb-4">
         <label
           htmlFor="vendorId"

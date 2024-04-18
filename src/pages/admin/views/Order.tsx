@@ -44,7 +44,7 @@ const OrderView = () => {
       abortController.abort();
     };
   }, [id, order?.vendorId]);
-  
+
   const sendToSupplier = async () => {
     setIsLoading(true);
     try {
@@ -63,27 +63,63 @@ const OrderView = () => {
       setIsLoading(false);
     }
   };
-
+  const cloneOrder = async () => {
+    try {
+      const response = await axiosApi.post(
+        `/purchase-order/clone-order/${id}`
+      );
+      if (!response.data) {
+        throw new Error(
+          `Failed to cloned: ${response.statusText}`
+        );
+      }
+      toast.success("Order cloned successfully");
+      console.log("Response from backend:", response.data);
+    } catch (error) {
+      toast.error("An error occurred while sending contract to supplier");
+      console.error("Error sending order to supplier:", error);
+    }
+  };
   return (
     <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
-      <div className="flex flex-col border justify-center border-gray-300 space-y-2 items-center">
-        <MarkPaid />
-        <button
-          type="submit"
-          disabled={isLoadig}
-          onClick={sendToSupplier}
-          className={`bg-green-500 mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 ${
-            isLoadig ? "bg-opacity-35 cursor-not-allowed" : ""
-          }`}
-        >
-          Send to Supplier
-        </button>
+      <div className="flex flex-row space-x-3 border-gray-300 space-y-2 items-center">
+
+        <div>
+          {(order?.approvalStatus == "ISSUED" || order?.approvalStatus == "OPEN" && (
+            <MarkPaid />
+          ))}
+        </div>
+        <div>
+          {(
+            order?.approvalStatus !== "CLOSED" && order?.approvalStatus !== "REJECT" && order?.approvalStatus !== "APPROVED" && (
+              <button
+                type="submit"
+                disabled={isLoadig}
+                onClick={sendToSupplier}
+                className={`bg-green-500 mt-5 text-white py-2 px-4 uppercase rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 ${isLoadig ? "bg-opacity-35 cursor-not-allowed" : ""
+                  }`}
+              >
+                {order?.approvalStatus === "OPEN" || order?.approvalStatus === "FULLY_RECEIVED" ? "RESEND to supplier" : "SEND TO SUPPLIER"}
+              </button>
+            )
+          )}
+
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            onClick={() => cloneOrder()} // Pass the 'id' to the function
+            className="bg-green-500 uppercase mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
+          >
+            Clone Order </button>
+        </div>
       </div>{" "}
       <div className="min-w-full ml-64">
         <div className="flex flex-col space-y-2">
           <td className="px-4 py-3 text-xs">
             <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
-             Status: {order?.approvalStatus}
+              Status: {order?.approvalStatus}
             </span>
           </td>
           <h2 className="text-[16px]">Order Name: {order?.purchaseOrderTitle}</h2>
@@ -109,7 +145,7 @@ const OrderView = () => {
           )}
         </div>
       </div>
-     
+
       <div className="min-w-full ml-64">
         <div className="w-full  pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
@@ -152,7 +188,7 @@ const OrderView = () => {
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 };

@@ -3,12 +3,12 @@ import React from "react";
 import { Category, ItemData } from "../../types";
 import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const UpdateItem = () => {
   const { id } = useParams();
   const [contractData, setContractData] = React.useState<ItemData>({
     itemName: "",
-    itemNumber: "",
     itemDescription: "",
     quantity: 1,
     unitPrice: 0,
@@ -57,8 +57,16 @@ const UpdateItem = () => {
   const UpdateItem = async () => {
     try {
       const response = await axiosApi.put(`/items/${id}`, contractData);
-
       console.log("Item created successfully:", response.data);
+      toast.success("Item updated successfully:")
+      setContractData({
+        itemName: "",
+        itemDescription: "",
+        quantity: 1,
+        unitPrice: 0,
+        categoryId: 0,
+        // vendorId: "",
+      })
     } catch (error) {
       console.error("Error creating item:", error);
     }
@@ -135,22 +143,7 @@ const UpdateItem = () => {
         />
       </div>
 
-      <div className="mb-4">
-        <label
-          htmlFor="itemNumber"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Item Number:
-        </label>
-        <input
-          type="text"
-          id="itemNumber"
-          name="itemNumber"
-          value={contractData.itemNumber}
-          onChange={handleInputChange}
-          className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-        />
-      </div>
+
 
       {/* <div className="mb-4">
         <label

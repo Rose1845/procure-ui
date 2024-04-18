@@ -11,6 +11,7 @@ import {
 // import router from "./router";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
+import TawkToChatScript from "./pages/base/components/TawkToChatScript";
 function App() {
   const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
           <ToastContainer />
+        <TawkToChatScript />
       </QueryClientProvider>
 
     </>

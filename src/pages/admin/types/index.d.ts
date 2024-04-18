@@ -118,14 +118,12 @@ export interface Item {
   unitPrice: number;
   categoryId: string;
   totalPrice: number;
-  vendorId: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface ItemData {
   itemName: string;
-  itemNumber: string;
   itemDescription: string;
   quantity: number;
   unitPrice: number;
