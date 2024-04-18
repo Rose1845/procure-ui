@@ -1,108 +1,70 @@
-import { Disclosure } from "@headlessui/react";
+import React from "react";
 // import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { FaBars } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-const navigation = [
-  { name: "Features", href: "#feature", current: true },
-  { name: "FAQS", href: "#faq", current: false },
-  { name: "How it works", href: "#works", current: false },
-  { name: "Contact", href: "#contact", current: false },
-];
+// const navigation = [
+//   { name: "Features", href: "#feature", current: true },
+//   { name: "FAQS", href: "#faq", current: false },
+//   { name: "How it works", href: "#works", current: false },
+//   { name: "Contact", href: "#contact", current: false },
+// ];
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+
 
 export default function Header() {
-  return (
-    <Disclosure as="nav" className="bg-gray-800">
-      {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="absolute -inset-0.5" />
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <IoClose className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <FaBars className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <img
-                    src="/android-chrome-512x512.png"
-                    alt="Logo Procurement"
-                    className="h-12 w-12 rounded-full"
-                  />
-                </div>
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="absolute inset-y-0 right-0 flex flex-row space-x-3 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <div>
-                  <button
-                    type="button"
-                    className="relative rounded-md bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  >
-                    <Link to={"/login"}>LOGIN</Link>
-                  </button>
-                </div>
+  const [show, setShow] = React.useState(false);
 
-                <div>
-                  <button className="relative px-3 py-2 bg-orange-600 p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                    REQUEST DEMO
-                  </button>
-                </div>
-              </div>
+  return (
+    <div className="bg-gray-100">
+      <nav className="w-full border-b">
+        <div className="py-5 md:py-0 container mx-auto px-6 flex items-center justify-between">
+          <div aria-label="Home. logo" role="img">
+            <Link to={"/"}>
+              <img className="w-12 h-12" src="/android-chrome-512x512.png"
+                alt="logo" />
+            </Link>
+
+          </div>
+          <div>
+            <button onClick={() => setShow(!show)} className={`${show ? 'hidden' : ''} sm:block md:hidden text-gray-500 hover:text-gray-700 focus:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500`}>
+              <svg aria-haspopup="true" aria-label="open Main Menu" xmlns="http://www.w3.org/2000/svg" className="md:hidden icon icon-tabler icon-tabler-menu" width={24} height={24} viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2c3e50" fill="none" strokeLinecap="round">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <line x1={4} y1={8} x2={20} y2={8} />
+                <line x1={4} y1={16} x2={20} y2={16} />
+              </svg>
+            </button>
+            <div id="menu" className={` ${show ? '' : 'hidden'} md:block lg:block `}>
+              <button onClick={() => setShow(!show)} className={`block md:hidden lg:hidden text-gray-500 hover:text-gray-700 focus:text-gray-700 fixed focus:outline-none focus:ring-2 focus:ring-gray-500 z-30 top-0 mt-6`}>
+                <svg aria-label="close main menu" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2c3e50" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" />
+                  <line x1={18} y1={6} x2={6} y2={18} />
+                  <line x1={6} y1={6} x2={18} y2={18} />
+                </svg>
+              </button>
+              <ul className="flex text-3xl md:text-base items-center py-10 md:flex flex-col md:flex-row justify-center fixed md:relative top-0 bottom-0 left-0 right-0 bg-white md:bg-transparent z-20">
+                <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0">
+                  <a href="javascript: void(0)">Feature</a>
+                </li>
+                <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
+                  <a href="javascript: void(0)">FAQS</a>
+                </li>
+                <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
+                  <a href="javascript: void(0)">How It Works</a>
+                </li>
+
+                <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
+                  <a href="#contact">Contact</a>
+                </li>
+              </ul>
             </div>
           </div>
-
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
-            </div>
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
+          <button className="focus:outline-none lg:text-lg lg:font-bold focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 hidden md:block bg-transparent transition duration-150 ease-in-out hover:bg-gray-200 rounded border border-indigo-700 text-indigo-700 px-4 sm:px-8 py-1 sm:py-3 text-sm">
+            <Link to={"/login"}>
+              Sign In
+            </Link>
+          </button>
+        </div>
+      </nav>
+    </div>
   );
 }

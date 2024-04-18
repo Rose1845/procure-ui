@@ -2,12 +2,13 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { axiosApi } from "../../../api";
 import { Invoice, PurchaseOrder } from "../types";
+import { toast } from "react-toastify";
 
 const InvoiceView = () => {
   const { id } = useParams();
   const [invoice, setInvoice] = React.useState<Invoice>();
   const [order, setOrder] = React.useState<PurchaseOrder>();
-
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
   React.useEffect(() => {
     const fetchInvoice = async () => {
       try {
@@ -34,11 +35,42 @@ const InvoiceView = () => {
     fetchCategory()
   }, [id, invoice?.purchaseOrder.purchaseOrderId]);
 
-  
+  const markAsPaid = async () => {
+    setIsLoading(true)
+
+    try {
+      const response = await axiosApi.patch(
+        `/invoices/edit-invoice/${id}`,
+        null,
+        {
+          params: {
+            contractStatus: "PAID",
+          }
+        }
+      );
+      const responseData = response.data;
+      toast.success("invoice marked successfully");
+      console.log("Response from backend:", responseData);
+    } catch (error) {
+      toast.error("Error approving contract");
+      console.error("Error approving contract:", error);
+    } finally {
+      setIsLoading(false)
+    }
+  };
   return (
     <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
       <div className="flex items-center justify-start flex-col">
-       
+        <div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            onClick={() => markAsPaid()} // Pass the 'id' to the function
+            className="bg-green-500 uppercase mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
+          >
+            MARK AS PAID
+          </button>
+        </div>
         <div className="flex justify-start flex-col">
           <div className="flex justify-start flex-col">
             <h2>InvoiceNumber:{invoice?.invoiceNumber}</h2>
@@ -61,7 +93,7 @@ const InvoiceView = () => {
           </div>
         </div>
       </div>
-     <div className="min-w-full ml-64">
+      <div className="min-w-full ml-64">
         <div className="w-full  pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
             <div className="w-full overflow-x-auto">

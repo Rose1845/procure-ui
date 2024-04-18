@@ -16,7 +16,7 @@ function Deliveries() {
 
   const fetchOrders = async () => {
     try {
-      const response = await axiosApi.get(`/purchase-order/paginations?page=${page}&size=${pageSize}`);
+      const response = await axiosApi.get(`/purchase-order/paginate?page=${page}&size=${pageSize}`);
       const { content, totalPages: total, totalElements: totalItems } = response.data;
       setOrders(content);
       setTotalPages(total);
@@ -25,8 +25,6 @@ function Deliveries() {
       console.error("Error fetching categories:", error);
     }
   };
-
-
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);

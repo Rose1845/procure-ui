@@ -15,10 +15,14 @@ function Order() {
   const [selectedApprovalStatus, setSelectedApprovalStatus] = React.useState<string | null>(null);
   const [selectedSupplier, setSelectedSupplier] = React.useState<string | null>(null); // Added state for selected supplier
   const pageSize = 5;
+  const [sortBy, setSortBy] = React.useState<string>("createdAt"); // Default sort by createdAt
+  const [sortDirection, setSortDirection] = React.useState<string>("desc"); // Default sort direction
+  const [searchParams, setSearchParams] = React.useState<{ purchaseOrderTitle?: string, startDate?: string, endDate?: string }>({});
+
   React.useEffect(() => {
     fetchOrders();
     fetchSuppliers()
-  }, [page, pageSize, selectedSupplier, selectedApprovalStatus]); // Added selectedSupplier to useEffect dependencies
+  }, [page, pageSize, selectedSupplier, selectedApprovalStatus, sortBy, sortDirection]); // Added selectedSupplier to useEffect dependencies
   const fetchSuppliers = async () => {
     try {
       const response = await axiosApi.get("/suppliers");
@@ -29,6 +33,7 @@ function Order() {
       console.error("Error fetching suppliers:", error);
     }
   };
+  
   const fetchOrders = async () => {
     try {
       let url = `/purchase-order/paginations?page=${page}&size=${pageSize}`;
@@ -37,6 +42,15 @@ function Order() {
       }
       if (selectedApprovalStatus) {
         url += `&approvalStatus=${selectedApprovalStatus}`;
+      }
+      url += `&sortField=${sortBy}&sortDirection=s${sortDirection}`;
+      if (searchParams.startDate) {
+        url += `&startDate=${searchParams.startDate}`;
+      }
+      if (searchParams.purchaseOrderTitle) {
+        url += `&purchaseOrderTitle=${searchParams.purchaseOrderTitle}`;
+      }      if (searchParams.endDate) {
+        url += `&endDate=${searchParams.endDate}`;
       }
       const response = await axiosApi.get(url);
       const { content, totalPages: total, totalElements: totalItems } = response.data;
@@ -130,6 +144,35 @@ function Order() {
   //     console.error(`Error deleting supplier with ID ${id}:`, error);
   //   }
   // };
+  const handleSortChange = (column: string) => {
+    if (column === sortBy) {
+      // Toggle sort direction if the same column is clicked again
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      // Set new sort column and default direction to ascending
+      setSortBy(column);
+      setSortDirection("desc");
+    }
+  };
+  const handleSearchParamsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchParams({
+      ...searchParams,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSearch = () => {
+    fetchOrders();
+  };
+  const clearSearchParams = () => {
+    setSearchParams({
+      purchaseOrderTitle: '',
+      startDate: '',
+      endDate: ''
+    });
+    fetchOrders()
+  };
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -170,55 +213,133 @@ function Order() {
           </div>
         </div>
       </div>
-      <div className="flex flex-row space-x-4">
-        <div className="flex flex-col justify-start">
-          <div>Filter</div>
-          <div className="flex flex-col space-y-3">
-            <select
-              id="supplier"
-              value={selectedSupplier || ""}
-              onChange={handleSupplierChange}
-              className="bg-white border border-gray-300 rounded px-3 py-1"
-            >
-              <option value="">All Suppliers</option>
-              {suppliers.map((supplier) => (
-                <option key={supplier.vendorId} value={supplier.vendorId}>
-                  {supplier.name}
-                </option>
-              ))}
-            </select>
-            <select
-              id="approvalStatus"
-              value={selectedApprovalStatus || ""}
-              onChange={handleApprovalStatusChange}
-              className="bg-white border border-gray-300 rounded px-3 py-1 ml-3"
-            >
-              <option value="">All Approval Status</option>
-              <option value="ISSUED">ISSUED</option>
-              <option value="FULLY_RECEIVED">FULLY RECEIVED</option>
-              <option value="CLOSED">CLOSED</option>
-              <option value="COMPLETED">COMPLETED</option>
-              <option value="REJECT">REJECT</option>
-              <option value="IN_DELIVERY">IN_DELIVERY</option>
-              <option value="PENDING">PENDING</option>
-            </select>
+      <div className="max-w-7xl  pt-16 flex flex-row space-x-4">
+       
+        <div>
+          <div className="flex flex-col justify-start">
+            <div>
+              <h3>Search...</h3>
+              <input
+                type="text"
+                name="purchaseOrderTitle"
+                value={searchParams.purchaseOrderTitle || ""}
+                onChange={handleSearchParamsChange}
+                placeholder="Search by order title..."
+                className="bg-white border border-gray-300 rounded px-3 py-1"
+              />
+            </div>
+            {/* Date range filters */}
+            <div className="flex flex-col space-y-3 mt-3">
+              <h3>
+                Search by Date Range
+              </h3>
+              <div className="flex  space-x-3 mt-3">
+                <div>
+                  <input
+                    type="date"
+                    name="startDate"
+                    value={searchParams.startDate || ""}
+                    onChange={handleSearchParamsChange}
+                    className="bg-white border border-gray-300 rounded px-3 py-1"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="date"
+                    name="endDate"
+                    value={searchParams.endDate || ""}
+                    onChange={handleSearchParamsChange}
+                    className="bg-white border border-gray-300 rounded px-3 py-1"
+                  />
+                </div>
+              </div>
+
+            </div>
+            <div className=" flex flex-row space-x-3 mt-3">
+              <button onClick={handleSearch} className="bg-blue-600 text-white px-4 py-2">
+                Search
+              </button>
+              <button
+                className="px-4 py-2 bg-red-600 text-white"
+                onClick={clearSearchParams}
+              >
+                Clear Search
+              </button>
+            </div>
+
+          </div>
+          <div className="flex mt-3 flex-col justify-start">
+            <div className="font-bold">Filter By:</div>
+            <div className="flex flex-col space-y-3">
+              <select
+                id="supplier"
+                value={selectedSupplier || ""}
+                onChange={handleSupplierChange}
+                className="bg-white border border-gray-300 rounded px-3 py-1"
+              >
+                <option selected className="uppercase" value="">ALL SUPPLIERS</option>
+                {suppliers.map((supplier) => (
+                  <option key={supplier.vendorId} value={supplier.vendorId}>
+                    {supplier.name}
+                  </option>
+                ))}
+              </select>
+              <select
+                id="approvalStatus"
+                value={selectedApprovalStatus || ""}
+                onChange={handleApprovalStatusChange}
+                className="bg-white border border-gray-300 rounded px-3 py-1"
+              >
+                <option selected value="">ALL APPROVAL STATUS</option>
+                <option value="ISSUED">ISSUED</option>
+                <option value="FULLY_RECEIVED">FULLY RECEIVED</option>
+                <option value="CLOSED">CLOSED</option>
+                <option value="COMPLETED">COMPLETED</option>
+                <option value="REJECT">REJECT</option>
+                <option value="IN_DELIVERY">IN_DELIVERY</option>
+                <option value="PENDING">PENDING</option>
+              </select>
+            </div>
           </div>
         </div>
         <div className="max-w-7xl mx-auto pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
+            <div className="flex flex-row space-x-3">
+              <h3 className="px-4 py-3">Sort By:</h3>
+              <th className="px-4 py-3 cursor-pointer" onClick={() => handleSortChange("purchaseOrderTitle")}>
+                Purchase Orders
+              </th>
+              <th className="px-4 py-3 cursor-pointer" onClick={() => handleSortChange("paymentType")}>
+                Payment Type
+              </th>
+              <th className="px-4 py-3 cursor-pointer" onClick={() => handleSortChange("approvalStatus")}>
+                Status
+              </th>
+              <th className="px-4 py-3 cursor-pointer" onClick={() => handleSortChange("createdAt")}>
+                Last Edited
+              </th>
+            </div>
             <div className="w-full overflow-x-auto">
               <table className="w-full">
-                <thead>
-                  <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
-                    <th className="px-4 py-3">Purchase Orders</th>
-                    <th className="px-4 py-3">Payment Type</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Last Edited</th>
+                <thead className="">
+                  <tr className="">
+                    <th className="px-4 py-3">
+                      Purchase Orders
+                    </th>
+                    <th className="px-4 py-3" >
+                      Payment Type
+                    </th>
+                    <th className="px-4 py-3" >
+                      Status
+                    </th>
+                    <th className="px-4 py-3">
+                      Last Edited
+                    </th>
                     <th className="px-4 py-3">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y dark:divide-gray-500">
-                  {orders.length === 0 ? (<tr className="text-gray-700 dark:text-gray-400">
+                  {orders.length == 0 ? (<tr className="text-gray-700 dark:text-gray-400">
                     <td colSpan={5} className="px-4 py-3 text-center">
                       No purchase orders found
                     </td>
@@ -227,7 +348,7 @@ function Order() {
                       <>
                         <tr
                           key={i}
-                          className="bg-gray-50  text-gray-700 dark:text-gray-400"
+                          className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
                         >
                           <td className="px-4 py-3">
                             <div className="flex items-center text-sm">
@@ -240,7 +361,7 @@ function Order() {
                           </td>
                           <td className="px-4 py-3 text-sm">{order.paymentType}</td>
                           <td className="px-4 py-3 text-xs">
-                            <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full  ">
+                            <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-700 rounded-full  dark:text-green-100">
                               {order.approvalStatus}{" "}
                             </span>
                           </td>
@@ -265,7 +386,7 @@ function Order() {
                       </button> */}
                             <button>
                               <Link
-                                className="bg-gray-50   text-gray-700 dark:text-gray-400"
+                                className="bg-gray-50  hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
                                 to={`/dashboard/order/view/${order.purchaseOrderId}`}
                               >
                                 View
@@ -284,7 +405,6 @@ function Order() {
                       </>
                     ))
                   )}
-
                 </tbody>
               </table>
             </div>

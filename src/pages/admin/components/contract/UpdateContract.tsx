@@ -14,7 +14,7 @@ const UpdateContract = () => {
     items: [],
     vendorId: "",
   });
-
+  
   const [items, setItems] = React.useState([]);
   const [suppliers, setSuppliers] = React.useState([]);
 

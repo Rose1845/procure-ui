@@ -7,6 +7,7 @@ import ApproveContract from "../pages/admin/components/contract/ApproveContract"
 import VerifyEmail from "@/pages/base/views/VerifyEmail";
 import Confirmation from "@/pages/base/views/Confirmation";
 import ChangePassword from "@/pages/base/views/ChangePassword";
+import RequestDemo from "@/pages/base/components/RequestDemo";
 
 export const BaseRoutes: RouteObject = {
   path: "/",
@@ -27,6 +28,10 @@ export const BaseRoutes: RouteObject = {
     {
       path: "verifyOtp/:email",
       element: < Confirmation />,
+    },
+    {
+      path: "request-demo",
+      element: < RequestDemo />,
     },
     {
       path: "change-password/:email",

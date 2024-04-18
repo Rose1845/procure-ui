@@ -10,14 +10,24 @@ function Supplier() {
   const [page, setPage] = React.useState<number>(0);
   const [totalPages, setTotalPages] = React.useState<number>(0);
   const [totalItems, setTotalItems] = React.useState<number>(0);
+  const [sortBy, setSortBy] = React.useState<string>("createdAt"); // Default sort by createdAt
+  const [sortDirection, setSortDirection] = React.useState<string>("desc"); // Default sort direction
+  const [searchParams, setSearchParams] = React.useState<{ name?: string }>({});
+
   const pageSize = 5;
   React.useEffect(() => {
     fetchSuppliers();
-  }, [page]);
+  }, [page, sortBy, sortDirection]);
 
   const fetchSuppliers = async () => {
     try {
-      const response = await axiosApi.get(`/suppliers/all?page=${page}&size=${pageSize}`);
+      let url = `/suppliers/pagination?page=${page}&size=${pageSize}`;
+
+      if (searchParams.name) {
+        url += `&name=${searchParams.name}`;
+      }
+      url += `&sortField=${sortBy}&sortDirection=s${sortDirection}`;
+      const response = await axiosApi.get(url);
       const { content, totalPages: total, totalElements: totalItems } = response.data;
       setSuppliers(content);
       setTotalPages(total);
@@ -44,6 +54,32 @@ function Supplier() {
       console.error(`Error deleting supplier with ID ${id}:`, error);
     }
   };
+  const handleSortChange = (column: string) => {
+    if (column === sortBy) {
+      // Toggle sort direction if the same column is clicked again
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      // Set new sort column and default direction to ascending
+      setSortBy(column);
+      setSortDirection("desc");
+    }
+  };
+  const handleSearchParamsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchParams({
+      ...searchParams,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSearch = () => {
+    fetchSuppliers();
+  };
+  const clearSearchParams = () => {
+    setSearchParams({
+      name: '',
+    });
+    fetchSuppliers()
+  };
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -67,12 +103,37 @@ function Supplier() {
         </button>
       </div>
       <div className="max-w-7xl mx-auto mr-11 pt-16 flex flex-col">
+        <div className="flex flex-col justify-start">
+          <div>
+            <h3>Search...</h3>
+            <input
+              type="text"
+              name="name"
+              value={searchParams.name || ""}
+              onChange={handleSearchParamsChange}
+              placeholder="Search by name..."
+              className="bg-white border border-gray-300 rounded px-3 py-1"
+            />
+          </div>
+          <div className=" flex flex-row space-x-3 mt-3">
+            <button onClick={handleSearch} className="bg-blue-600 text-white px-4 py-2">
+              Search
+            </button>
+            <button
+              className="px-4 py-2 bg-red-600 text-white"
+              onClick={clearSearchParams}
+            >
+              Clear Search
+            </button>
+          </div>
+
+        </div>
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
-                  <th className="px-4 py-3">Supplier Name</th>
+                  <th className="px-4 py-3 cursor-pointer text-black font-bold" onClick={() => handleSortChange("name")}>Supplier Name</th>
                   <th className="px-4 py-3">Contact Person</th>
                   <th className="px-4 py-3">Phone Number</th>
                   <th className="px-4 py-3">Email Address</th>
@@ -81,50 +142,58 @@ function Supplier() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y dark:divide-gray-500">
-                {suppliers.map((supplier, i) => (
-                  <tr key={i}>
-                    <td className="px-4 py-3">
-                      <div className="flex suppliers-center text-sm">
-                        <div>
-                          <p className="font-semibold">{supplier.name}</p>
+                {suppliers.length == 0 ? (<tr className="text-gray-700 dark:text-gray-400">
+                  <td colSpan={5} className="px-4 py-3 text-center">
+                    No suppliers  found
+                  </td>
+                </tr>
+                ) : (
+                  suppliers.map((supplier, i) => (
+                    <tr key={i}>
+                      <td className="px-4 py-3">
+                        <div className="flex suppliers-center text-sm">
+                          <div>
+                            <p className="font-semibold">{supplier.name}</p>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      {supplier.contactPerson}
-                    </td>
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        {supplier.contactPerson}
+                      </td>
 
-                    <td className="px-4 py-3 text-sm">
-                      {supplier.phoneNumber}
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      {supplier.email}
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      {supplier.address.city}
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      {new Date(supplier.updatedAt).toLocaleString()}
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      <button
-                        className="text-blue-600 hover:underline"
-                        onClick={() => handleEdit(supplier.vendorId)}
-                      >
-                        Edit
-                        <FaEdit className="text-xl text-gray-900" />
-                      </button>
-                      {" | "}
-                      <button
-                        className="text-red-600 hover:underline"
-                        onClick={() => handleDelete(supplier.vendorId)}
-                      >
-                        Delete
-                        <FaTrashAlt />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                      <td className="px-4 py-3 text-sm">
+                        {supplier.phoneNumber}
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        {supplier.email}
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        {supplier.address.city}
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        {new Date(supplier.updatedAt).toLocaleString()}
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        <button
+                          className="text-blue-600 hover:underline"
+                          onClick={() => handleEdit(supplier.vendorId)}
+                        >
+                          Edit
+                          <FaEdit className="text-xl text-gray-900" />
+                        </button>
+                        {" | "}
+                        <button
+                          className="text-red-600 hover:underline"
+                          onClick={() => handleDelete(supplier.vendorId)}
+                        >
+                          Delete
+                          <FaTrashAlt />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+
               </tbody>
             </table>
           </div>
@@ -197,9 +266,13 @@ function Supplier() {
             <button className="px-4 py-2 text-white font-bold bg-blue-600">
               <Link to={"/dashboard/suppliers/import"}> Import from Excel</Link>
             </button>
-            <button className="px-4 py-2 text-white font-bold bg-blue-600">
-              Export to CSV
-            </button>
+            {
+              suppliers.length > 0 && (
+                <button className="px-4 py-2 text-white font-bold bg-blue-600">
+                  Export to CSV
+                </button>
+              )
+            }
           </div>
         </div>
       </div>
