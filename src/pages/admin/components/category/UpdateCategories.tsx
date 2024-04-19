@@ -1,8 +1,10 @@
+import useApi from "@/hooks/useApi";
 import React, { useState, useEffect } from "react";
-import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
 
 const EditCategory = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
 
   const [editedCategory, setEditedCategory] = useState({

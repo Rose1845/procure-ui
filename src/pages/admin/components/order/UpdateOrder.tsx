@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Item, PurchaseOrderData } from "../../types";
-import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
+import useApi from "@/hooks/useApi";
 
 const UpdateOrder = () => {
+  const { axiosApi } = useApi()
   const { id } = useParams();
   const [orderData, setOrderData] = React.useState<PurchaseOrderData>({
     purchaseOrderTitle: "",

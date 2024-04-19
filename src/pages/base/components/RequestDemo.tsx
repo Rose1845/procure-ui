@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { publicApi } from "@/api";
+import useApi from "@/hooks/useApi";
 import React from "react";
 import { toast } from "react-toastify";
 
 function RequestDemo() {
+    const { publicApi } = useApi()
+
     const [formData, setFormData] = React.useState({
         firstName: '',
         lastName: '',

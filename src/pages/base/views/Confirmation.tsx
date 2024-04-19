@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { publicApi } from '@/api';
 import { toast } from 'react-toastify';
+import useApi from '@/hooks/useApi';
 
 function Confirmation() {
+    const { publicApi } = useApi()
+
     const { email } = useParams();
     const [, setError] = useState('');
     const [loading, setLoading] = useState(false);

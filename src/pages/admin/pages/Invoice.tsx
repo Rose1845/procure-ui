@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { axiosApi } from "../../../api";
 import { FaTrashAlt } from "react-icons/fa";
 import { PurchaseOrder, Supplier } from "../types";
 import { Link } from "react-router-dom";
 import JSZip from "jszip";
+import useApi from "@/hooks/useApi";
 type Invoice = {
   invoiceId: string;
   invoiceNumber: string;
@@ -17,6 +17,8 @@ type Invoice = {
 };
 
 const Invoice: React.FC = () => {
+  const { axiosApi } = useApi()
+
   const [invoices, setInvoices] = useState<Invoice[]>([]);
 
   const [page, setPage] = React.useState<number>(0);

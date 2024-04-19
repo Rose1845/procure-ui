@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { axiosApi } from '@/api';
 import 'chart.js/auto'
+import useApi from '@/hooks/useApi';
 const PurchaseOrderBarGraph: React.FC = () => {
+    const { axiosApi } = useApi()
+
     const [monthlyData, setMonthlyData] = useState<{ month: string; count: number }[]>([]);
     const [chartKey, setChartKey] = useState(0); // Key to force re-render the chart
     const ref1 = useRef();

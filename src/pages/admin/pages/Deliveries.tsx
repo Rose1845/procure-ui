@@ -1,10 +1,12 @@
 import React from "react";
 import { PurchaseOrder } from "../types";
-import { axiosApi } from "../../../api";
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
+import useApi from "@/hooks/useApi";
 
 function Deliveries() {
+  const { axiosApi } = useApi()
+
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
   const [page, setPage] = React.useState<number>(0);
   const [totalPages, setTotalPages] = React.useState<number>(0);

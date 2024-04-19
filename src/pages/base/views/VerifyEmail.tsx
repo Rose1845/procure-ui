@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { publicApi } from '@/api';
+import useApi from '@/hooks/useApi';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function VerifyEmail() {
+    const { publicApi } = useApi()
+
     const [credentials, setCredentials] = React.useState({ email: '' });
     const [error, setError] = React.useState('');
     const [loading, setLoading] =React.useState(false);

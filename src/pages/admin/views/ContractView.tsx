@@ -1,10 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { axiosApi } from "../../../api";
 import { Contract, Supplier } from "../types";
 import { toast } from "react-toastify";
+import useApi from "@/hooks/useApi";
 
 const ContractView = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [contract, setContract] = React.useState<Contract>();
   const [supplierDetails, setSupplierDetails] = React.useState<Supplier>();

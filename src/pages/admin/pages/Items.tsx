@@ -1,10 +1,12 @@
 import React from "react";
 import { Item } from "../types";
-import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import useApi from "@/hooks/useApi";
 
 function Items() {
+  const { axiosApi } = useApi()
+
   const navigate = useNavigate()
   const [items, setItems] = React.useState<Item[]>([]);
   const [page, setPage] = React.useState<number>(0);

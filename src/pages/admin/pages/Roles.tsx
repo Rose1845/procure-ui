@@ -1,9 +1,11 @@
 import React from "react";
 import { Role } from "../types";
-import { axiosApi } from "../../../api";
 import { Link } from "react-router-dom";
+import useApi from "@/hooks/useApi";
 
 function Roles() {
+    const { axiosApi } = useApi()
+
     const [roles, setRoles] = React.useState<Role[]>([]);
     React.useEffect(() => {
         fetchRoles()

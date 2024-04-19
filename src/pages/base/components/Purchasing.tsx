@@ -6,8 +6,8 @@ function Purchasing() {
       <section className="mx-auto container bg-white pt-16">
         <div className="px-4 lg:px-0">
           <div role="contentinfo" className="flex items-center flex-col px-4">
-            <p tabIndex={0} className="focus:outline-none uppercase text-sm text-center text-gray-500 leading-none">FEATURES</p>
-            <h1 tabIndex={0} className="focus:outline-none text-4xl lg:text-4xl pt-4 font-extrabold text-center leading-tight text-gray-800 lg:w-7/12 md:w-9/12 xl:w-5/12">procurement software gives you access to a wide range of features</h1>
+            <h1 className="focus:outline-none uppercase text-sm text-center text-gray-500 leading-none">FEATURES</h1>
+            <p className="focus:outline-none text-4xl lg:text-4xl pt-4  text-center leading-tight text-gray-800 lg:w-7/12 md:w-9/12 xl:w-5/12">procurement software gives you access to a wide range of features</p>
           </div>
         </div>
       </section>
@@ -212,7 +212,7 @@ function Purchasing() {
           </section>
         </div>
       </div>
-     
+
     </section>
   );
 }

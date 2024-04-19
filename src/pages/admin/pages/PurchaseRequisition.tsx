@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { axiosApi } from "../../../api";
 import { PurchaseRequisition } from "../types";
+import useApi from "@/hooks/useApi";
 
 function PurchaseRequisition() {
+  const { axiosApi } = useApi()
+
   const [requisitions, setRequisitions] = React.useState<PurchaseRequisition[]>(
     []
   );

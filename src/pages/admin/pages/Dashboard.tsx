@@ -1,10 +1,11 @@
 import React from "react";
-import { axiosApi } from "../../../api";
 import { PurchaseOrder } from "../types";
 import PurchaseOrderBarGraph from "../components/order/PurchaseOrderBarGraph";
 import ContractsBarGraph from "../components/contract/ContractsBarGraph";
+import useApi from "@/hooks/useApi";
 
 function Dashboard() {
+  const {axiosApi}= useApi()
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
 
   React.useEffect(() => {

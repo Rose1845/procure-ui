@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import useApi from "@/hooks/useApi";
 import React, { useState } from "react";
-import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";
 
 const CsvCategoryUploader: React.FC = () => {
+  const { axiosApi } = useApi()
+
   const [, setTemplate] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 

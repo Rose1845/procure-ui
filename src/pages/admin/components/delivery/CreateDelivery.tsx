@@ -1,10 +1,12 @@
 import React from "react";
-import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
 import { DeliveryDTo, PurchaseOrder } from "../../types";
 import { toast } from "react-toastify";
+import useApi from "@/hooks/useApi";
 
 function CreateDelivery() {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [order, setOrder] = React.useState<PurchaseOrder>();
   React.useEffect(() => {
@@ -28,6 +30,7 @@ function CreateDelivery() {
     receivedBy: "",
     itemDToSet: [],
     deliveredOn: "",
+    deliveredVia: "",
     expectedOn: "",
     receivedOn: "",
   });
@@ -97,12 +100,13 @@ function CreateDelivery() {
       if (!response.data) {
         toast.error("error coocured");
       }
-      toast.success("contract created succesfully");
+      toast.success("delivery added succesfully");
       setFormData({
         deliveryDate: "",
         receivedBy: "",
         itemDToSet: [],
         deliveredOn: "",
+        deliveredVia:"",
         expectedOn: "",
         receivedOn: "",
       });
@@ -115,7 +119,7 @@ function CreateDelivery() {
   };
 
   return (
-    <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
+    <div className=" flex flex-col justify-center items-center mx-auto mt-8 py-16">
       <form
         onSubmit={handleSubmit}
         className="container flex flex-col justify-center items-center mx-auto mt-8 py-16"
@@ -127,7 +131,7 @@ function CreateDelivery() {
                 {order?.approvalStatus}
               </span>
             </td>
-            <h2>Order Name: {order?.purchaseOrderTitle}</h2>
+            <h2 className="text-xl font-bold">Order Name: <span>{order?.purchaseOrderTitle}</span></h2>
             <h2>CreatedOn:</h2>
             <h2>Order PaymentType: {order?.paymentType}</h2>
             <h2>Expires On: {order?.deliveryDate}</h2>
@@ -137,6 +141,16 @@ function CreateDelivery() {
             </div>
           </div>
           <div className="flex flex-col justify-end">
+            <label htmlFor="deliveryDate">Delivered Via:</label>
+            <input
+              type="text"
+              id="deliveredVia"
+              name="deliveredVia"
+              value={formData.deliveredVia}
+              onChange={handleInputChange}
+              required
+              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+            />
             <label htmlFor="deliveryDate">Delivery Date:</label>
             <input
               type="date"
@@ -256,7 +270,7 @@ function CreateDelivery() {
               </div>
             </div>
           </div>
-          <button type="submit">Create Delivery</button>
+          <button className="uppercase px-4 py-2 bg-blue-800 text-white font-bold" type="submit">ADD Delivery</button>
         </div>
       </form>
     </div>

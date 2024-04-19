@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { axiosApi } from "../../../api";
 import { PurchaseRequest } from "../types";
+import useApi from "@/hooks/useApi";
 
 function TotalCostEvaluation() {
+    const { axiosApi } = useApi()
+
     const { id } = useParams();
     const [request, setRequest] = React.useState<PurchaseRequest>();
     const [isLoading, setIsLoading] = useState<boolean>(false);

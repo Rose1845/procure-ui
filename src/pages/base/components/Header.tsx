@@ -20,7 +20,7 @@ export default function Header() {
         <div className="py-5 md:py-0 container mx-auto px-6 flex items-center justify-between">
           <div aria-label="Home. logo" role="img">
             <Link to={"/"}>
-              <img className="w-12 h-12" src="/android-chrome-512x512.png"
+              <img className="w-12 h-12" src="/android-chrome-192x192.png"
                 alt="logo" />
             </Link>
 

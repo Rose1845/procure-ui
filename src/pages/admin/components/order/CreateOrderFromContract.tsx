@@ -2,10 +2,12 @@
 import React from "react";
 
 import { Contract } from "../../types";
-import { axiosApi } from "@/api";
 import { toast } from "react-toastify";
+import useApi from "@/hooks/useApi";
 
 const CreateOrderFromContract = () => {
+  const { axiosApi } = useApi()
+
   const [orderData, setOrderData] = React.useState({
     purchaseOrderTitle: "",
     deliveryDate: "",

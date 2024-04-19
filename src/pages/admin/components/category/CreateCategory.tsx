@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
-import { axiosApi } from "../../../../api";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import useApi from "@/hooks/useApi";
 
 function CreateCategory() {
+  const { axiosApi } = useApi()
+
   const categorySchema = z.object({
     categoryName: z.string().min(4),
   });

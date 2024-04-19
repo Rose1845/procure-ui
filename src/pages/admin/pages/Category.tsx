@@ -1,9 +1,9 @@
 
 import React from "react";
-import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Item } from "../types";
+import useApi from "@/hooks/useApi";
 interface Category {
   categoryId: number;
   categoryName: string | null;
@@ -12,6 +12,8 @@ interface Category {
   updatedAt: string;
 }
 function Category() {
+  const { axiosApi } = useApi()
+
   const navigate = useNavigate();
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [page, setPage] = React.useState<number>(0);

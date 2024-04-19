@@ -3,10 +3,14 @@
 import React from 'react'
 // import { useNavigate } from 'react-router-dom';
 import { RiEyeLine, RiEyeOffLine } from "react-icons/ri"; // Import eye and eye-off icons
-import { publicApi } from '@/api';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '@/hooks/useAuth';
+import useApi from '@/hooks/useApi';
 
 function Login() {
+  const { publicApi } = useApi()
+
+  const auth = useAuth()
   const [credentials, setCredentials] = React.useState({
     username: "",
     password: "",
@@ -32,11 +36,9 @@ function Login() {
 
     try {
       const response = await publicApi.post("/auth/login", credentials);
-      const { token, user } = response.data;
+      const data = response.data;
+      auth.dispatch({ type: 'LOGIN', payload: data })
 
-      // Set token in localStorage or use a more secure storage method
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
       navigate("/dashboard");
     } catch (error: any) {
       if (error.response && error.response.status === 400) {

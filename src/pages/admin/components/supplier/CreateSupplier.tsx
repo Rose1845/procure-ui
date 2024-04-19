@@ -1,11 +1,13 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { axiosApi } from "../../../../api";
 import { SupplierData } from "../../types";
 import { toast } from "react-toastify";
+import useApi from "@/hooks/useApi";
 
 function CreateSupplier() {
+  const { axiosApi } = useApi()
+
   const [supplierData, setSupplierData] = useState<SupplierData>({
     name: "",
     contactPerson: "",

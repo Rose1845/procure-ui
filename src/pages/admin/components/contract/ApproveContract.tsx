@@ -3,9 +3,11 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Contract, Supplier } from "../../types";
-import { axiosApi } from "../../../../api";
+import useApi from "@/hooks/useApi";
 
 const ApproveContract = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [contract, setContract] = React.useState<Contract>();
   const [supplierDetails,setSupplierDetails] = React.useState<Supplier>();

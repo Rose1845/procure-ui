@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import useApi from "@/hooks/useApi";
 import React from "react";
-import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
 
 const UpdateSupplier = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
 
   const [supplierData, setSupplierData] = React.useState({

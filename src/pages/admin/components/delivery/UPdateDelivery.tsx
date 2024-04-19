@@ -13,6 +13,7 @@ const CreateDelivery: React.FC = () => {
       },
     ],
     deliveredOn: "",
+    deliveredVia:"",
     expectedOn: "",
     receivedOn: "",
   });
@@ -71,6 +72,15 @@ const CreateDelivery: React.FC = () => {
     <div>
       <h2>Create Delivery</h2>
       <form onSubmit={handleSubmit}>
+        <label>
+          Delivered Via:
+          <input
+            type="text"
+            name="deliveredVia"
+            value={formData.deliveredVia}
+            onChange={handleInputChange}
+          />
+        </label>
         <label>
           Delivery Date:
           <input

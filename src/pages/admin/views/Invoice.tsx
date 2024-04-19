@@ -1,10 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { axiosApi } from "../../../api";
 import { Invoice, PurchaseOrder } from "../types";
 import { toast } from "react-toastify";
+import useApi from "@/hooks/useApi";
 
 const InvoiceView = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [invoice, setInvoice] = React.useState<Invoice>();
   const [order, setOrder] = React.useState<PurchaseOrder>();

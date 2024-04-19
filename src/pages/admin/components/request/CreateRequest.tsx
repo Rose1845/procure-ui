@@ -2,10 +2,12 @@
 import React from "react";
 
 import { toast } from "react-toastify";
-import { axiosApi } from "@/api";
 import { PurchaseRequestData } from "../../types";
+import useApi from "@/hooks/useApi";
 
 const CreateRequest = () => {
+  const { axiosApi } = useApi()
+
   const [orderData, setOrderData] = React.useState<PurchaseRequestData>({
     purchaseRequestTitle: "",
     deliveryDate: "",

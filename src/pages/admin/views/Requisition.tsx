@@ -1,8 +1,10 @@
+import useApi from "@/hooks/useApi";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { axiosApi } from "../../../api";
 
 function Requisition() {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [requisition, setRequisition] = React.useState();
   React.useEffect(() => {

@@ -169,6 +169,22 @@ type DeliveryDTo = {
     quantityReceived: number;
   }>;
   deliveredOn: string;
+  deliveredVia: string;
+  expectedOn: string;
+  receivedOn: string;
+};
+export type Delivery = {
+  id:number;
+  deliveryDate: string;
+  receivedBy: string;
+  items: Array<{
+    item: Item;
+    quantityDelivered: number;
+    quantityReceived: number;
+  }>;
+  purchaseOrder: PurchaseOrder;
+  deliveredOn: string;
+  deliveredVia: string;
   expectedOn: string;
   receivedOn: string;
 };
@@ -191,9 +207,10 @@ export type User = {
   username: string;
   firstname: string;
   lastname: string;
-  phoneNumber:string;
+  phoneNumber: string;
   avatar: string;
   roles: Role[];
+  roles;
   enabled: boolean;
   authorities: Authority[];
   accountNonExpired: boolean;

@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { ContactData } from "../types";
-import axios from "axios";
+import useApi from "@/hooks/useApi";
 
 function Contact() {
+  const { publicApi } = useApi()
+
   const [contact, setContact] = React.useState<ContactData>({
     name: "",
     title: "",
@@ -30,7 +32,7 @@ function Contact() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8081/api/contact/message", contact);
+      const response = await publicApi.post("/contact/message", contact);
       console.log("mesage sent successfully:", response.data);
       setContact({
         email: "",

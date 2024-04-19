@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { axiosApi } from "../../../api";
 import { PurchaseOrder, Supplier } from "../types";
 import { toast } from "react-toastify";
 import MarkPaid from "../components/order/MarkPaid";
+import useApi from "@/hooks/useApi";
 
 const OrderView = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [order, setOrder] = React.useState<PurchaseOrder>();
   const [isLoadig, setIsLoading] = useState<boolean>(false);
@@ -54,7 +56,7 @@ const OrderView = () => {
           Authorization: `Bearer ${accessToken}`
         }
       });
-      toast.success(response.data.message);
+      toast.success("sent successfully");
       console.log("Response from backend:", response.data);
     } catch (error) {
       toast.error("An error occurred while sending order to supplier");

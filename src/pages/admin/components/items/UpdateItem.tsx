@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Category, ItemData } from "../../types";
-import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import useApi from "@/hooks/useApi";
 
 const UpdateItem = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [contractData, setContractData] = React.useState<ItemData>({
     itemName: "",

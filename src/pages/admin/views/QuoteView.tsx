@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { axiosApi } from '@/api';
 import { PurchaseRequest } from '../types';
+import useApi from '@/hooks/useApi';
 
 interface OfferItem {
     id: number;
@@ -19,6 +19,8 @@ interface OfferItem {
 }
 
 const QuoteView: React.FC = () => {
+    const { axiosApi } = useApi()
+
     const { id } = useParams<{ id: string }>();
     const [offers, setOffers] = useState<OfferItem[]>([]);
     const [request, setRequest] = React.useState<PurchaseRequest>();

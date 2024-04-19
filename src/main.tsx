@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 // import App from "./App.tsx";
 import "./index.css";
 import App from "./App.tsx";
+import AuthProvider from "./stores/AuthProvider.tsx";
 
 // import App from "./App.tsx";
 // import { RouterProvider } from "react-router-dom";
@@ -15,6 +16,8 @@ import App from "./App.tsx";
 // import { AuthProvider } from "./context/AuthProvider.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>
 );

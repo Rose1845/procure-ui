@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { PurchaseOrder } from "../../types";
-import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";
+import useApi from "@/hooks/useApi";
 
 const ApproveOrder = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [order, setOrder] = React.useState<PurchaseOrder>();
   const [approvalAction, setApprovalAction] = React.useState<string>("");

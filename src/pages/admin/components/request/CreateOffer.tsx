@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { axiosApi } from "@/api";
 import React, { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { PurchaseRequest } from "../../types";
+import useApi from "@/hooks/useApi";
 
 
 type OfferItem = {
@@ -12,6 +12,8 @@ type OfferItem = {
   offerUnitPrice: number;
 }
 const CreateOffer = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [isLoading, setIsloading] = React.useState(false);
   const [request, setRequest] = React.useState<PurchaseRequest>();

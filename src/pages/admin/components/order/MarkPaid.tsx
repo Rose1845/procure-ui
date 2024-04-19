@@ -1,9 +1,11 @@
 import React from "react";
 import { toast } from "react-toastify";
-import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
+import useApi from "@/hooks/useApi";
 
 function MarkPaid() {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [, setIsLoading] = React.useState(false);
 

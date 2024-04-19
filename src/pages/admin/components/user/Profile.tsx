@@ -1,9 +1,11 @@
 import React from 'react'
 import { User } from '../../types';
 import { useParams } from 'react-router-dom';
-import { axiosApi } from '@/api';
+import useApi from '@/hooks/useApi';
 
 const Profile = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [user, setUser] = React.useState<User>();
   React.useEffect(() => {

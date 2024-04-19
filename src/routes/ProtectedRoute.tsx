@@ -1,22 +1,21 @@
+import useAuth from "@/hooks/useAuth";
 import React from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "../utils/auth";  
+import { Navigate, useLocation } from "react-router-dom";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
   children: React.ReactNode;
 }
 
-function ProtectedRoute({ redirectPath = "/login", children }: ProtectedRouteProps) {
-  const token = useAuth();
-  const location = useLocation();
-  if (!token) {
-    console.log(token, "token1");
-    return <Navigate to={redirectPath} replace state={{ from: location }} />;
-  }
-  return children || <Outlet />;
+function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { state } = useAuth()
+  const location = useLocation()
+  return state && state.token ? (
+    <React.Fragment>
+      {children}
+    </React.Fragment>) :
+    <Navigate to={'/login'} state={{ from: location.pathname }} />
 }
-
 export default ProtectedRoute;
 
 

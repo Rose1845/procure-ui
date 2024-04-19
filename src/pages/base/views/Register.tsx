@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { publicApi } from '@/api';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { RiEyeLine, RiEyeOffLine } from "react-icons/ri"; // Import eye and eye-off icons
 import { toast } from 'react-toastify';
+import useApi from '@/hooks/useApi';
 
 function Register() {
+  const { publicApi } = useApi()
+
   const navigate = useNavigate();
   const [register, setRegister] = React.useState({
     firstName: '',

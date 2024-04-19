@@ -1,22 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AuthContext } from "@/context/AuthContext";
-import { clearUserData } from "@/utils/auth";
+import useAuth from "@/hooks/useAuth";
 import { Menu, Transition } from "@headlessui/react";
-import  { Fragment, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Fragment } from "react";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 function AdminHeader() {
-  const  user  = useContext(AuthContext);
-  console.log(user, "user");
-
-  const navigate = useNavigate();
+  const { state, dispatch } = useAuth()
+  const user = state?.user
 
   const handleLogout = () => {
-    clearUserData();
-    navigate("/login")
+    dispatch({ type: "LOGOUT", })
   };
 
   return (
@@ -60,13 +55,13 @@ function AdminHeader() {
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">Open user menu</span>
 
-                     {user && (
+                    {user && (
                       <img
                         className="h-8 w-8 rounded-full"
-                        src={user?.user?.user?.avatar}
+                        src={user?.avatar}
                         alt=""
                       />
-                    )} 
+                    )}
                   </Menu.Button>
                 </div>
                 <Transition
@@ -82,7 +77,7 @@ function AdminHeader() {
                     <Menu.Item>
                       {({ active }) => (
                         <a
-                          href={`/dashboard/profile/user/${user?.user?.user?.id}`} // Modify the href attribute
+                          href={`/dashboard/profile/user/${user?.id}`} // Modify the href attribute
                           className={classNames(
                             active ? "bg-gray-100" : "",
                             "block px-4 py-2 text-sm text-gray-700"
@@ -107,10 +102,10 @@ function AdminHeader() {
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                       
+
                         <a
                           href="#"
-                          onClick={()=>handleLogout()} // Call handleLogout when the "Sign out" option is clicked
+                          onClick={() => handleLogout()} // Call handleLogout when the "Sign out" option is clicked
                           className={classNames(
                             active ? "bg-gray-100" : "",
                             "block px-4 py-2 text-sm text-gray-700"

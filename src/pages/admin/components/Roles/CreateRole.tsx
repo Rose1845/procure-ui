@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { axiosApi } from '@/api';
+import useApi from '@/hooks/useApi';
 import React from 'react'
 import { toast } from 'react-toastify';
 
 function CreateRole() {
+    const { axiosApi } = useApi()
+
     const [roleData,setRoleData] = React.useState({
         name:"",
         description:"",

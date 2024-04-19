@@ -1,11 +1,13 @@
 import React from "react";
 import { PurchaseOrder, Supplier } from "../types";
-import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import JSZip from 'jszip';
+import useApi from "@/hooks/useApi";
 
 function Order() {
+  const { axiosApi } = useApi()
+
   const navigate = useNavigate();
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
   const [page, setPage] = React.useState<number>(0);

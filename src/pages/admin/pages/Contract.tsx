@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { axiosApi } from "../../../api";
 import { Contract, Supplier } from "../types";
+import useApi from "@/hooks/useApi";
 
 function Contract() {
+  const { axiosApi } = useApi()
+
   const [contracts, setContracts] = React.useState<Contract[]>([]);
 
 

@@ -1,9 +1,10 @@
+import useApi from "@/hooks/useApi";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { axiosApi } from "../../../../api";
 
 function SendApprovalEmail() {
   const { id } = useParams();
+  const { axiosApi } = useApi()
 
   const sendToSupplier = async () => {
     try {

@@ -1,10 +1,12 @@
 import React from "react";
 import { Supplier } from "../types";
-import { axiosApi } from "../../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaPlus, FaTrashAlt } from "react-icons/fa";
+import useApi from "@/hooks/useApi";
 
 function Supplier() {
+  const { axiosApi } = useApi()
+
   const navigate = useNavigate();
   const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
   const [page, setPage] = React.useState<number>(0);

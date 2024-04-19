@@ -2,10 +2,12 @@
 import React from "react";
 import { toast } from "react-toastify";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { axiosApi } from "../../../../api";
 import { PurchaseOrder } from "../../types";
+import useApi from "@/hooks/useApi";
 
 const CreateInvoice = () => {
+  const { axiosApi } = useApi()
+
   const queryClient = useQueryClient();
   const { data: purchaseOrders } = useQuery(
     "purchaseOrders",

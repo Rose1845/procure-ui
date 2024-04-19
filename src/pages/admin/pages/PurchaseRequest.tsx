@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { axiosApi } from "../../../api";
 import { ItemDetail, PurchaseRequest } from "../types";
+import useApi from "@/hooks/useApi";
 
 function PurchaseRequestComponent() {
+  const { axiosApi } = useApi()
+
   const [requests, setRequests] = React.useState<PurchaseRequest[]>([]);
   const [selectedRequestId, setSelectedRequestId] = useState<number | null>(null);
   const [itemDetails, setItemDetails] = useState<ItemDetail[]>([]);

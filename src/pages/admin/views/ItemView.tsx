@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { axiosApi } from "../../../api";
 import { Category, Item } from "../types";
+import useApi from "@/hooks/useApi";
 
 const ItemView = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [item, setItem] = React.useState<Item>();
   const [category, setCategory] = React.useState<Category>();

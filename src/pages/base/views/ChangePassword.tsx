@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { publicApi } from '@/api';
+import useApi from '@/hooks/useApi';
 import React, { useState } from 'react';
 import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 function ChangePassword() {
+    const { publicApi } = useApi()
+
     const [credentials, setCredentials] = useState(
         {
             password: '',

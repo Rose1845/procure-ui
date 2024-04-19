@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Category, ItemData } from "../../types";
-import { axiosApi } from "../../../../api";
 import { toast } from "react-toastify";
+import useApi from "@/hooks/useApi";
 
 const CreateItem = () => {
+  const { axiosApi } = useApi()
+
   const [contractData, setContractData] = React.useState<ItemData>({
     itemName: "",
     itemDescription: "",

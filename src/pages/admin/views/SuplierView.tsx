@@ -1,5 +1,5 @@
+import useApi from '@/hooks/useApi';
 import React, { useEffect, useState } from 'react';
-import { axiosApi } from '@/api';
 
 interface SupplierViewProps {
     vendorId: string;
@@ -16,6 +16,8 @@ interface SupplierData {
 }
 
 const SupplierView: React.FC<SupplierViewProps> = ({ vendorId }) => {
+    const { axiosApi } = useApi()
+
     const [supplier, setSupplier] = useState<SupplierData | null>(null);
 
     useEffect(() => {

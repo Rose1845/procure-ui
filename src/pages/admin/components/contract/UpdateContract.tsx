@@ -1,9 +1,11 @@
 import React from "react";
 import { ContractData, Item, Supplier } from "../../types";
-import { axiosApi } from "../../../../api";
 import { useParams } from "react-router-dom";
+import useApi from "@/hooks/useApi";
 
 const UpdateContract = () => {
+  const { axiosApi } = useApi()
+
   const { id } = useParams();
   const [contractData, setContractData] = React.useState<ContractData>({
     contractTitle: "",
