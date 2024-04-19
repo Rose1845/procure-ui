@@ -15,7 +15,7 @@ function Deliveries() {
   React.useEffect(() => {
     fetchOrders();
   }, [page]);
-
+ 
   const fetchOrders = async () => {
     try {
       const response = await axiosApi.get(`/purchase-order/paginate?page=${page}&size=${pageSize}`);

@@ -117,16 +117,16 @@ const Profile = () => {
                 </div>
                 <ul className="list-inside space-y-2">
                   <li>
-                    <div className="text-teal-600">Owner at Her Company Inc.</div>
-                    <div className="text-gray-500 text-xs">March 2020 - Now</div>
+                    <div className="text-teal-600">Company Admin.</div>
+                    <div className="text-gray-500 text-xs">March 2024 - Now</div>
                   </li>
                   <li>
                     <div className="text-teal-600">Owner at Her Company Inc.</div>
-                    <div className="text-gray-500 text-xs">March 2020 - Now</div>
+                    <div className="text-gray-500 text-xs">March 2024 - Now</div>
                   </li>
                   <li>
                     <div className="text-teal-600">Owner at Her Company Inc.</div>
-                    <div className="text-gray-500 text-xs">March 2020 - Now</div>
+                    <div className="text-gray-500 text-xs">March 2024 - Now</div>
                   </li>
                   <li>
                     <div className="text-teal-600">Owner at Her Company Inc.</div>

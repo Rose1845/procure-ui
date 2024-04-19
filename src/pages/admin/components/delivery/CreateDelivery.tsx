@@ -104,9 +104,13 @@ function CreateDelivery() {
       setFormData({
         deliveryDate: "",
         receivedBy: "",
-        itemDToSet: [],
+        itemDToSet: [{
+          itemId:"",
+          quantityDelivered:0,
+          quantityReceived:0
+        }],
         deliveredOn: "",
-        deliveredVia:"",
+        deliveredVia: "",
         expectedOn: "",
         receivedOn: "",
       });
@@ -119,20 +123,19 @@ function CreateDelivery() {
   };
 
   return (
-    <div className=" flex flex-col justify-center items-center mx-auto mt-8 py-16">
+    <div className=" flex flex-col w-full items-center mx-auto mt-8 py-16">
       <form
         onSubmit={handleSubmit}
         className="container flex flex-col justify-center items-center mx-auto mt-8 py-16"
       >
-        <div className=" flex flex-row justify-center items-center space-x-6">
-          <div className="flex flex-col justify-start space-x-2">
+        <div className=" flex flex-row justify-between  items-center space-x-6">
+          <div className="flex flex-col  space-x-2">
             <td className="px-4 py-3 text-xs">
               <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
-                {order?.approvalStatus}
+                PO Status: {order?.approvalStatus}
               </span>
             </td>
             <h2 className="text-xl font-bold">Order Name: <span>{order?.purchaseOrderTitle}</span></h2>
-            <h2>CreatedOn:</h2>
             <h2>Order PaymentType: {order?.paymentType}</h2>
             <h2>Expires On: {order?.deliveryDate}</h2>
             <div>
@@ -207,8 +210,7 @@ function CreateDelivery() {
             />
           </div>
         </div>
-
-        <div className="flexs flex-col space-y-6">
+        <div className="flex w-full flex-col space-y-6">
           <div className="max-w-7xl mx-auto pt-16 ">
             <div className="w-full overflow-hidden rounded-lg shadow-xs">
               <div className="w-full overflow-x-auto">
@@ -270,7 +272,9 @@ function CreateDelivery() {
               </div>
             </div>
           </div>
-          <button className="uppercase px-4 py-2 bg-blue-800 text-white font-bold" type="submit">ADD Delivery</button>
+          <div className="flex justify-center">
+            <button className="uppercase px-4 py-2 bg-blue-600 text-white font-bold" type="submit">ADD Delivery</button>
+          </div>
         </div>
       </form>
     </div>

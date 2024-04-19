@@ -40,6 +40,7 @@ import TotalCostEvaluation from "@/pages/admin/views/TotalCostEvaluation";
 import Profile from "@/pages/admin/components/user/Profile";
 import Roles from "@/pages/admin/pages/Roles";
 import ItemView from "@/pages/admin/views/ItemView";
+import AuthorityRoute from "./UserAuthority";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -195,7 +196,11 @@ export const DashboardRoutes: RouteObject = {
     },
     {
       path: "/dashboard/deliveries/add/:id",
-      element: <CreateDelivery />,
+      element: (
+        <AuthorityRoute perm="ADMIN">
+          <CreateDelivery />
+        </AuthorityRoute>
+      ),
     },
     {
       path: "/dashboard/invoice/view/:id",
