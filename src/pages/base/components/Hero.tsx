@@ -66,7 +66,14 @@ import { Link } from "react-router-dom";
 function Hero() {
   // const [show, setShow] = React.useState(false);
   return (
-    <div className="bg-gray-100 pb-12 overflow-y-hidden" style={{ minHeight: 700 }}>
+    <div
+      className="bg-gray-200 pb-12 overflow-y-hidden bg-blend-multiply"
+      style={{
+        minHeight: 700,
+        backgroundImage:
+          "url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+      }}
+    >
       {/* <nav className="w-full border-b">
           <div className="py-5 md:py-0 container mx-auto px-6 flex items-center justify-between">
             <div aria-label="Home. logo" role="img">
@@ -113,33 +120,33 @@ function Hero() {
             </button>
           </div>
         </nav> */}
-      <div className="bg-gray-100">
+      <div className="">
         <div className="container mx-auto flex flex-col  items-center py-24 sm:py-30">
           <div className="w-11/12 sm:w-2/3 lg:flex justify-center items-center flex-col  mb-5 sm:mb-10">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-center text-gray-800 font-black leading-7 md:leading-10">
               Your Number One Stop for your
               <span className="text-indigo-700"> Procurement</span>
               {""}
-              Solutions              </h1>
-            <p className="mt-5 sm:mt-10 lg:w-10/12 text-gray-400 font-normal text-center text-sm sm:text-lg"> We redefine the procurement experience, making it seamless,
-              efficient, and tailored to your needs.</p>
+              Solutions{" "}
+            </h1>
+            <p className="mt-5 sm:mt-10 lg:w-10/12 text-gray-200 font-medium text-center text-sm sm:text-lg">
+              {" "}
+              We redefine the procurement experience, making it seamless,
+              efficient, and tailored to your needs.
+            </p>
           </div>
           <div className="flex justify-center items-center">
             <button className="ml-4  focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 bg-transparent transition duration-150 ease-in-out hover:border-indigo-600 lg:text-xl lg:font-bold  hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-4 sm:px-10 py-2 sm:py-4 text-sm">
-              <Link to={"/login"}>
-                SIGN IN   </Link>
+              <Link to={"/login"}>SIGN IN </Link>
             </button>
             <button className="ml-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 bg-transparent transition duration-150 ease-in-out hover:border-indigo-600 lg:text-xl lg:font-bold  hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-4 sm:px-10 py-2 sm:py-4 text-sm">
-              <Link to={"/request-demo"}>
-                REQUEST A Demo
-              </Link>
+              <Link to={"/request-demo"}>REQUEST A Demo</Link>
             </button>
           </div>
         </div>
       </div>
       {/* Code block ends */}
     </div>
-
   );
 }
 

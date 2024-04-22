@@ -17,7 +17,7 @@ type Invoice = {
 };
 
 const Invoice: React.FC = () => {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
   const [invoices, setInvoices] = useState<Invoice[]>([]);
 
@@ -26,17 +26,34 @@ const Invoice: React.FC = () => {
   const [totalItems, setTotalItems] = React.useState<number>(0);
   const [sortBy, setSortBy] = React.useState<string>("createdAt"); // Default sort by createdAt
   const [sortDirection, setSortDirection] = React.useState<string>("desc"); // Default sort direction
-  const [searchParams, setSearchParams] = React.useState<{ invoiceNumber?: string, startDate?: string, endDate?: string }>({});
-  const [selectedApprovalStatus, setSelectedApprovalStatus] = React.useState<string | null>(null);
-  const [selectedInvoiceStatus, setSelectedInvoiceStatus] = React.useState<string | null>(null);
+  const [searchParams, setSearchParams] = React.useState<{
+    invoiceNumber?: string;
+    startDate?: string;
+    endDate?: string;
+  }>({});
+  const [selectedApprovalStatus, setSelectedApprovalStatus] = React.useState<
+    string | null
+  >(null);
+  const [selectedInvoiceStatus, setSelectedInvoiceStatus] = React.useState<
+    string | null
+  >(null);
   const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
-  const [selectedSupplier, setSelectedSupplier] = React.useState<string | null>(null); // Added state for selected supplier
+  const [selectedSupplier, setSelectedSupplier] = React.useState<string | null>(
+    null
+  ); // Added state for selected supplier
 
   const pageSize = 5;
   React.useEffect(() => {
     fetchInvoice();
-    fetchSuppliers()
-  }, [page, sortBy, sortDirection, selectedSupplier, selectedApprovalStatus, selectedInvoiceStatus]);
+    fetchSuppliers();
+  }, [
+    page,
+    sortBy,
+    sortDirection,
+    selectedSupplier,
+    selectedApprovalStatus,
+    selectedInvoiceStatus,
+  ]);
   const fetchSuppliers = async () => {
     try {
       const response = await axiosApi.get("/suppliers");
@@ -71,7 +88,11 @@ const Invoice: React.FC = () => {
         url += `&endDate=${searchParams.endDate}`;
       }
       const response = await axiosApi.get(url);
-      const { content, totalPages: total, totalElements: totalItems } = response.data;
+      const {
+        content,
+        totalPages: total,
+        totalElements: totalItems,
+      } = response.data;
       setInvoices(content);
       setTotalPages(total);
       setTotalItems(totalItems);
@@ -86,13 +107,13 @@ const Invoice: React.FC = () => {
         responseType: "arraybuffer",
       });
 
-      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const blob = new Blob([response.data], { type: "application/pdf" });
 
       // Create a temporary URL for the blob
       const url = window.URL.createObjectURL(blob);
 
       // Create a link element to trigger the download
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
       link.download = `invoice_report.pdf`;
 
@@ -104,7 +125,7 @@ const Invoice: React.FC = () => {
       // window.URL.revokeObjectURL(url);
       document.body.removeChild(link);
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      console.error("Error generating PDF:", error);
       // Handle error
     }
   };
@@ -115,22 +136,28 @@ const Invoice: React.FC = () => {
     // Iterate over each order and generate PDF report
     for (const invoice of invoices) {
       try {
-        const response = await axiosApi.get(`/invoices/${invoice.invoiceId}/report`, {
-          responseType: 'arraybuffer',
-        });
+        const response = await axiosApi.get(
+          `/invoices/${invoice.invoiceId}/report`,
+          {
+            responseType: "arraybuffer",
+          }
+        );
 
-        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const blob = new Blob([response.data], { type: "application/pdf" });
         zip.file(`invoice_report.pdf`, blob);
       } catch (error) {
-        console.error(`Error generating PDF for order ${invoice.invoiceId}:`, error);
+        console.error(
+          `Error generating PDF for order ${invoice.invoiceId}:`,
+          error
+        );
       }
     }
 
     // Generate and download the zip folder
-    zip.generateAsync({ type: 'blob' }).then((content: Blob | MediaSource) => {
-      const link = document.createElement('a');
+    zip.generateAsync({ type: "blob" }).then((content: Blob | MediaSource) => {
+      const link = document.createElement("a");
       link.href = window.URL.createObjectURL(content);
-      link.download = 'order_reports.zip';
+      link.download = "order_reports.zip";
       link.click();
     });
   };
@@ -156,7 +183,9 @@ const Invoice: React.FC = () => {
       setSortDirection("desc");
     }
   };
-  const handleSearchParamsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchParamsChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setSearchParams({
       ...searchParams,
       [event.target.name]: event.target.value,
@@ -168,19 +197,25 @@ const Invoice: React.FC = () => {
   };
   const clearSearchParams = () => {
     setSearchParams({
-      invoiceNumber: '',
-      endDate: '',
-      startDate: ''
+      invoiceNumber: "",
+      endDate: "",
+      startDate: "",
     });
-    fetchInvoice()
+    fetchInvoice();
   };
-  const handleSupplierChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSupplierChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedSupplier(event.target.value);
   };
-  const handleApprovalStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleApprovalStatusChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedApprovalStatus(event.target.value);
   };
-  const handleInvoiceStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleInvoiceStatusChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedInvoiceStatus(event.target.value);
   };
 
@@ -299,9 +334,7 @@ const Invoice: React.FC = () => {
               </div>
               {/* Date range filters */}
               <div className="flex flex-col space-y-3 mt-3">
-                <h3>
-                  Search by Date Range
-                </h3>
+                <h3>Search by Date Range</h3>
                 <div className="flex  space-x-3 mt-3">
                   <div>
                     <input
@@ -322,10 +355,12 @@ const Invoice: React.FC = () => {
                     />
                   </div>
                 </div>
-
               </div>
               <div className=" flex flex-row space-x-3 mt-3">
-                <button onClick={handleSearch} className="bg-blue-600 text-white px-4 py-2">
+                <button
+                  onClick={handleSearch}
+                  className="bg-blue-600 text-white px-4 py-2"
+                >
                   Search
                 </button>
                 <button
@@ -335,7 +370,6 @@ const Invoice: React.FC = () => {
                   Clear Search
                 </button>
               </div>
-
             </div>
             <div className="flex mt-3 flex-col justify-start">
               <div className="font-bold">Filter By:</div>
@@ -346,7 +380,9 @@ const Invoice: React.FC = () => {
                   onChange={handleSupplierChange}
                   className="bg-white border border-gray-300 rounded px-3 py-1"
                 >
-                  <option selected className="uppercase" value="">ALL SUPPLIERS</option>
+                  <option selected className="uppercase" value="">
+                    ALL SUPPLIERS
+                  </option>
                   {suppliers.map((supplier) => (
                     <option key={supplier.vendorId} value={supplier.vendorId}>
                       {supplier.name}
@@ -359,7 +395,9 @@ const Invoice: React.FC = () => {
                   onChange={handleApprovalStatusChange}
                   className="bg-white border border-gray-300 rounded px-3 py-1"
                 >
-                  <option selected value="">ALL PO STATUSES</option>
+                  <option selected value="">
+                    ALL PO STATUSES
+                  </option>
                   <option value="ISSUED">ISSUED</option>
                   <option value="FULLY_RECEIVED">FULLY RECEIVED</option>
                   <option value="CLOSED">CLOSED</option>
@@ -374,45 +412,78 @@ const Invoice: React.FC = () => {
                   onChange={handleInvoiceStatusChange}
                   className="bg-white border border-gray-300 rounded px-3 py-1"
                 >
-                  <option selected value="">ALL INVOICE STATUS</option>
+                  <option selected value="">
+                    ALL INVOICE STATUS
+                  </option>
                   <option value="PAID">PAID</option>
-                  <option value="APPROVED_FOR_PAYMENT">APPROVED_FOR_PAYMENT</option>
+                  <option value="APPROVED_FOR_PAYMENT">
+                    APPROVED_FOR_PAYMENT
+                  </option>
                 </select>
               </div>
             </div>
           </div>
-
         </div>
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
-                  <th className="px-4 py-3 cursor-pointer text-black font-bold" onClick={() => handleSortChange("invoiceNumber")}>Invoice Number</th>
+                  <th
+                    className="px-4 py-3 cursor-pointer text-black font-bold"
+                    onClick={() => handleSortChange("invoiceNumber")}
+                  >
+                    Invoice Number
+                  </th>
                   <th className="px-4 py-3">CreatedAt</th>
                   <th className="px-4 py-3">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y dark:divide-gray-500">
-                {invoices.length == 0 ? (<tr className="text-gray-700 dark:text-gray-400">
-                  <td colSpan={5} className="px-4 py-3 text-center">
-                    No invoices  found
-                  </td>
-                </tr>
+                {invoices.length == 0 ? (
+                  <tr className="text-gray-700 dark:text-gray-400">
+                    <td colSpan={5} className="px-4 py-3 text-center">
+                      No invoices found
+                    </td>
+                  </tr>
                 ) : (
                   invoices.map((invoice, i) => (
                     <tr key={i}>
                       <td className="px-4 py-3">
                         <div className="flex invoices-center text-sm">
                           <div className="flex flex-col">
-                            <p className="font-semibold">{invoice.invoiceNumber}</p>
+                            <p className="font-semibold">
+                              {invoice.invoiceNumber}
+                            </p>
                             <span className="text-sm">
                               PurchaseOrderTitle:{" "}
                               {invoice.purchaseOrder?.purchaseOrderTitle}
                             </span>
-                            <span className="text-sm">
+                            <span
+                              className={` px-4 py-2 leading-tight text-neutral-950 rounded-full  ${
+                                invoice.purchaseOrder?.approvalStatus ===
+                                "COMPLETED"
+                                  ? "bg-green-500 text-white"
+                                  : invoice.purchaseOrder?.approvalStatus ===
+                                    "FULLY_RECEIVED"
+                                  ? "bg-purple-500 text-white"
+                                  : invoice.purchaseOrder?.approvalStatus ===
+                                    "ISSUED"
+                                  ? "bg-gray-500 text-white"
+                                  : invoice.purchaseOrder?.approvalStatus ===
+                                    "REJECT"
+                                  ? "bg-red-500 text-white"
+                                  : invoice.purchaseOrder?.approvalStatus ===
+                                    "PENDING"
+                                  ? "bg-green-500 text-white"
+                                  : invoice.purchaseOrder?.approvalStatus ===
+                                    "IN_DELIVERY"
+                                  ? "bg-blue-500 text-white"
+                                  : "bg-blue-600 text-white" // Default color for other statuses
+                              }`}
+                            >
                               PurchaseOrderStatus:{" "}
-                              {invoice.purchaseOrder?.approvalStatus}
+                              {invoice.purchaseOrder?.approvalStatus}{" "}
                             </span>
                           </div>
                         </div>
@@ -448,7 +519,6 @@ const Invoice: React.FC = () => {
                     </tr>
                   ))
                 )}
-
               </tbody>
             </table>
           </div>
@@ -477,15 +547,19 @@ const Invoice: React.FC = () => {
                           clip-rule="evenodd"
                           fill-rule="evenodd"
                         ></path>
-                      </svg>                      </button>
+                      </svg>{" "}
+                    </button>
                   </li>
                   {/* Render page numbers */}
                   {/* Example: */}
                   {[1, 2, 3, 4, 5].map((pageNumber) => (
                     <li key={pageNumber}>
                       <button
-                        className={`px-3 py-1 rounded-md ${page + 1 === pageNumber ? "bg-blue-600 text-white" : ""
-                          } focus:outline-none focus:shadow-outline-purple`}
+                        className={`px-3 py-1 rounded-md ${
+                          page + 1 === pageNumber
+                            ? "bg-blue-600 text-white"
+                            : ""
+                        } focus:outline-none focus:shadow-outline-purple`}
                         onClick={() => handlePageChange(pageNumber - 1)}
                       >
                         {pageNumber}
@@ -521,20 +595,18 @@ const Invoice: React.FC = () => {
             <button className="px-4 py-2 text-white font-bold bg-blue-600">
               <Link to={"/dashboard/invoices/import"}> EXPORT TO CSV</Link>
             </button>
-            {
-              invoices.length > 0 && (
-                <div className="flex justify-end flex-row sapce-x-3 mb-4">
-                  <div>
-                    <button
-                      className="bg-blue-600 text-white px-4 py-2 rounded-md"
-                      onClick={() => generateAndDownloadZip(invoices)}
-                    >
-                      EXPORT TO PDF
-                    </button>
-                  </div>
+            {invoices.length > 0 && (
+              <div className="flex justify-end flex-row sapce-x-3 mb-4">
+                <div>
+                  <button
+                    className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                    onClick={() => generateAndDownloadZip(invoices)}
+                  >
+                    EXPORT TO PDF
+                  </button>
                 </div>
-              )
-            }
+              </div>
+            )}
           </div>
         </div>
       </div>

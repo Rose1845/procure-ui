@@ -1,12 +1,12 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { SupplierData } from "../../types";
 import { toast } from "react-toastify";
 import useApi from "@/hooks/useApi";
+import PhoneInput from "react-phone-number-input";
 
 function CreateSupplier() {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
   const [supplierData, setSupplierData] = useState<SupplierData>({
     name: "",
@@ -163,7 +163,9 @@ function CreateSupplier() {
                   onChange={handleInputChange}
                   className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
                 />
-                {errors.name && <div className="text-red-600">{errors.name}</div>}
+                {errors.name && (
+                  <div className="text-red-600">{errors.name}</div>
+                )}
               </div>
             </div>
             <div className="flex flex-col">
@@ -178,8 +180,9 @@ function CreateSupplier() {
                   className="px-4 py-2 border w-full focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
                 />
               </div>
-              {errors.contactPerson && <div className="text-red-600">{errors.contactPerson}</div>}
-
+              {errors.contactPerson && (
+                <div className="text-red-600">{errors.contactPerson}</div>
+              )}
             </div>
             <div className="mb-4">
               <label
@@ -197,7 +200,6 @@ function CreateSupplier() {
                 className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
               />
               {errors.email && <p className="text-red-600">{errors.email}</p>}
-
             </div>
 
             <div className="mb-4">
@@ -207,15 +209,47 @@ function CreateSupplier() {
               >
                 Phone Number
               </label>
-              <input
+              <PhoneInput
+                className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                inputProps={{
+                  name: "phoneNumber",
+                  required: true,
+                  autoFocus: true,
+                }}
+                international
+                defaultCountry="KE"
+                placeholder="Enter phone number"
+                onChange={(phoneNumber: string) =>
+                  setSupplierData((prevData) => ({ ...prevData, phoneNumber }))
+                }
+                value={supplierData.phoneNumber}
+              />
+              {/* <PhoneInput
+                className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                international
+                placeholder="Enter phone number"
+                defaultCountry="KE"
+                onChange={handleInputChange}
+                value={supplierData.phoneNumber}
+                error={
+                  supplierData.phoneNumber
+                    ? isValidPhoneNumber(supplierData.phoneNumber)
+                      ? undefined
+                      : "Invalid phone number"
+                    : "Phone number required"
+                }
+              /> */}
+              {/* <input
                 type="text"
                 id="phoneNumber"
                 name="phoneNumber"
                 value={supplierData.phoneNumber}
                 onChange={handleInputChange}
                 className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-              />
-              {errors.phoneNumber && <p className="text-red-600">{errors.phoneNumber}</p>}
+              /> */}
+              {errors.phoneNumber && (
+                <p className="text-red-600">{errors.phoneNumber}</p>
+              )}
             </div>
             <div className="mb-4">
               <label
@@ -232,13 +266,18 @@ function CreateSupplier() {
                 onChange={handleInputChange}
                 className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
               />
-              {errors.contactInformation && <div className="text-red-600">{errors.contactInformation}</div>}
-
+              {errors.contactInformation && (
+                <div className="text-red-600">{errors.contactInformation}</div>
+              )}
             </div>
           </div>
           <div className="flex flex-col space-y-3">
-            <h3 className="
-        font-bold text-xl">Address Information</h3>
+            <h3
+              className="
+        font-bold text-xl"
+            >
+              Address Information
+            </h3>
             <div className="mb-4">
               <label
                 htmlFor="address.box"
@@ -255,7 +294,6 @@ function CreateSupplier() {
                 className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
               />
               {errors.box && <p className="text-red-600">{errors.box}</p>}
-
             </div>
             <div className="mb-4">
               <label
@@ -272,7 +310,9 @@ function CreateSupplier() {
                 onChange={handleInputChange}
                 className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
               />
-              {errors.country && <div className="text-red-600">{errors.country}</div>}
+              {errors.country && (
+                <div className="text-red-600">{errors.country}</div>
+              )}
             </div>
 
             <div className="mb-4">
@@ -308,15 +348,20 @@ function CreateSupplier() {
                 onChange={handleInputChange}
                 className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
               />
-              {errors.location && <p className="text-red-600">{errors.location}</p>}
-
+              {errors.location && (
+                <p className="text-red-600">{errors.location}</p>
+              )}
             </div>
           </div>
         </div>
 
         <div className="">
-          <h3 className="
-        font-bold text-xl">Other Details:</h3>
+          <h3
+            className="
+        font-bold text-xl"
+          >
+            Other Details:
+          </h3>
           <div className="flex flex-col">
             <label className="leading-loose">Payment Type</label>
             <select
@@ -330,7 +375,9 @@ function CreateSupplier() {
               <option value="MPESA">MPESA</option>
               <option value="PAYPAL">PAYPAL</option>
             </select>
-            {errors.paymentType && <div className="text-red-600">{errors.paymentType}</div>}
+            {errors.paymentType && (
+              <div className="text-red-600">{errors.paymentType}</div>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -347,7 +394,9 @@ function CreateSupplier() {
               onChange={handleInputChange}
               className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
             />
-            {errors.termsAndConditions && <p className="text-red-600">{errors.termsAndConditions}</p>}
+            {errors.termsAndConditions && (
+              <p className="text-red-600">{errors.termsAndConditions}</p>
+            )}
           </div>
         </div>
         <div className="pt-4 flex items-center space-x-4">

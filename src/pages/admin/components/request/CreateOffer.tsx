@@ -3,35 +3,34 @@ import React, { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { PurchaseRequest } from "../../types";
 import useApi from "@/hooks/useApi";
-
+import { toast } from "react-toastify";
 
 type OfferItem = {
   item: {
     itemId: string;
   };
   offerUnitPrice: number;
-}
+};
 const CreateOffer = () => {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
   const { id } = useParams();
   const [isLoading, setIsloading] = React.useState(false);
   const [request, setRequest] = React.useState<PurchaseRequest>();
   const [offers, setOffers] = React.useState<OfferItem[]>([]);
-  const [queryParams] = useSearchParams()
-  const supplierId = queryParams.get("supplierId")
+  const [queryParams] = useSearchParams();
+  const supplierId = queryParams.get("supplierId");
   const handleItemChange = (index: number, update: OfferItem) => {
-
-    const item = offers[index]
+    const item = offers[index];
     console.log({ original: offers });
 
     if (item) {
-      const temp = { ...item, ...update }
-      const arrayTemp = offers
-      arrayTemp[index] = temp
-      setOffers(_ => [...arrayTemp])
+      const temp = { ...item, ...update };
+      const arrayTemp = offers;
+      arrayTemp[index] = temp;
+      setOffers((_) => [...arrayTemp]);
     }
-  }
+  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -42,6 +41,7 @@ const CreateOffer = () => {
         });
         const categoryData = response.data;
         setRequest(categoryData);
+
         console.log("request retrieved successfully");
       } catch (error) {
         console.error("Error updating request:", error);
@@ -56,23 +56,24 @@ const CreateOffer = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log(supplierId, "suplier");
-    e.preventDefault()
+    e.preventDefault();
 
     const purchaseRequestId = id;
-    setIsloading(true)
+    setIsloading(true);
     try {
       const url = `/purchase-request/${purchaseRequestId}/edit2-offer-unit-prices2?supplierId=${supplierId}`;
       const response = await axiosApi.patch(url, offers);
       const offer1 = response.data;
       console.log(offer1, "offer request");
+      setOffers([]);
+      toast.success("you offer has been sent!");
       return offer1;
     } catch (error) {
       console.log(error);
-
     } finally {
-      setIsloading(false)
+      setIsloading(false);
     }
-  }
+  };
   useEffect(() => {
     const updatedItemDetails =
       request?.items.map((item) => ({
@@ -81,7 +82,7 @@ const CreateOffer = () => {
         },
         offerUnitPrice: 0,
       })) || [];
-    setOffers(prev => [...prev, ...updatedItemDetails]);
+    setOffers((prev) => [...prev, ...updatedItemDetails]);
   }, [request?.items]);
   console.log({ supplierId });
 
@@ -100,9 +101,7 @@ const CreateOffer = () => {
           <h2>Expires On: {request?.dueDate}</h2>
         </div>
       </div>
-      <form
-        onSubmit={handleSubmit}
-      >
+      <form onSubmit={handleSubmit}>
         <div className="pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
             <div className="w-full overflow-x-auto">
@@ -113,7 +112,9 @@ const CreateOffer = () => {
                     <th className="px-4 py-3">Quantity</th>
                     <th className="px-4 py-3">Unit Price</th>
                     <th className="px-4 py-3">Total Price</th>
-                    <th className="px-4 py-3">Offer Unit Price</th>
+                    {request?.approvalStatus === "PENDING" && (
+                      <th className="px-4 py-3">Offer Unit Price</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y dark:divide-gray-500">
@@ -135,19 +136,22 @@ const CreateOffer = () => {
                           {item.unitPrice}{" "}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-sm">
-                        {item.totalPrice}
-                      </td>
-                      <td className="px-4 py-3 text-sm">
-                        <input
-                          type="number"
-                          value={offers[idx]?.offerUnitPrice || ""}
-                          onChange={(e) => {
-                            handleItemChange(idx, { ...offers[idx], offerUnitPrice: Number(e.target.value) })
-                          }}
-                          className="px-2 py-1 w-full border rounded-md"
-                        />
-                      </td>
+                      <td className="px-4 py-3 text-sm">{item.totalPrice}</td>
+                      {request.approvalStatus === "PENDING" && (
+                        <td className="px-4 py-3 text-sm">
+                          <input
+                            type="number"
+                            value={offers[idx]?.offerUnitPrice || ""}
+                            onChange={(e) => {
+                              handleItemChange(idx, {
+                                ...offers[idx],
+                                offerUnitPrice: Number(e.target.value),
+                              });
+                            }}
+                            className="px-2 py-1 w-full border rounded-md"
+                          />
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>
@@ -156,21 +160,21 @@ const CreateOffer = () => {
           </div>
         </div>
         <div>
-          <button
-            disabled={isLoading}
-            type="submit"
-            className={`bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none ${isLoading ? "bg-opacity-45 bg-red-900 cursor-not-allowed" : ""
+          {request?.approvalStatus === "PENDING" && (
+            <button
+              disabled={isLoading}
+              type="submit"
+              className={`bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none ${
+                isLoading ? "bg-opacity-45 bg-red-900 cursor-not-allowed" : ""
               }`}
-          >
-            {isLoading ? "Submitting..." : 'Make Offer'}
-          </button>
+            >
+              {isLoading ? "Submitting..." : "Make Offer"}
+            </button>
+          )}
         </div>
-
       </form>
     </div>
   );
 };
-
-
 
 export default CreateOffer;

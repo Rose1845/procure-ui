@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import useApi from "@/hooks/useApi";
 
 function CreateDelivery() {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
   const { id } = useParams();
   const [order, setOrder] = React.useState<PurchaseOrder>();
@@ -104,11 +104,13 @@ function CreateDelivery() {
       setFormData({
         deliveryDate: "",
         receivedBy: "",
-        itemDToSet: [{
-          itemId:"",
-          quantityDelivered:0,
-          quantityReceived:0
-        }],
+        itemDToSet: [
+          {
+            itemId: "",
+            quantityDelivered: 0,
+            quantityReceived: 0,
+          },
+        ],
         deliveredOn: "",
         deliveredVia: "",
         expectedOn: "",
@@ -135,11 +137,13 @@ function CreateDelivery() {
                 PO Status: {order?.approvalStatus}
               </span>
             </td>
-            <h2 className="text-xl font-bold">Order Name: <span>{order?.purchaseOrderTitle}</span></h2>
+            <h2 className="text-xl font-bold">
+              Order Name: <span>{order?.purchaseOrderTitle}</span>
+            </h2>
             <h2>Order PaymentType: {order?.paymentType}</h2>
             <h2>Expires On: {order?.deliveryDate}</h2>
             <div>
-              Contract Terms and Condition:
+              Terms and Condition:
               {order?.termsAndConditions}
             </div>
           </div>
@@ -273,7 +277,12 @@ function CreateDelivery() {
             </div>
           </div>
           <div className="flex justify-center">
-            <button className="uppercase px-4 py-2 bg-blue-600 text-white font-bold" type="submit">ADD Delivery</button>
+            <button
+              className="uppercase px-4 py-2 bg-blue-600 text-white font-bold"
+              type="submit"
+            >
+              ADD Delivery
+            </button>
           </div>
         </div>
       </form>

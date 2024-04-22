@@ -2,6 +2,7 @@
 import useApi from "@/hooks/useApi";
 import React from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const UpdateSupplier = () => {
   const { axiosApi } = useApi()
@@ -149,6 +150,7 @@ const UpdateSupplier = () => {
         paymentType: "MPESA",
         termsAndConditions: "",
       });
+      toast.success("suplier updated!")
       console.log(updatedSupplierData, "edit supplier");
       console.log(`Supplier with ID ${id} updated successfully`);
     } catch (error) {

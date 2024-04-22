@@ -72,7 +72,23 @@ function Supplier() {
       [event.target.name]: event.target.value,
     });
   };
+  const handleExport = async () => {
+    try {
+      const response = await axiosApi.get("/suppliers/export/suppliers", {
+        responseType: "blob",
+      });
 
+      const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.setAttribute("download", "categories.csv");
+      document.body.appendChild(link);
+      link.click();
+      link.remove(); // Clean up
+    } catch (error) {
+      console.error("Error exporting categories:", error);
+    }
+  };
   const handleSearch = () => {
     fetchSuppliers();
   };
@@ -118,7 +134,10 @@ function Supplier() {
             />
           </div>
           <div className=" flex flex-row space-x-3 mt-3">
-            <button onClick={handleSearch} className="bg-blue-600 text-white px-4 py-2">
+            <button
+              onClick={handleSearch}
+              className="bg-blue-600 text-white px-4 py-2"
+            >
               Search
             </button>
             <button
@@ -128,27 +147,33 @@ function Supplier() {
               Clear Search
             </button>
           </div>
-
         </div>
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
-                  <th className="px-4 py-3 cursor-pointer text-black font-bold" onClick={() => handleSortChange("name")}>Supplier Name</th>
+                  <th
+                    className="px-4 py-3 cursor-pointer text-black font-bold"
+                    onClick={() => handleSortChange("name")}
+                  >
+                    Supplier Name
+                  </th>
                   <th className="px-4 py-3">Contact Person</th>
                   <th className="px-4 py-3">Phone Number</th>
                   <th className="px-4 py-3">Email Address</th>
                   <th className="px-4 py-3">City</th>
                   <th className="px-4 py-3">Last Edited</th>
+                  <th className="px-4 py-3">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y dark:divide-gray-500">
-                {suppliers.length == 0 ? (<tr className="text-gray-700 dark:text-gray-400">
-                  <td colSpan={5} className="px-4 py-3 text-center">
-                    No suppliers  found
-                  </td>
-                </tr>
+                {suppliers.length == 0 ? (
+                  <tr className="text-gray-700 dark:text-gray-400">
+                    <td colSpan={5} className="px-4 py-3 text-center">
+                      No suppliers found
+                    </td>
+                  </tr>
                 ) : (
                   suppliers.map((supplier, i) => (
                     <tr key={i}>
@@ -166,9 +191,7 @@ function Supplier() {
                       <td className="px-4 py-3 text-sm">
                         {supplier.phoneNumber}
                       </td>
-                      <td className="px-4 py-3 text-sm">
-                        {supplier.email}
-                      </td>
+                      <td className="px-4 py-3 text-sm">{supplier.email}</td>
                       <td className="px-4 py-3 text-sm">
                         {supplier.address.city}
                       </td>
@@ -195,7 +218,6 @@ function Supplier() {
                     </tr>
                   ))
                 )}
-
               </tbody>
             </table>
           </div>
@@ -224,15 +246,19 @@ function Supplier() {
                           clip-rule="evenodd"
                           fill-rule="evenodd"
                         ></path>
-                      </svg>                      </button>
+                      </svg>{" "}
+                    </button>
                   </li>
                   {/* Render page numbers */}
                   {/* Example: */}
                   {[1, 2, 3, 4, 5].map((pageNumber) => (
                     <li key={pageNumber}>
                       <button
-                        className={`px-3 py-1 rounded-md ${page + 1 === pageNumber ? "bg-blue-600 text-white" : ""
-                          } focus:outline-none focus:shadow-outline-purple`}
+                        className={`px-3 py-1 rounded-md ${
+                          page + 1 === pageNumber
+                            ? "bg-blue-600 text-white"
+                            : ""
+                        } focus:outline-none focus:shadow-outline-purple`}
                         onClick={() => handlePageChange(pageNumber - 1)}
                       >
                         {pageNumber}
@@ -268,13 +294,14 @@ function Supplier() {
             <button className="px-4 py-2 text-white font-bold bg-blue-600">
               <Link to={"/dashboard/suppliers/import"}> Import from Excel</Link>
             </button>
-            {
-              suppliers.length > 0 && (
-                <button className="px-4 py-2 text-white font-bold bg-blue-600">
-                  Export to CSV
-                </button>
-              )
-            }
+            {suppliers.length > 0 && (
+              <button
+                onClick={handleExport}
+                className="px-4 py-2 text-white font-bold bg-blue-600"
+              >
+                Export to CSV
+              </button>
+            )}
           </div>
         </div>
       </div>

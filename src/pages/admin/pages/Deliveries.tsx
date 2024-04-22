@@ -1,25 +1,34 @@
 import React from "react";
-import { PurchaseOrder } from "../types";
+import { Delivery, PurchaseOrder } from "../types";
 import { Link } from "react-router-dom";
-import { FaEdit } from "react-icons/fa";
 import useApi from "@/hooks/useApi";
 
 function Deliveries() {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
   const [page, setPage] = React.useState<number>(0);
   const [totalPages, setTotalPages] = React.useState<number>(0);
   const [totalItems, setTotalItems] = React.useState<number>(0);
+  const [selectedOrder, setSelectedOrder] =
+    React.useState<PurchaseOrder | null>(null);
+  const [delivery, setDelivery] = React.useState<Delivery | null>(null);
+
   const pageSize = 5;
   React.useEffect(() => {
     fetchOrders();
   }, [page]);
- 
+
   const fetchOrders = async () => {
     try {
-      const response = await axiosApi.get(`/purchase-order/paginate?page=${page}&size=${pageSize}`);
-      const { content, totalPages: total, totalElements: totalItems } = response.data;
+      const response = await axiosApi.get(
+        `/purchase-order/paginate?page=${page}&size=${pageSize}`
+      );
+      const {
+        content,
+        totalPages: total,
+        totalElements: totalItems,
+      } = response.data;
       setOrders(content);
       setTotalPages(total);
       setTotalItems(totalItems);
@@ -27,54 +36,37 @@ function Deliveries() {
       console.error("Error fetching categories:", error);
     }
   };
+  const handleViewDeliveries = async (id: number) => {
+    try {
+      const response = await axiosApi.get(`/deliveries/order-delivery/${id}`);
+      setDelivery(response.data);
+      setSelectedOrder(response.data);
+    } catch (error) {
+      console.error("Error fetching delivery details:", error);
+    }
+  };
 
+  const renderDeliveryDetails = () => {
+    if (!delivery || Object.keys(delivery).length === 0) {
+      return <p>No deliveries found for this order.</p>;
+    }
+  };
+  // R
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
+  
   const startIndex = page * pageSize + 1;
   const endIndex = Math.min((page + 1) * pageSize, totalItems);
 
   return (
     <div className="max-w-7xl mx-auto pt-16 ">
-      <div className="flex justify-end">
-        <div className="relative inline-block text-left">
-          <button className="px-4 py-2 bg-blue-600 text-white">
-            Create Purchase Order
-          </button>
-          <div
-            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="menu-button"
-          >
-            <div className="py-1" role="none">
-              <Link
-                to="/dashboard/order/add_order"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-                id="menu-item-0"
-              >
-                Standard Purchase Order
-              </Link>
-              <Link
-                to="/dashboard/order/add_order_from_contract"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-                id="menu-item-1"
-              >
-                Create Order From Contract
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto pt-16 ">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
+                <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 ">
                   <th className="px-4 py-3">Purchase Orders</th>
                   <th className="px-4 py-3">Payment Type</th>
                   <th className="px-4 py-3">Status</th>
@@ -83,49 +75,119 @@ function Deliveries() {
               </thead>
               <tbody className="bg-white divide-y dark:divide-gray-500">
                 {orders.map((order, i) => (
-                  <><tr
-                    key={i}
-                    className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
-                  >
-                    <td className="px-4 py-3">
-                      <div className="flex items-center text-sm">
-                        <div>
-                          <p className="font-semibold">
-                            {order.purchaseOrderTitle}
-                          </p>
+                  <>
+                    <tr
+                      key={i}
+                      onClick={() =>
+                        handleViewDeliveries(order.purchaseOrderId)
+                      }
+                      className="bg-gray-50 hover:bg-gray-100  text-gray-700 "
+                    >
+                      <td className="px-4 py-3">
+                        <div className="flex items-center text-sm">
+                          <div>
+                            <p className="font-semibold">
+                              {order.purchaseOrderTitle}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-sm">{order.paymentType}</td>
-                    <td className="px-4 py-3 text-xs">
-                      <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                        {order.approvalStatus}{" "}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      {new Date(order.createdAt).toLocaleString()}
-                    </td>
-
-                    <td className="px-4 py-3 text-sm">
-                      {order.approvalStatus === "ISSUED" && (
-                        <Link
-                          to={`/dashboard/deliveries/add/${order.purchaseOrderId}`}
-                          className="text-blue-600 hover:underline"
+                      </td>
+                      <td className="px-4 py-3 text-sm">{order.paymentType}</td>
+                      <td className="px-4 py-3 text-xs">
+                        <span
+                          className={` px-4 py-2 leading-tight text-neutral-950 rounded-full  ${
+                            order.approvalStatus === "COMPLETED"
+                              ? "bg-green-500 text-white"
+                              : order.approvalStatus === "FULLY_RECEIVED"
+                              ? "bg-purple-500 text-white"
+                              : order.approvalStatus === "ISSUED"
+                              ? "bg-gray-500 text-white"
+                              : order.approvalStatus === "REJECT"
+                              ? "bg-red-500 text-white"
+                              : order.approvalStatus === "PENDING"
+                              ? "bg-green-500 text-white"
+                              : order.approvalStatus === "IN_DELIVERY"
+                              ? "bg-blue-500 text-white"
+                              : "bg-blue-600 text-white" // Default color for other statuses
+                          }`}
                         >
-                          Add Delivery
-                          <FaEdit className="text-xl text-gray-900" />
-                        </Link>
-                      )}
-                    </td>
-                  </tr>
+                          {order.approvalStatus}{" "}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        {new Date(order.createdAt).toLocaleString()}
+                      </td>
 
+                      <td className="px-4 py-3 text-sm">
+                        {order.approvalStatus === "ISSUED" && (
+                          <Link
+                            to={`/dashboard/deliveries/add/${order.purchaseOrderId}`}
+                            className="text-blue-600 bg-white  px-4 py-2 ring-2 hover:underline"
+                          >
+                            Add Delivery
+                          </Link>
+                        )}
+                      </td>
+                    </tr>
                   </>
                 ))}
               </tbody>
             </table>
+            <div>
+              {selectedOrder && (
+                <div>
+                  <table className="w-full">
+                    <thead>
+                      <tr className="text-xs font-semibold tracking-wide text-left text-gray-900 uppercase border-b dark:border-gray-700 bg-white ">
+                        <th className="px-4 py-3">Delivered Via</th>
+                        <th className="px-4 py-3">Date Delivered</th>
+                        <th className="px-4 py-3">Expected Arrival</th>
+                        <th className="px-4 py-3">Date Received </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y dark:divide-gray-500">
+                      <>
+                        <tr className="bg-white   text-gray-900 ">
+                          <td className="px-4 py-3">
+                            <div className="flex items-center text-sm">
+                              <div>
+                                <p className="font-semibold">
+                                  {delivery?.deliveredVia}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-sm">
+                            {delivery?.deliveryDate}
+                          </td>
+                          <td className="px-4 py-3 text-xs">
+                            <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                              {delivery?.expectedOn}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-sm">
+                            {delivery?.receivedOn}
+                          </td>
+
+                          <td className="px-4 py-3 text-sm">
+                            <Link
+                              to={`/dashboard/delivery/view/${delivery?.id}`}
+                              className="text-white uppercase bg-blue-600 px-4 py-2 hover:underline"
+                            >
+                              VIew Delivery SUMMARY
+                            </Link>
+                          </td>
+                        </tr>
+                      </>
+                    </tbody>
+                  </table>
+                  {renderDeliveryDetails()}
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400">
+          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 ">
             <span className="flex suppliers-center col-span-3">
               Showing {startIndex}-{endIndex} of {totalItems}
             </span>
@@ -150,15 +212,19 @@ function Deliveries() {
                           clip-rule="evenodd"
                           fill-rule="evenodd"
                         ></path>
-                      </svg>                      </button>
+                      </svg>{" "}
+                    </button>
                   </li>
                   {/* Render page numbers */}
                   {/* Example: */}
                   {[1, 2, 3, 4, 5].map((pageNumber) => (
                     <li key={pageNumber}>
                       <button
-                        className={`px-3 py-1 rounded-md ${page + 1 === pageNumber ? "bg-blue-600 text-white" : ""
-                          } focus:outline-none focus:shadow-outline-purple`}
+                        className={`px-3 py-1 rounded-md ${
+                          page + 1 === pageNumber
+                            ? "bg-blue-600 text-white"
+                            : ""
+                        } focus:outline-none focus:shadow-outline-purple`}
                         onClick={() => handlePageChange(pageNumber - 1)}
                       >
                         {pageNumber}

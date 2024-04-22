@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { PurchaseRequisition } from "../types";
 import useApi from "@/hooks/useApi";
+import { PurchaseRequisition } from "../../types";
 
-function PurchaseRequisition() {
+function ApproveRequisition() {
   const { axiosApi } = useApi();
 
   const [requisitions, setRequisitions] = React.useState<PurchaseRequisition[]>(
@@ -49,29 +49,27 @@ function PurchaseRequisition() {
                     key={i}
                     className="bg-gray-50 hover:bg-gray-100  text-gray-700 dark:text-gray-400"
                   >
-                    <td className="px-4 flex flex-col-reverse py-3 text-sm">
+                    <td className="px-4 flex space-y-2 flex-col-reverse py-3 text-sm">
                       <span> {requi.requisitionTitle}</span>
-                      <div>
-                        <span
-                          className={` px-4 py-2 leading-tight text-neutral-950 rounded-full  ${
-                            requi.approvalStatus === "COMPLETED"
-                              ? "bg-green-500 text-white"
-                              : requi.approvalStatus === "FULLY_RECEIVED"
-                              ? "bg-purple-500 text-white"
-                              : requi.approvalStatus === "ISSUED"
-                              ? "bg-gray-500 text-white"
-                              : requi.approvalStatus === "REJECT"
-                              ? "bg-red-500 text-white"
-                              : requi.approvalStatus === "PENDING"
-                              ? "bg-green-500 text-white"
-                              : requi.approvalStatus === "IN_DELIVERY"
-                              ? "bg-blue-500 text-white"
-                              : "bg-blue-600 text-white" // Default color for other statuses
-                          }`}
-                        >
-                          {requi.approvalStatus}{" "}
-                        </span>
-                      </div>
+                      <span
+                        className={` px-4 py-2 leading-tight text-neutral-950 rounded-full  ${
+                          requi.approvalStatus === "COMPLETED"
+                            ? "bg-green-500 text-white"
+                            : requi.approvalStatus === "FULLY_RECEIVED"
+                            ? "bg-purple-500 text-white"
+                            : requi.approvalStatus === "ISSUED"
+                            ? "bg-gray-500 text-white"
+                            : requi.approvalStatus === "REJECT"
+                            ? "bg-red-500 text-white"
+                            : requi.approvalStatus === "PENDING"
+                            ? "bg-green-500 text-white"
+                            : requi.approvalStatus === "IN_DELIVERY"
+                            ? "bg-blue-500 text-white"
+                            : "bg-blue-600 text-white" // Default color for other statuses
+                        }`}
+                      >
+                        {requi.approvalStatus}{" "}
+                      </span>
                     </td>
                     <td className="px-4 py-3 text-sm">{requi.requisitionId}</td>
                     <td className="px-4 py-3 text-sm">
@@ -175,4 +173,4 @@ function PurchaseRequisition() {
   );
 }
 
-export default PurchaseRequisition;
+export default ApproveRequisition;

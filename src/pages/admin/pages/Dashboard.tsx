@@ -5,7 +5,7 @@ import ContractsBarGraph from "../components/contract/ContractsBarGraph";
 import useApi from "@/hooks/useApi";
 
 function Dashboard() {
-  const {axiosApi}= useApi()
+  const { axiosApi } = useApi();
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
 
   React.useEffect(() => {
@@ -15,8 +15,8 @@ function Dashboard() {
   }, []);
 
   const fetchOrders = async () => {
-    const response = await axiosApi.get("/purchase-order");
-    const order = response.data;
+    const response = await axiosApi.get("/purchase-order/latest");
+    const order = response.data.content;
     console.log(order, "orders");
     return order;
   };
@@ -127,9 +127,9 @@ function Dashboard() {
           <ContractsBarGraph />
         </div>
       </div>
-
       <div className="max-w-7xl mx-auto pt-16 ">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
+          <p> 5 Latest Purchase Orders</p>
           <div className="w-full overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -138,7 +138,6 @@ function Dashboard() {
                   <th className="px-4 py-3">Payment Type</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Created On</th>
-
                   <th className="px-4 py-3">Last Edited</th>
                 </tr>
               </thead>
@@ -146,7 +145,7 @@ function Dashboard() {
                 {orders.map((order, i) => (
                   <tr
                     key={i}
-                    className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
+                    className="bg-gray-50 hover:bg-gray-100  text-gray-700 dark:text-gray-400"
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center text-sm">

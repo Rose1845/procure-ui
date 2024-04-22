@@ -102,7 +102,8 @@ function ChangePassword() {
                                     name="repeatPassword"
                                     id="repeatPassword"
                                     onChange={handleChange}
-                                    value={credentials.repeatPassword} className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" placeholder="Password" />
+                                    value={credentials.repeatPassword}
+                                     className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" placeholder="Password" />
                                 <button
                                     onClick={handleTogglePassword}
                                     className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400"

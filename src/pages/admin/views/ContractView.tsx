@@ -247,7 +247,7 @@ const ContractView = () => {
                   {contract?.items.map((order, i) => (
                     <tr
                       key={i}
-                      className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
+                      className="bg-gray-50 hover:bg-gray-100  text-gray-700 dark:text-gray-400"
                     >
                       <td className="px-4 py-3">
                         <div className="flex items-center text-sm">

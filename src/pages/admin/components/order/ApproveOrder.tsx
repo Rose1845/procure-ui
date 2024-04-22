@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { PurchaseOrder } from "../../types";
+import { PurchaseOrder, Supplier } from "../../types";
 import { toast } from "react-toastify";
 import useApi from "@/hooks/useApi";
 
 const ApproveOrder = () => {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
   const { id } = useParams();
   const [order, setOrder] = React.useState<PurchaseOrder>();
   const [approvalAction, setApprovalAction] = React.useState<string>("");
-
+  const [supplierDetails, setSupplierDetails] = React.useState<Supplier>();
   useEffect(() => {
     const fetchCategory = async () => {
       try {
@@ -24,17 +24,29 @@ const ApproveOrder = () => {
         console.error("Error updating order:", error);
       }
     };
+    const fetchSupplierDetails = async () => {
+      try {
+        const response = await axiosApi.get(
+          `/suppliers/supplier/${order?.vendorId}`
+        );
+        console.log(response.data, "supplier de");
+
+        setSupplierDetails(response.data);
+        console.log("Supplier details retrieved successfully");
+      } catch (error) {
+        console.error("Error fetching Supplier details:", error);
+      }
+    };
+    fetchSupplierDetails();
     fetchCategory();
-  }, [id]);
+  }, [id, order?.vendorId]);
   const handleApprovalAction = (action: string) => {
     setApprovalAction(action);
-    ApproveContract()
+    ApproveContract();
   };
 
   const ApproveContract = async () => {
     try {
-      const accessToken = localStorage.getItem("access_token");
-
       const response = await axiosApi.patch(
         `/purchase-order/approve/${id}`,
         null,
@@ -42,10 +54,7 @@ const ApproveOrder = () => {
           params: {
             approvalStatus: `${approvalAction}`,
           },
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        },
+        }
       );
 
       if (!response.data) {
@@ -62,7 +71,7 @@ const ApproveOrder = () => {
   };
 
   return (
-    <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
+    <div className="flex w-full flex-col px-4  mt-8 py-16">
       {/* <div>
         <div>
           <td className="px-4 py-3 text-xs">
@@ -81,22 +90,67 @@ const ApproveOrder = () => {
         </div>
       </div> */}
       <div className="flex items-center">
-        <button
-          onClick={() => handleApprovalAction("APPROVED")}
-          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 mr-2"
-        >
-          ACCEPTED{" "}
-        </button>
-        <button
-          onClick={() => handleApprovalAction("REJECT")}
-          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300 mr-2"
-        >
-          DECLINE
-        </button>
+        {order?.approvalStatus !== "ACCEPTED" &&
+          order?.approvalStatus !== "TERMINATED" &&
+          order?.approvalStatus !== "REJECT" &&
+          order?.approvalStatus !== "APPROVED" && (
+            <div>
+              <button
+                onClick={() => handleApprovalAction("APPROVED")}
+                className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 mr-2"
+              >
+                ACCEPTED{" "}
+              </button>
+              <button
+                onClick={() => handleApprovalAction("REJECT")}
+                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300 mr-2"
+              >
+                DECLINE
+              </button>
+            </div>
+          )}
       </div>
 
       <div>
-        <div className="max-w-7xl mx-auto pt-16 ">
+        <div className="flex flex-col space-y-2">
+          <h2 className="text-[16px]">
+            Order Name: {order?.purchaseOrderTitle}
+          </h2>
+          <h2 className="text-[16px]">CreatedOn:</h2>
+          <h2 className="text-[16px]">
+            Order PaymentType: {order?.paymentType}
+          </h2>
+          <h2 className="text-[16px]">Expires On: {order?.deliveryDate}</h2>
+        </div>
+        <div className="text-[16px]">
+          Terms and Condition:
+          {order?.termsAndConditions}
+        </div>
+
+        <div className="pt-3 space-y-2">
+          <h1 className="text-xl font-bold">Supplier Details</h1>
+          {supplierDetails && (
+            <div>
+              <h2 className="text-[16px]">
+                Supplier Name: {supplierDetails.name}
+              </h2>
+              <h2 className="text-[16px]">
+                Supplier Email: {supplierDetails.email}
+              </h2>
+              <h2 className="text-[16px]">
+                Address:{supplierDetails.address.box}
+                {supplierDetails.address.city},{supplierDetails.address.country}
+              </h2>
+              <h2 className="text-[16px]">
+                Location:{supplierDetails.address.location}
+              </h2>
+              <p className="text-[16px]">
+                Payment Terms: {supplierDetails.paymentType}
+              </p>
+            </div>
+          )}
+        </div>
+        <div className="w-full mx-auto pt-16 ">
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
             <div className="w-full overflow-x-auto">
               <table className="w-full">
@@ -112,7 +166,7 @@ const ApproveOrder = () => {
                   {order?.items.map((order, i) => (
                     <tr
                       key={i}
-                      className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
+                      className="bg-gray-50 hover:bg-gray-100  text-gray-700 dark:text-gray-400"
                     >
                       <td className="px-4 py-3">
                         <div className="flex items-center text-sm">
@@ -132,6 +186,7 @@ const ApproveOrder = () => {
                   ))}
                 </tbody>
               </table>
+              <div className="mt-3">Total Amount : {order?.totalAmount}</div>
             </div>
           </div>
         </div>

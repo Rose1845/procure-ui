@@ -1,7 +1,7 @@
 import React from "react";
 import { Item } from "../types";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import useApi from "@/hooks/useApi";
 
 function Items() {
@@ -50,13 +50,13 @@ function Items() {
   const endIndex = Math.min((page + 1) * pageSize, totalItems);
 
   return (
-    <div className="max-w-7xl mx-auto pt-16 flex-row gap-8">
+    <div className="max-w-7xl mx-auto pt-16">
       <div className="flex justify-end">
         <button className="px-4 py-2 bg-blue-600 text-white">
           <Link to={"/dashboard/items/add_item"}> Add Item</Link>
         </button>
       </div>
-      <div className="mt-4 mx-4">
+      <div className="w-full overflow-hidden rounded-lg shadow-xs">
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
             <table className="w-full">
@@ -67,7 +67,6 @@ function Items() {
                   <th className="px-4 py-3">Unit Price</th>
                   <th className="px-4 py-3">Last Edited</th>
                   <th className="px-4 py-3">Actions</th>
-
                 </tr>
               </thead>
               <tbody className="bg-white divide-y dark:divide-gray-500">
@@ -81,9 +80,11 @@ function Items() {
                       </div>
                     </td>
                     <td className="px-4 py-3 text-sm">{item.itemNumber}</td>
-
                     <td className="px-4 py-3 text-sm">{item.unitPrice}</td>
-                    <td className="px-4 py-3 text-sm"> {new Date(item.updatedAt).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-sm">
+                      {" "}
+                      {new Date(item.updatedAt).toLocaleDateString()}
+                    </td>
                     <td className="px-4 py-3 text-sm">
                       <button
                         className="text-blue-600 hover:underline"
@@ -101,10 +102,8 @@ function Items() {
                         <FaTrashAlt />
                       </button>
                       <button>
-                        <Link
-                          to={`/dashboard/item/view/${item.itemId}`}
-                        >
-                          <FaEye className="text-xl text-gray-900" />
+                        <Link to={`/dashboard/item/view/${item.itemId}`}>
+                          View
                         </Link>
                       </button>
                     </td>
@@ -139,13 +138,17 @@ function Items() {
                           clip-rule="evenodd"
                           fill-rule="evenodd"
                         ></path>
-                      </svg>                      </button>
+                      </svg>{" "}
+                    </button>
                   </li>
                   {[1, 2, 3, 4, 5].map((pageNumber) => (
                     <li key={pageNumber}>
                       <button
-                        className={`px-3 py-1 rounded-md ${page + 1 === pageNumber ? "bg-blue-600 text-white" : ""
-                          } focus:outline-none focus:shadow-outline-purple`}
+                        className={`px-3 py-1 rounded-md ${
+                          page + 1 === pageNumber
+                            ? "bg-blue-600 text-white"
+                            : ""
+                        } focus:outline-none focus:shadow-outline-purple`}
                         onClick={() => handlePageChange(pageNumber - 1)}
                       >
                         {pageNumber}

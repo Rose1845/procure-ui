@@ -41,6 +41,14 @@ import Profile from "@/pages/admin/components/user/Profile";
 import Roles from "@/pages/admin/pages/Roles";
 import ItemView from "@/pages/admin/views/ItemView";
 import AuthorityRoute from "./UserAuthority";
+import AddNewUser from "@/pages/admin/components/users/AddNewUser";
+import UpdatePassword from "@/pages/admin/components/user/UpdatePassword";
+import AddRoleToUser from "@/pages/admin/components/user/AddRoleToUser";
+import DeliveryView from "@/pages/admin/views/DeliveryView";
+import Approvals from "@/pages/admin/pages/Approvals";
+import UpdateContract from "@/pages/admin/components/contract/UpdateContract";
+import RemoveRoleFromUser from "@/pages/admin/components/user/RemoveRoleFromUser";
+import CreateRole from "@/pages/admin/components/Roles/CreateRole";
 
 export const DashboardRoutes: RouteObject = {
   path: "/dashboard",
@@ -87,6 +95,10 @@ export const DashboardRoutes: RouteObject = {
       element: <EditCategory />,
     },
     {
+      path: "/dashboard/contract/edit/:id",
+      element: <UpdateContract />,
+    },
+    {
       path: "/dashboard/roles/add_role",
       element: <Roles />,
     },
@@ -107,6 +119,22 @@ export const DashboardRoutes: RouteObject = {
       element: <Profile />,
     },
     {
+      path: "/dashboard/user/add_role/:id",
+      element: <AddRoleToUser />,
+    },
+    {
+      path: "/dashboard/user/create_role",
+      element: <CreateRole />,
+    },
+    {
+      path: "/dashboard/user/remove_role/:id",
+      element: <RemoveRoleFromUser />,
+    },
+    {
+      path: "/dashboard/user/update_password/:id",
+      element: <UpdatePassword />,
+    },
+    {
       path: "/dashboard/order/add_order",
       element: <CreateOrder />,
     },
@@ -123,6 +151,10 @@ export const DashboardRoutes: RouteObject = {
       element: <OrderView />,
     },
     {
+      path: "/dashboard/delivery/view/:id",
+      element: <DeliveryView />,
+    },
+    {
       path: "/dashboard/request/view/:id",
       element: <RequestView />,
     },
@@ -133,6 +165,10 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/quotes/tco_evaluation/:id",
       element: <TotalCostEvaluation />,
+    },
+    {
+      path: "/dashboard/approval",
+      element: <Approvals />,
     },
     {
       path: "/dashboard/purchase-request",
@@ -170,6 +206,7 @@ export const DashboardRoutes: RouteObject = {
       path: "/dashboard/category/add_category",
       element: <CreateCategory />,
     },
+
     {
       path: "/dashboard/contract/add_contract",
       element: <CreateContract />,
@@ -193,6 +230,14 @@ export const DashboardRoutes: RouteObject = {
     {
       path: "/dashboard/deliveries",
       element: <Deliveries />,
+    },
+    {
+      path: "/dashboard/add/new_user",
+      element: (
+        <AuthorityRoute perm="ADMIN">
+          <AddNewUser />
+        </AuthorityRoute>
+      ),
     },
     {
       path: "/dashboard/deliveries/add/:id",

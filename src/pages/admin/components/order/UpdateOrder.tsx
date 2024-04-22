@@ -3,9 +3,10 @@ import React from "react";
 import { Item, PurchaseOrderData } from "../../types";
 import { useParams } from "react-router-dom";
 import useApi from "@/hooks/useApi";
+import { toast } from "react-toastify";
 
 const UpdateOrder = () => {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
   const { id } = useParams();
   const [orderData, setOrderData] = React.useState<PurchaseOrderData>({
     purchaseOrderTitle: "",
@@ -13,7 +14,7 @@ const UpdateOrder = () => {
     termsAndConditions: "",
     paymentType: "MPESA" || "PAYPAL",
     items: [],
-    vendorId: '',
+    vendorId: "",
   });
 
   const [items, setItems] = React.useState([]);
@@ -30,8 +31,9 @@ const UpdateOrder = () => {
     const fetchOrderData = async () => {
       try {
         const response = await axiosApi.get(
-          `/purchase-order/order-items/${id}`
+          `/purchase-order/get/order-items/${id}`
         );
+
         const updatedOrder = response.data;
         setOrderData(updatedOrder);
       } catch (error) {
@@ -82,6 +84,15 @@ const UpdateOrder = () => {
     try {
       const response = await axiosApi.put(`/purchase-order/${id}`, dataToSend);
       const responseData = response.data;
+      toast.success("order updated successfully!!");
+      setOrderData({
+        purchaseOrderTitle: "",
+        deliveryDate: "",
+        termsAndConditions: "",
+        paymentType: "MPESA" || "PAYPAL",
+        items: [],
+        vendorId: "",
+      });
       console.log("Response from backend:", responseData);
     } catch (error) {
       console.error("Error creating order:", error);

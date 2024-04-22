@@ -41,14 +41,13 @@ const ItemView = () => {
   }, [id, item?.categoryId]);
 
   return (
-    <div className="container flex flex-col justify-center items-center mx-auto mt-8 py-16">
-     
+    <div className="max-w-7xl mx-auto pt-16">
       <div>
         Item<p>{item?.itemName}</p>
         {"/"}
         Category: {category?.categoryName}
       </div>
-      <div className="w-full overflow-x-auto">
+      <div className="w-full overflow-hidden rounded-lg shadow-xs">
         <table className="w-full">
           <thead>
             <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400">
