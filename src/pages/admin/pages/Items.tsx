@@ -1,13 +1,13 @@
 import React from "react";
 import { Item } from "../types";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import useApi from "@/hooks/useApi";
 
 function Items() {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [items, setItems] = React.useState<Item[]>([]);
   const [page, setPage] = React.useState<number>(0);
   const [totalPages, setTotalPages] = React.useState<number>(0);
@@ -18,8 +18,14 @@ function Items() {
   }, [page]);
   const fetchItems = async () => {
     try {
-      const response = await axiosApi.get(`/items/all-by-pagination?page=${page}&size=${pageSize}`);
-      const { content, totalPages: total, totalElements: totalItems } = response.data;
+      const response = await axiosApi.get(
+        `/items/all-by-pagination?page=${page}&size=${pageSize}`
+      );
+      const {
+        content,
+        totalPages: total,
+        totalElements: totalItems,
+      } = response.data;
       setItems(content);
       setTotalPages(total);
       setTotalItems(totalItems);
@@ -31,18 +37,36 @@ function Items() {
     navigate(`/dashboard/items/update_item/${id}`);
     console.log(`Editing item with ID: ${id}`);
   };
-  const handleDelete = async (id: string) => {
-    try {
-      // Send a DELETE request to delete the supplier with the given ID
-      await axiosApi.delete(`/items/${id}`);
-      console.log(`item with ID ${id} deleted successfully`);
+  // const handleDelete = async (id: string) => {
+  //   try {
+  //     // Send a DELETE request to delete the supplier with the given ID
+  //     await axiosApi.delete(`/items/${id}`);
+  //     console.log(`item with ID ${id} deleted successfully`);
 
-      // Refresh the list of suppliers after deletion
-      fetchItems();
+  //     // Refresh the list of suppliers after deletion
+  //     fetchItems();
+  //   } catch (error) {
+  //     console.error(`Error deleting item with ID ${id}:`, error);
+  //   }
+  // };
+
+  const handleExport = async () => {
+    try {
+      const response = await axiosApi.get("/items/export/items", {
+        responseType: "blob",
+      });
+      const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.setAttribute("download", "items.csv");
+      document.body.appendChild(link);
+      link.click();
+      link.remove(); // Clean up
     } catch (error) {
-      console.error(`Error deleting item with ID ${id}:`, error);
+      console.error("Error exporting categories:", error);
     }
   };
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -94,13 +118,13 @@ function Items() {
                         <FaEdit className="text-xl text-gray-900" />
                       </button>
                       {" | "}
-                      <button
+                      {/* <button
                         className="text-red-600 hover:underline"
                         onClick={() => handleDelete(item.itemId)}
                       >
                         Delete
                         <FaTrashAlt />
-                      </button>
+                      </button> */}
                       <button>
                         <Link to={`/dashboard/item/view/${item.itemId}`}>
                           View
@@ -179,6 +203,16 @@ function Items() {
                 </ul>
               </nav>
             </span>
+          </div>
+          <div className="flex justify-end items-center space-x-3">
+            {items.length > 0 && (
+              <button
+                onClick={handleExport}
+                className="px-4 py-2 text-white font-bold bg-blue-600"
+              >
+                Export to CSV
+              </button>
+            )}
           </div>
         </div>
       </div>

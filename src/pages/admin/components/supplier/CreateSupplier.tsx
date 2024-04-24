@@ -111,6 +111,8 @@ function CreateSupplier() {
   };
 
   const createSupplier = async () => {
+    console.log(supplierData,"data");
+    
     try {
       const response = await axiosApi.post("/suppliers", supplierData);
       const createdContract = response.data;

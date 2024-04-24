@@ -1,7 +1,7 @@
 import React from "react";
 import { Supplier } from "../types";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEdit, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaPlus } from "react-icons/fa";
 import useApi from "@/hooks/useApi";
 
 function Supplier() {
@@ -44,18 +44,18 @@ function Supplier() {
     navigate(`/dashboard/update_supplier/${id}`);
     console.log(`Editing supplier with ID: ${id}`);
   };
-  const handleDelete = async (id: string) => {
-    try {
-      // Send a DELETE request to delete the supplier with the given ID
-      await axiosApi.delete(`/suppliers/${id}`);
-      console.log(`Supplier with ID ${id} deleted successfully`);
+  // const handleDelete = async (id: string) => {
+  //   try {
+  //     // Send a DELETE request to delete the supplier with the given ID
+  //     await axiosApi.delete(`/suppliers/${id}`);
+  //     console.log(`Supplier with ID ${id} deleted successfully`);
 
-      // Refresh the list of suppliers after deletion
-      fetchSuppliers();
-    } catch (error) {
-      console.error(`Error deleting supplier with ID ${id}:`, error);
-    }
-  };
+  //     // Refresh the list of suppliers after deletion
+  //     fetchSuppliers();
+  //   } catch (error) {
+  //     console.error(`Error deleting supplier with ID ${id}:`, error);
+  //   }
+  // };
   const handleSortChange = (column: string) => {
     if (column === sortBy) {
       // Toggle sort direction if the same column is clicked again
@@ -81,7 +81,7 @@ function Supplier() {
       const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = downloadUrl;
-      link.setAttribute("download", "categories.csv");
+      link.setAttribute("download", "suppliers.csv");
       document.body.appendChild(link);
       link.click();
       link.remove(); // Clean up
@@ -207,13 +207,13 @@ function Supplier() {
                           <FaEdit className="text-xl text-gray-900" />
                         </button>
                         {" | "}
-                        <button
+                        {/* <button
                           className="text-red-600 hover:underline"
                           onClick={() => handleDelete(supplier.vendorId)}
                         >
                           Delete
                           <FaTrashAlt />
-                        </button>
+                        </button> */}
                       </td>
                     </tr>
                   ))

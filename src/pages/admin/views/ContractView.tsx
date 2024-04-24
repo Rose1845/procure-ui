@@ -3,16 +3,27 @@ import { useParams } from "react-router-dom";
 import { Contract, Supplier } from "../types";
 import { toast } from "react-toastify";
 import useApi from "@/hooks/useApi";
+import RenewContract from "../components/contract/RenewContract";
+import EditDueDate from "../components/contract/EditDueDate";
 
 const ContractView = () => {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
   const { id } = useParams();
   const [contract, setContract] = React.useState<Contract>();
   const [supplierDetails, setSupplierDetails] = React.useState<Supplier>();
   const [totalAmount, setTotalAmount] = React.useState<number>(0);
   const [isLoading, setIsloading] = React.useState(false);
+  const [showForm, setShowForm] = React.useState<boolean>(false);
+  const [showEditForm, setShowEditForm] = React.useState<boolean>(false);
 
+  const handleShowForm = () => {
+    setShowForm(!showForm); // Toggle the value of showForm
+  };
+
+  const handleShowEditForm = () => {
+    setShowEditForm(!showForm); // Toggle the value of showForm
+  };
   React.useEffect(() => {
     const fetchContract = async () => {
       try {
@@ -26,7 +37,9 @@ const ContractView = () => {
 
     const fetchSupplierDetails = async () => {
       try {
-        const response = await axiosApi.get(`/suppliers/supplier/${contract?.vendorId}`);
+        const response = await axiosApi.get(
+          `/suppliers/supplier/${contract?.vendorId}`
+        );
         console.log(response.data, "supplier de");
 
         setSupplierDetails(response.data);
@@ -42,9 +55,7 @@ const ContractView = () => {
 
   const sendToSupplier = async () => {
     try {
-      const response = await axiosApi.post(
-        `/contract/send-to-supplier/${id}`
-      );
+      const response = await axiosApi.post(`/contract/send-to-supplier/${id}`);
       if (!response.data) {
         throw new Error(
           `Failed to send contract to supplier: ${response.statusText}`
@@ -56,20 +67,16 @@ const ContractView = () => {
       toast.error("An error occurred while sending contract to supplier");
       console.error("Error sending contract to supplier:", error);
     } finally {
-      setIsloading(false)
+      setIsloading(false);
     }
   };
   const cloneContract = async () => {
-    setIsloading(true)
+    setIsloading(true);
 
     try {
-      const response = await axiosApi.post(
-        `/contract/clone-contract/${id}`
-      );
+      const response = await axiosApi.post(`/contract/clone-contract/${id}`);
       if (!response.data) {
-        throw new Error(
-          `Failed to cloned: ${response.statusText}`
-        );
+        throw new Error(`Failed to cloned: ${response.statusText}`);
       }
       toast.success("Contract cloned successfully");
       console.log("Response from backend:", response.data);
@@ -77,34 +84,34 @@ const ContractView = () => {
       toast.error("An error occurred while sending contract to supplier");
       console.error("Error sending contract to supplier:", error);
     } finally {
-      setIsloading(false)
+      setIsloading(false);
     }
   };
-  const renewContract = async () => {
-    setIsloading(true)
+  // const renewContract = async () => {
+  //   setIsloading(true);
 
-    try {
-      const response = await axiosApi.patch(
-        `/contract/edit-contract/${id}`,
-        null,
-        {
-          params: {
-            contractStatus: "RENEW",
-          }
-        }
-      );
-      const responseData = response.data;
-      toast.success("COntract Renewed successfully");
-      console.log("Response from backend:", responseData);
-    } catch (error) {
-      toast.error("Error approving contract");
-      console.error("Error approving contract:", error);
-    } finally {
-      setIsloading(false)
-    }
-  };
+  //   try {
+  //     const response = await axiosApi.patch(
+  //       `/contract/edit-contract/${id}`,
+  //       null,
+  //       {
+  //         params: {
+  //           contractStatus: "RENEW",
+  //         },
+  //       }
+  //     );
+  //     const responseData = response.data;
+  //     toast.success("COntract Renewed successfully");
+  //     console.log("Response from backend:", responseData);
+  //   } catch (error) {
+  //     toast.error("Error approving contract");
+  //     console.error("Error approving contract:", error);
+  //   } finally {
+  //     setIsloading(false);
+  //   }
+  // };
   const terminateContract = async () => {
-    setIsloading(true)
+    setIsloading(true);
 
     try {
       const response = await axiosApi.patch(
@@ -113,7 +120,7 @@ const ContractView = () => {
         {
           params: {
             contractStatus: "TERMINATE",
-          }
+          },
         }
       );
       const responseData = response.data;
@@ -123,7 +130,7 @@ const ContractView = () => {
       toast.error("Error approving contract");
       console.error("Error approving contract:", error);
     } finally {
-      setIsloading(false)
+      setIsloading(false);
     }
   };
   React.useEffect(() => {
@@ -143,70 +150,91 @@ const ContractView = () => {
   return (
     <div className="max-w-7xl mx-auto mt-8 py-16">
       <div className="flex flex-row space-x-3">
-        <div >
-          {(contract?.contractStatus !== "DECLINE" &&
+        <div>
+          {contract?.contractStatus !== "DECLINE" &&
             contract?.contractStatus !== "EXPIRED" &&
-            contract?.contractStatus !== "TERMINATED") && (
+            contract?.contractStatus !== "TERMINATED" && (
               <div className="flex flex-row space-x-3">
-                <button
-                  type="submit"
-                  disabled={isLoading}
+                <div>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    onClick={() => sendToSupplier()} // Pass the 'id' to the function
+                    className="bg-green-500 uppercase mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
+                  >
+                    Send Contract to Supplier
+                  </button>
+                </div>
 
-                  onClick={() => sendToSupplier()} // Pass the 'id' to the function
-                  className="bg-green-500 uppercase mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
-                >
-                  Send Contract to Supplier
-                </button>
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  onClick={() => terminateContract()} // Pass the 'id' to the function
-                className={`bg-red-500 uppercase mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 ${isLoading ? "animate-spin bg-red-500 opacity-10 cursor-not-allowed" : ""}`}
-                >
-                  {isLoading ? "loading" : "Terminate contract"}
-                </button>
+                <div>
+                  {showEditForm && <EditDueDate />}
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    onClick={handleShowEditForm}
+                    className="bg-green-500 uppercase mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
+                  >
+                    Edit Due Date{" "}
+                  </button>
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    onClick={() => terminateContract()} // Pass the 'id' to the function
+                    className={`bg-red-500 uppercase mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300 ${
+                      isLoading
+                        ? "animate-spin bg-red-500 opacity-10 cursor-not-allowed"
+                        : ""
+                    }`}
+                  >
+                    {isLoading ? "loading" : "Terminate contract"}
+                  </button>
+                </div>
               </div>
-
             )}
         </div>
 
         <div>
+          {showForm && <RenewContract />}
+
           {(contract?.contractStatus == "DECLINE" ||
             contract?.contractStatus == "EXPIRED" ||
             contract?.contractStatus == "TERMINATED") && (
-              <button
-                type="submit"
-                disabled={isLoading}
-
-                onClick={() => renewContract()} // Pass the 'id' to the function
-                className="bg-green-500 uppercase mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
-              >
-                Renew Contract</button>
-            )}
+            <button
+              type="submit"
+              disabled={isLoading}
+              onClick={handleShowForm}
+              className="bg-green-500 uppercase mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
+            >
+              Renew Contract
+            </button>
+          )}
         </div>
         <div>
           <button
             type="submit"
             disabled={isLoading}
-
             onClick={() => cloneContract()} // Pass the 'id' to the function
             className="bg-green-500 uppercase mt-5 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300"
           >
-            Cloned Contract </button>
+            Cloned Contract{" "}
+          </button>
         </div>
       </div>
       <div>
-
         <div>
           <td className="px-4 py-3 text-xs">
-            <span className={`px-2 py-1 font-semibold leading-tight rounded-full ${contract && (
-              contract.contractStatus === "DECLINE" ||
-              contract.contractStatus === "EXPIRED" ||
-              contract.contractStatus === "TERMINATED"
-            )
-              ? "text-red-700 bg-red-100"
-              : "text-green-700 bg-green-100"
-              }`}>
+            <span
+              className={`px-2 py-1 font-semibold leading-tight rounded-full ${
+                contract &&
+                (contract.contractStatus === "DECLINE" ||
+                  contract.contractStatus === "EXPIRED" ||
+                  contract.contractStatus === "TERMINATED")
+                  ? "text-red-700 bg-red-100"
+                  : "text-green-700 bg-green-100"
+              }`}
+            >
               {contract?.contractStatus}
             </span>
           </td>
@@ -226,7 +254,10 @@ const ContractView = () => {
             <div>
               <h2>Supplier Name: {supplierDetails.name}</h2>
               <h2>Supplier Email: {supplierDetails.email}</h2>
-              <h2>Address:{supplierDetails.address.box}{supplierDetails.address.city},{supplierDetails.address.country}</h2>
+              <h2>
+                Address:{supplierDetails.address.box}
+                {supplierDetails.address.city},{supplierDetails.address.country}
+              </h2>
               <h2>Location:{supplierDetails.address.location}</h2>
             </div>
           )}
@@ -264,7 +295,6 @@ const ContractView = () => {
                       </td>
                       <td className="px-4 py-3 text-sm">{order.totalPrice}</td>
                     </tr>
-
                   ))}
                 </tbody>
                 <div className="flex flex-row space-x-2 pt-3">

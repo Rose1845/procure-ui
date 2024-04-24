@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import useApi from "@/hooks/useApi";
 
 const CreateItem = () => {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
   const [contractData, setContractData] = React.useState<ItemData>({
     itemName: "",
@@ -53,11 +53,11 @@ const CreateItem = () => {
     if (!itemName.trim()) {
       errors.itemName = "Item Name is required";
     }
-   
+
     if (!itemDescription.trim()) {
       errors.itemDescription = "Item Description is required";
     }
-    if (unitPrice == 0) {
+    if (unitPrice < 1) {
       errors.unitPrice = "Unit Price must be greater than zero";
     }
     if (quantity < 1) {
@@ -85,15 +85,19 @@ const CreateItem = () => {
           quantity: 1,
           unitPrice: 0,
           categoryId: 0,
-        })
+        });
         console.log("Item created successfully:", response.data);
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        const { errors } = error.response.data;
-        Object.keys(errors).forEach((key) => {
-          setErrors((prevErrors) => ({ ...prevErrors, [key]: errors[key] }));
-        });
+        const { errors, errorMessage } = error.response.data;
+        if (errors) {
+          Object.keys(errors).forEach((key) => {
+            setErrors((prevErrors) => ({ ...prevErrors, [key]: errors[key] }));
+          });
+        } else {
+          toast.error(errorMessage);
+        }
       } else {
         toast.error("An error occurred!");
         console.error("Error creating item:", error);
@@ -180,7 +184,6 @@ const CreateItem = () => {
         )}
       </div>
 
-    
       {/* <div className="mb-4">
         <label
           htmlFor="vendorId"

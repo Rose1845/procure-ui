@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { FaTrashAlt } from "react-icons/fa";
 import { PurchaseOrder, Supplier } from "../types";
 import { Link } from "react-router-dom";
 import JSZip from "jszip";
@@ -162,17 +161,17 @@ const Invoice: React.FC = () => {
     });
   };
 
-  const handleDelete = async (id: string) => {
-    try {
-      await axiosApi.delete(`/invoices/${id}`);
-      console.log(`Invoice with ID ${id} deleted successfully`);
+  // const handleDelete = async (id: string) => {
+  //   try {
+  //     await axiosApi.delete(`/invoices/${id}`);
+  //     console.log(`Invoice with ID ${id} deleted successfully`);
 
-      // Update state after deletion
-      fetchInvoice();
-    } catch (error) {
-      console.error(`Error deleting invoice with ID ${id}:`, error);
-    }
-  };
+  //     // Update state after deletion
+  //     fetchInvoice();
+  //   } catch (error) {
+  //     console.error(`Error deleting invoice with ID ${id}:`, error);
+  //   }
+  // };
   const handleSortChange = (column: string) => {
     if (column === sortBy) {
       // Toggle sort direction if the same column is clicked again
@@ -492,15 +491,14 @@ const Invoice: React.FC = () => {
                         {new Date(invoice.createdAt).toLocaleString()}
                       </td>
                       <td className="px-4 py-3 space-x-3 text-sm">
-                        <button
+                        {/* <button
                           className="text-red-600 hover:underline"
                           onClick={() => handleDelete(invoice.invoiceId)}
                         >
                           Delete
                           <FaTrashAlt />
-                        </button>
-                        {"|"}
-                        <button className="uppercase">
+                        </button> */}
+                        <button className="uppercase bg-blue-600 px-4 py-2 text-white">
                           <Link
                             to={`/dashboard/invoice/view/${invoice.invoiceId}`}
                           >

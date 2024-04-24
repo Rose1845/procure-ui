@@ -1,9 +1,9 @@
-import { TbBook, TbCurrencyDollar } from "react-icons/tb";
+// import { TbBook, TbCurrencyDollar } from "react-icons/tb";
 import {
   TfiDashboard,
   TfiShoppingCart,
   TfiUser,
-  TfiSettings,
+  // TfiSettings,
 } from "react-icons/tfi";
 
 export interface SidebarLink {
@@ -24,11 +24,11 @@ export const sidebarLinks: SidebarLink[] = [
     path: "/dashboard/category",
     LinkIcon: TfiShoppingCart,
   },
-  {
-    label: "Approvals",
-    path: "/dashboard/approval",
-    LinkIcon: TfiShoppingCart,
-  },
+  // {
+  //   label: "Approvals",
+  //   path: "/dashboard/approval",
+  //   LinkIcon: TfiShoppingCart,
+  // },
   {
     label: "Suppliers",
     path: "/dashboard/suppliers",
@@ -36,7 +36,7 @@ export const sidebarLinks: SidebarLink[] = [
   },
 
   {
-    label: "Products",
+    label: "Items",
     path: "/dashboard/items",
     LinkIcon: TfiShoppingCart,
   },
@@ -44,41 +44,38 @@ export const sidebarLinks: SidebarLink[] = [
     label: "Transaction",
     path: "",
     children: [
-      {
-        label: "Purchase Requisition",
-        path: "/dashboard/purchase-requisition",
-        LinkIcon: TfiShoppingCart,
-      },
+      // {
+      //   label: "Purchase Requisition",
+      //   path: "/dashboard/purchase-requisition",
+      //   // LinkIcon: TfiShoppingCart,
+      // },
       {
         label: "Purchase Request",
         path: "/dashboard/purchase-request",
-        LinkIcon: TfiShoppingCart,
+        // LinkIcon: TfiShoppingCart,
       },
       {
         label: "Purchase Order",
         path: "/dashboard/order",
-        LinkIcon: TfiShoppingCart,
+        // LinkIcon: TfiShoppingCart,
       },
       {
         label: "Contract",
         path: "/dashboard/contract",
-        LinkIcon: TbBook,
+        // LinkIcon: TbBook,
       },
       {
         label: "Invoice",
         path: "/dashboard/invoice",
-        LinkIcon: TbCurrencyDollar,
+        // LinkIcon: TbCurrencyDollar,
       },
       {
         label: "Deliveries",
         path: "/dashboard/deliveries",
-        LinkIcon: TbCurrencyDollar,
+        // LinkIcon: TbCurrencyDollar,
       },
     ],
   },
-  {
-    label: "Settings",
-    path: "/dashboard/settings",
-    LinkIcon: TfiSettings,
-  },
 ];
+
+

@@ -385,7 +385,7 @@ const UpdateContract = () => {
       if (!response.data) {
         throw new Error(`Failed to create contract: ${response.statusText}`);
       }
-      toast.success("Contract created successfully");
+      toast.success("Contract updated successfully");
       setContractData({
         contractTitle: "",
         contractType: "",

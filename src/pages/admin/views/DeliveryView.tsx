@@ -32,7 +32,7 @@ const DeliveryView = () => {
   if (!deliveredItem) return <div>No data available</div>;
   return (
     <div className="max-w-7xl mx-auto pt-24">
-      <h2>Delivered Item Details</h2>
+      <h1 className="font-bold">Delivered Item Details</h1>
       <p>Received By: {deliveredItem.receivedBy}</p>
       <p>Delivered Via: {deliveredItem.deliveredVia}</p>
 

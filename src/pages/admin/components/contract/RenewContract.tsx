@@ -60,7 +60,6 @@ const RenewContract = () => {
         `/contract/renew/${id}`,
         contractData
       );
-
       if (!response.data) {
         throw new Error(`Failed to create contract: ${response.statusText}`);
       }
@@ -138,7 +137,7 @@ const RenewContract = () => {
           onClick={RenewContract}
           className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
         >
-          Update Category
+          Renew Contract
         </button>
       </div>
     </div>

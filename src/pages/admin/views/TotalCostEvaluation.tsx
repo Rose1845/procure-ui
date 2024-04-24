@@ -130,6 +130,8 @@ function TotalCostEvaluation() {
                               <td className="border border-gray-300 px-4 py-2">
                                 {itemDetail.quoteStatus !== "BUYER_ACCEPTED" &&
                                 itemDetail.quoteStatus !==
+                                  "BUYER_HAS_CANCELED" &&
+                                itemDetail.quoteStatus !==
                                   "Waiting_for_offer" ? (
                                   <button
                                     onClick={() =>
@@ -153,7 +155,6 @@ function TotalCostEvaluation() {
                           <td className="border border-gray-300 px-4 py-2 font-semibold">
                             {subtotals[supplierId]}
                           </td>
-                          <td></td>
                         </tr>
                       </tbody>
                     </table>

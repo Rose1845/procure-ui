@@ -57,14 +57,14 @@ const EditDueDate = () => {
 
     try {
       const response = await axiosApi.patch(
-        `/contract/renew/${id}`,
+        `/contract/editDate/${id}`,
         contractData
       );
 
       if (!response.data) {
         throw new Error(`Failed to create contract: ${response.statusText}`);
       }
-      toast.success("Contract renewed successfully");
+      toast.success("Due Date updated successfully");
       setContractData({
         contractEndDate: "",
       });
@@ -145,7 +145,7 @@ const EditDueDate = () => {
           onClick={EditDueDate}
           className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
         >
-          Update Category
+          Edit Due Date
         </button>
       </div>
     </div>

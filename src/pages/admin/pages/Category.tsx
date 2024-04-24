@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { Item } from "../types";
 import useApi from "@/hooks/useApi";
 interface Category {
@@ -12,7 +12,6 @@ interface Category {
 }
 function Category() {
   const { axiosApi } = useApi();
-
   const navigate = useNavigate();
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [page, setPage] = React.useState<number>(0);
@@ -22,7 +21,6 @@ function Category() {
   const [searchParams, setSearchParams] = React.useState<{
     categoryName?: string;
   }>({});
-
   React.useEffect(() => {
     fetchCategories();
   }, [page, pageSize]); // Added selectedSupplier to useEffect dependencies
@@ -53,15 +51,15 @@ function Category() {
     console.log(`Editing Category with ID: ${id}`);
   };
 
-  const handleDelete = async (id: number) => {
-    try {
-      await axiosApi.delete(`/category/${id}`);
-      console.log(`Category with ID ${id} deleted successfully`);
-      fetchCategories(); // Refresh the list of categories after deletion
-    } catch (error) {
-      console.error(`Error deleting category with ID ${id}:`, error);
-    }
-  };
+  // const handleDelete = async (id: number) => {
+  //   try {
+  //     await axiosApi.delete(`/category/${id}`);
+  //     console.log(`Category with ID ${id} deleted successfully`);
+  //     fetchCategories(); // Refresh the list of categories after deletion
+  //   } catch (error) {
+  //     console.error(`Error deleting category with ID ${id}:`, error);
+  //   }
+  // };
   const handleSearchParamsChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -180,13 +178,13 @@ function Category() {
                               <FaEdit className="text-xl text-gray-900" />
                             </button>
                             {" | "}
-                            <button
+                            {/* <button
                               className="text-red-600 hover:underline"
                               onClick={() => handleDelete(order.categoryId)}
                             >
                               Delete
                               <FaTrashAlt />
-                            </button>
+                            </button> */}
                             <button>
                               <Link
                                 className="bg-gray-50  hover:bg-gray-100  text-gray-700 "

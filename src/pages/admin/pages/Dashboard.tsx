@@ -72,7 +72,7 @@ function Dashboard() {
             <p>Orders</p>
           </div>
         </div>
-        <div className="bg-white shadow-lg rounded-md flex items-center justify-between p-3 border-b-4 border-blue-600 text-neutral-950 font-medium group">
+        {/* <div className="bg-white shadow-lg rounded-md flex items-center justify-between p-3 border-b-4 border-blue-600 text-neutral-950 font-medium group">
           <div className="flex justify-center items-center w-14 h-14 bg-white rounded-full transition-all duration-300 transform group-hover:rotate-12">
             <svg
               width="30"
@@ -117,7 +117,7 @@ function Dashboard() {
             <p className="text-2xl">$75,257</p>
             <p>Balances</p>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="flex  justify-between flex-row space-x-4">
         <div className="shadow">

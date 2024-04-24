@@ -2,9 +2,10 @@
 import React from "react";
 import { ContactData } from "../types";
 import useApi from "@/hooks/useApi";
+import { toast } from "react-toastify";
 
 function Contact() {
-  const { publicApi } = useApi()
+  const { publicApi } = useApi();
 
   const [contact, setContact] = React.useState<ContactData>({
     name: "",
@@ -12,7 +13,7 @@ function Contact() {
     email: "",
     message: "",
   });
-  
+
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setContact((prevData) => ({
@@ -28,11 +29,11 @@ function Contact() {
     }));
   };
 
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await publicApi.post("/contact/message", contact);
+      toast.success("message sent successfuly");
       console.log("mesage sent successfully:", response.data);
       setContact({
         email: "",
@@ -40,7 +41,6 @@ function Contact() {
         name: "",
         title: "",
       });
-
     } catch (error) {
       console.log(error, "Error sending message");
     }
@@ -131,7 +131,7 @@ function Contact() {
             </div>
             <button
               type="submit"
-              className="py-3 mt-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-orange-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
+              className="py-3 mt-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-blue-600 sm:w-fit hover:bg-blue-800 focus:ring-4 focus:outline-none"
             >
               Send message
             </button>

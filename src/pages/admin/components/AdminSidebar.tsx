@@ -47,7 +47,7 @@ function AdminSidebar() {
                       <li key={childLink.path}>
                         <NavLink
                           to={childLink.path}
-                          className="flex items-center w-full p-1 text-base font-normal text-white transition duration-75 rounded-lg group hover:bg-gray-100"
+                          className="flex items-center w-full p-1 text-base font-normal text-nutral-900 transition duration-75 rounded-lg group hover:bg-gray-100"
                         >
                           {childLink.LinkIcon && <childLink.LinkIcon className="w-6 h-6 mr-3" />}
                           <span>{childLink.label}</span>

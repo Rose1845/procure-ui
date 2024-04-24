@@ -159,8 +159,8 @@ function Purchasing() {
                   easier to operate the procurement process within your team.
                 </p>
               </div>
-              <div className="pt-24 grid lg:grid-cols-3 md:grid-cols-2 justify-center items-center xl:gap-y-16 gap-y-20 gap-x-16 lg:gap-x-20 xl:gap-x-0 lg:px-10 xl:px-0">
-                <div className="cursor-pointer hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
+              <div className="pt-24 grid  lg:grid-cols-3 md:grid-cols-2 justify-center items-center xl:gap-y-16 gap-y-20 gap-x-16 lg:gap-x-20 xl:gap-x-0 lg:px-10 xl:px-0">
+                <div className="cursor-pointer bg-white ml-3 hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
                   <div className="mb-6">
                     <svg
                       width={32}
@@ -190,7 +190,7 @@ function Purchasing() {
                     <p>Customize your orders to improve efficiency</p>
                   </div>
                 </div>
-                <div className="cursor-pointer hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
+                {/* <div className="cursor-pointer hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
                   <div className="mb-6">
                     <svg
                       width={32}
@@ -222,8 +222,8 @@ function Purchasing() {
                       centralise purchasing
                     </p>
                   </div>
-                </div>
-                <div className="cursor-pointer hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
+                </div> */}
+                <div className="cursor-pointer bg-white ml-3 hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
                   <div className="mb-6">
                     <svg
                       width={32}
@@ -253,7 +253,7 @@ function Purchasing() {
                     <p>Improve your supplier negotiations to save on money.</p>
                   </div>
                 </div>
-                <div className="cursor-pointer hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
+                <div className="cursor-pointer bg-white ml-3 hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
                   <div className="mb-6">
                     <svg
                       width={32}
@@ -276,7 +276,7 @@ function Purchasing() {
                       />
                     </svg>
                   </div>
-                  <div className="text-gray-800  text-2xl font-semibold text-center">
+                  <div className="text-gray-800   text-2xl font-semibold text-center">
                     <h2>Invoice</h2>
                   </div>
                   <div className="text-gray-600  mt-2 text-lg text-center">
@@ -285,7 +285,7 @@ function Purchasing() {
                     </p>
                   </div>
                 </div>
-                <div className="cursor-pointer hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
+                <div className="cursor-pointer bg-white ml-3 hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
                   <div className="mb-6">
                     <svg
                       width={32}

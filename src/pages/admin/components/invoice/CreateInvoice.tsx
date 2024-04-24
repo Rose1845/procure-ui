@@ -53,6 +53,7 @@ const CreateInvoice = () => {
 
   async function createInvoice(dataToSend: any) {
     const response = await axiosApi.post("/invoices/add", dataToSend);
+    
     return response.data;
   }
 

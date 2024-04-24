@@ -27,7 +27,7 @@ function RequestDemo() {
         e.preventDefault();
         try {
             const response = await publicApi.post('/demo/request', formData);
-            toast.success("Request sent succesffully!")
+            toast.success("Demo Request sent succesffully!")
             setFormData(
                 {
                     firstName: '',
@@ -47,7 +47,7 @@ function RequestDemo() {
         <div className="bg-gradient-to-b from-purple-600 to-indigo-700 h-96 w-full">
             <div className="w-full flex items-center justify-center my-12">
                 <form onSubmit={handleSubmit} className="absolute top-40 bg-white shadow rounded py-12 lg:px-28 px-8">
-                    <p className="md:text-3xl text-xl font-bold leading-7 text-center text-gray-700">Let’s chat and get a quote!</p>
+                    <p className="md:text-3xl text-xl font-bold leading-7 text-center text-gray-700">See ProcureSwift in Action!</p>
                     <div className="md:flex items-center mt-12">
                         <div className="md:w-72 flex flex-col">
                             <label className="text-base font-semibold leading-none text-gray-800">First Name</label>
