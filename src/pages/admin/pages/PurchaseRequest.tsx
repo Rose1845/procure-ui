@@ -159,6 +159,7 @@ import React from "react";
 import { ItemDetail, PurchaseRequest } from "../types";
 import useApi from "@/hooks/useApi";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function PurchaseRequest() {
   const { axiosApi } = useApi();
@@ -264,6 +265,7 @@ function PurchaseRequest() {
   const handleSearch = () => {
     fetchOrders();
   };
+
   const clearSearchParams = () => {
     setSearchParams({
       purchaseRequestTitle: "",
@@ -272,10 +274,24 @@ function PurchaseRequest() {
     });
     fetchOrders();
   };
-  const handleRefresh =()=>{
-    fetchOrders()
-  }
-
+  const sendToSupplier = async (id: number) => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axiosApi.get(
+        `/purchase-request/send-offer-to-suppliers/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      toast.success("sent successfully");
+      console.log("Response from backend:", response.data);
+    } catch (error) {
+      toast.error("An error occurred while sending order to supplier");
+      console.error("Error sending order to supplier:", error);
+    }
+  };
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -285,21 +301,6 @@ function PurchaseRequest() {
   return (
     <div className="max-w-7xl mx-auto pt-16 ">
       <div className="flex justify-end">
-        <button onClick={handleRefresh} className="flex items-center px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-indigo-600 rounded-lg hover:bg-indigo-500 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80">
-          <svg
-            className="w-5 h-5 mx-1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <span className="mx-1">Refresh</span>
-        </button>
         <button className="bg-blue-600 text-white px-4 py-2">
           <Link to={"/dashboard/purchase-request/add-request"}>
             Create Request
@@ -406,7 +407,7 @@ function PurchaseRequest() {
                 Last Edited
               </th>
             </div>
-            <div className="w-full overflow-x-auto">
+            <div className="w-full ">
               <table className="w-full">
                 <thead className="">
                   <tr className="">
@@ -466,12 +467,36 @@ function PurchaseRequest() {
                           <td className="px-4 py-3 text-sm">
                             {new Date(order.createdAt).toLocaleString()}
                           </td>
+                          {order.approvalStatus == "PENDING" && (
+                            <td className="px-4 py-3 text-xs">
+                              <button
+                                className="bg-green-600 uppercase px-4 py-2 text-white"
+                                onClick={() =>
+                                  sendToSupplier(order.purchaseRequestId)
+                                }
+                              >
+                                Send to suppliers
+                              </button>
+                            </td>
+                          )}
+                          {order.approvalStatus == "ISSUED" && (
+                            <td className="px-4 py-3 text-xs">
+                              <button
+                                className="bg-blue-600 uppercase px-4 py-2 text-white"
+                                onClick={() =>
+                                  sendToSupplier(order.purchaseRequestId)
+                                }
+                              >
+                                RESEND EMAIL TO SUPPLIERS
+                              </button>
+                            </td>
+                          )}
                         </tr>
                         <tr></tr>
                       </>
                     ))
                   )}
-                  <tr>
+                  <tr className=" dark:text-gray-400">
                     {selectedRequestId && (
                       <div className="py-16 max-w-7xl mx-auto pt-16">
                         <h2 className="text-lg font-semibold">
@@ -483,8 +508,8 @@ function PurchaseRequest() {
                               {item.supplier.name}: {item.quoteStatus}
                             </li>
                           ))}
-                          <div className="flex flex-row space-x-3 py-3 text-sm">
-                            <div>
+                          <div className="flex w-full flex-row space-x-3 py-3 text-sm">
+                            <div className="w-96">
                               <Link
                                 className="uppercase px-4 py-3 text-xl text-white bg-sky-600 rounded-full"
                                 to={`/dashboard/quotes/tco_evaluation/${selectedRequestId}`}
@@ -492,7 +517,7 @@ function PurchaseRequest() {
                                 compare tco
                               </Link>
                             </div>
-                            <div>
+                            <div className="w-96">
                               <Link
                                 className="uppercase px-4 py-3 text-xl text-white bg-sky-600 rounded-full"
                                 to={`/dashboard/quotes/compare_offers/${selectedRequestId}`}

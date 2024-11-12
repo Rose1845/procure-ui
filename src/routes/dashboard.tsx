@@ -206,7 +206,6 @@ export const DashboardRoutes: RouteObject = {
       path: "/dashboard/category/add_category",
       element: <CreateCategory />,
     },
-
     {
       path: "/dashboard/contract/add_contract",
       element: <CreateContract />,

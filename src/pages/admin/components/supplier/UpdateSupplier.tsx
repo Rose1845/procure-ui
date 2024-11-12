@@ -40,7 +40,6 @@ const UpdateSupplier = () => {
         );
       }
     };
-
     fetchSupplierData();
   }, []);
 

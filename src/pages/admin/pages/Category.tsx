@@ -51,15 +51,7 @@ function Category() {
     console.log(`Editing Category with ID: ${id}`);
   };
 
-  // const handleDelete = async (id: number) => {
-  //   try {
-  //     await axiosApi.delete(`/category/${id}`);
-  //     console.log(`Category with ID ${id} deleted successfully`);
-  //     fetchCategories(); // Refresh the list of categories after deletion
-  //   } catch (error) {
-  //     console.error(`Error deleting category with ID ${id}:`, error);
-  //   }
-  // };
+ 
   const handleSearchParamsChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -117,7 +109,7 @@ function Category() {
               name="categoryName"
               value={searchParams.categoryName || ""}
               onChange={handleSearchParamsChange}
-              placeholder="Search by order title..."
+              placeholder="Search by category  name..."
               className="bg-white border border-gray-300 rounded px-3 py-1"
             />
           </div>

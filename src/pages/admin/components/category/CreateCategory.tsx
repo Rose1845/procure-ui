@@ -39,7 +39,7 @@ function CreateCategory() {
       if (error.response && error.response.status === 400) {
         const { errorMessage } = error.response.data;
         if (errorMessage) {
-          setError(errorMessage);
+          toast.error(errorMessage);
         } else {
           setError("An error occurred. Please try again later.");
         }

@@ -1,10 +1,10 @@
-import React from 'react'
-import { User } from '../../types';
-import { Link, useParams } from 'react-router-dom';
-import useApi from '@/hooks/useApi';
+import React from "react";
+import { User } from "../../types";
+import { Link, useParams } from "react-router-dom";
+import useApi from "@/hooks/useApi";
 
 const Profile = () => {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
   const { id } = useParams();
   const [user, setUser] = React.useState<User>();
@@ -33,20 +33,12 @@ const Profile = () => {
               <img
                 className="h-auto w-full mx-auto"
                 src={user?.avatar}
-                alt=""
+                alt={user?.firstname}
               />
             </div>
             <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
               {user?.firstname} {user?.lastname}
             </h1>
-            <h3 className="text-gray-600 font-lg text-semibold leading-6">
-              Owner at Her Company Inc.
-            </h3>
-            <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur
-              non deserunt
-            </p>
             <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
               <li className="flex items-center py-3">
                 <span>Status</span>
@@ -55,9 +47,6 @@ const Profile = () => {
                     Active
                   </span>
                 </span>
-              </li>
-              <li className="flex items-center py-3">
-                <span>Company Name</span>
               </li>
             </ul>
           </div>
@@ -101,18 +90,7 @@ const Profile = () => {
                   <div className="px-4 py-2 font-semibold">Contact No.</div>
                   <div className="px-4 py-2">{user?.phoneNumber}</div>
                 </div>
-                <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Current Address</div>
-                  <div className="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
-                </div>
-                <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">
-                    Permanant Address
-                  </div>
-                  <div className="px-4 py-2">
-                    Arlington Heights, IL, Illinois
-                  </div>
-                </div>
+
                 <div className="grid grid-cols-2">
                   <div className="px-4 py-2 font-semibold">Email.</div>
                   <div className="px-4 py-2">
@@ -123,9 +101,6 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            <button className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
-              Show Full Information
-            </button>
           </div>
 
           <div className="my-4"></div>
@@ -133,25 +108,6 @@ const Profile = () => {
           <div className="bg-white p-3 shadow-sm rounded-sm">
             <div className="grid grid-cols-2">
               <div>
-                <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                  <span className="text-green-500">
-                    <svg
-                      className="h-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                  </span>
-                  <span className="tracking-wide">Organization</span>
-                </div>
                 <ul className="list-inside space-y-2">
                   <li>
                     <div className="text-teal-600 flex flex-row">
@@ -159,21 +115,12 @@ const Profile = () => {
                       {user?.authorities.map((auht) => (
                         <div key={auht.authority}>
                           {" "}
-                          <span className='flex flex-col text-xl'>{auht.authority}</span>
+                          <span className="flex flex-col text-xl">
+                            {auht.authority}
+                          </span>
                         </div>
                       ))}
                       .
-                    </div>
-                    <div className="text-gray-500 text-xs">
-                      March 2024 - Now
-                    </div>
-                  </li>
-                  <li>
-                    <div className="text-teal-600">
-                      Owner at Her Company Inc.
-                    </div>
-                    <div className="text-gray-500 text-xs">
-                      March 2020 - Now
                     </div>
                   </li>
                 </ul>
@@ -184,6 +131,6 @@ const Profile = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Profile
+export default Profile;

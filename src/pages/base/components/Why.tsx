@@ -38,7 +38,7 @@ function Why() {
                     </p>
                     <p className="text-base leading-7 text-dark-grey-600">
                       Whether you're a small startup or a large enterprise, our
-                      EDMS scales with your business needs.
+                      PMS scales with your business needs.
                     </p>
                   </div>
                   <div className="flex flex-col items-center gap-3 px-8 py-10 bg-white rounded-3xl shadow-main">

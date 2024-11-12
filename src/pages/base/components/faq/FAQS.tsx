@@ -30,7 +30,7 @@ function FAQS() {
   const handleOpen = (value: React.SetStateAction<number>) => setOpen(open === value ? 0 : value);
 
   return (
-    <section className="max-w-7xl mx-auto">
+    <section id="faqs" className="max-w-7xl mx-auto">
       <h1 className="text-center text-3xl font-black m-4">Frequently Asked Questions(FAQS)</h1>
       {
         faqs.map((faq,i)=>(

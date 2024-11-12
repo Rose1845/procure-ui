@@ -55,7 +55,7 @@ function Deliveries() {
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
-  
+
   const startIndex = page * pageSize + 1;
   const endIndex = Math.min((page + 1) * pageSize, totalItems);
 
@@ -71,6 +71,7 @@ function Deliveries() {
                   <th className="px-4 py-3">Payment Type</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Last Edited</th>
+                  <th className="px-4 py-3">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y dark:divide-gray-500">

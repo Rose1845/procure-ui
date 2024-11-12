@@ -2,11 +2,11 @@ import React from "react";
 import { PurchaseOrder, Supplier } from "../types";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
-import JSZip from 'jszip';
+import JSZip from "jszip";
 import useApi from "@/hooks/useApi";
 
 function Order() {
-  const { axiosApi } = useApi()
+  const { axiosApi } = useApi();
 
   const navigate = useNavigate();
   const [orders, setOrders] = React.useState<PurchaseOrder[]>([]);
@@ -14,17 +14,32 @@ function Order() {
   const [totalPages, setTotalPages] = React.useState<number>(0);
   const [totalItems, setTotalItems] = React.useState<number>(0);
   const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
-  const [selectedApprovalStatus, setSelectedApprovalStatus] = React.useState<string | null>(null);
-  const [selectedSupplier, setSelectedSupplier] = React.useState<string | null>(null); // Added state for selected supplier
+  const [selectedApprovalStatus, setSelectedApprovalStatus] = React.useState<
+    string | null
+  >(null);
+  const [selectedSupplier, setSelectedSupplier] = React.useState<string | null>(
+    null
+  ); // Added state for selected supplier
   const pageSize = 5;
   const [sortBy, setSortBy] = React.useState<string>("createdAt"); // Default sort by createdAt
   const [sortDirection, setSortDirection] = React.useState<string>("desc"); // Default sort direction
-  const [searchParams, setSearchParams] = React.useState<{ purchaseOrderTitle?: string, startDate?: string, endDate?: string }>({});
-
+  const [searchParams, setSearchParams] = React.useState<{
+    purchaseOrderTitle?: string;
+    startDate?: string;
+    endDate?: string;
+  }>({});
+  
   React.useEffect(() => {
     fetchOrders();
-    fetchSuppliers()
-  }, [page, pageSize, selectedSupplier, selectedApprovalStatus, sortBy, sortDirection]); // Added selectedSupplier to useEffect dependencies
+    fetchSuppliers();
+  }, [
+    page,
+    pageSize,
+    selectedSupplier,
+    selectedApprovalStatus,
+    sortBy,
+    sortDirection,
+  ]); // Added selectedSupplier to useEffect dependencies
   const fetchSuppliers = async () => {
     try {
       const response = await axiosApi.get("/suppliers");
@@ -35,7 +50,7 @@ function Order() {
       console.error("Error fetching suppliers:", error);
     }
   };
-  
+
   const fetchOrders = async () => {
     try {
       let url = `/purchase-order/paginations?page=${page}&size=${pageSize}`;
@@ -51,11 +66,16 @@ function Order() {
       }
       if (searchParams.purchaseOrderTitle) {
         url += `&purchaseOrderTitle=${searchParams.purchaseOrderTitle}`;
-      }      if (searchParams.endDate) {
+      }
+      if (searchParams.endDate) {
         url += `&endDate=${searchParams.endDate}`;
       }
       const response = await axiosApi.get(url);
-      const { content, totalPages: total, totalElements: totalItems } = response.data;
+      const {
+        content,
+        totalPages: total,
+        totalElements: totalItems,
+      } = response.data;
       setOrders(content);
       setTotalPages(total);
       setTotalItems(totalItems);
@@ -63,10 +83,16 @@ function Order() {
       console.error("Error fetching categories:", error);
     }
   };
-  const handleSupplierChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  
+  const handleSupplierChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedSupplier(event.target.value);
   };
-  const handleApprovalStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+
+  const handleApprovalStatusChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedApprovalStatus(event.target.value);
   };
 
@@ -74,19 +100,18 @@ function Order() {
     try {
       const response = await axiosApi.get(`/purchase-order/${orderId}/report`, {
         /**
-         * 
+         *
          */
         responseType: "arraybuffer",
-
       });
 
-      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const blob = new Blob([response.data], { type: "application/pdf" });
 
       // Create a temporary URL for the blob
       const url = window.URL.createObjectURL(blob);
 
       // Create a link element to trigger the download
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
       link.download = `order_${orderId}_report.pdf`;
 
@@ -94,11 +119,13 @@ function Order() {
       document.body.appendChild(link);
       link.click();
 
-      // Clean up by revoking the URL and removing the link from the document
-      // window.URL.revokeObjectURL(url);
+      /**
+       * Clean up by revoking the URL and removing the link from the document
+      window.URL.revokeObjectURL(url);
+       */
       document.body.removeChild(link);
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      console.error("Error generating PDF:", error);
       // Handle error
     }
   };
@@ -109,22 +136,28 @@ function Order() {
     // Iterate over each order and generate PDF report
     for (const order of orders) {
       try {
-        const response = await axiosApi.get(`/purchase-order/${order.purchaseOrderId}/report`, {
-          responseType: 'arraybuffer',
-        });
+        const response = await axiosApi.get(
+          `/purchase-order/${order.purchaseOrderId}/report`,
+          {
+            responseType: "arraybuffer",
+          }
+        );
 
-        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const blob = new Blob([response.data], { type: "application/pdf" });
         zip.file(`order_${order.purchaseOrderId}_report.pdf`, blob);
       } catch (error) {
-        console.error(`Error generating PDF for order ${order.purchaseOrderId}:`, error);
+        console.error(
+          `Error generating PDF for order ${order.purchaseOrderId}:`,
+          error
+        );
       }
     }
 
     // Generate and download the zip folder
-    zip.generateAsync({ type: 'blob' }).then((content: Blob | MediaSource) => {
-      const link = document.createElement('a');
+    zip.generateAsync({ type: "blob" }).then((content: Blob | MediaSource) => {
+      const link = document.createElement("a");
       link.href = window.URL.createObjectURL(content);
-      link.download = 'order_reports.zip';
+      link.download = "order_reports.zip";
       link.click();
     });
   };
@@ -156,7 +189,9 @@ function Order() {
       setSortDirection("desc");
     }
   };
-  const handleSearchParamsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchParamsChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setSearchParams({
       ...searchParams,
       [event.target.name]: event.target.value,
@@ -168,11 +203,11 @@ function Order() {
   };
   const clearSearchParams = () => {
     setSearchParams({
-      purchaseOrderTitle: '',
-      startDate: '',
-      endDate: ''
+      purchaseOrderTitle: "",
+      startDate: "",
+      endDate: "",
     });
-    fetchOrders()
+    fetchOrders();
   };
 
   const handlePageChange = (newPage: number) => {

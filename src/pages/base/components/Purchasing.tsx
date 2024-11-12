@@ -2,7 +2,7 @@
 
 function Purchasing() {
   return (
-    <section className="max-w-full mx-auto flex flex-col gap-5">
+    <section id="features" className="max-w-full mx-auto flex flex-col gap-5">
       <section className="mx-auto container bg-white pt-16">
         <div className="px-4 lg:px-0 py-10">
           <div role="contentinfo" className="flex items-center flex-col px-4">
@@ -54,7 +54,7 @@ function Purchasing() {
                     <h2>User Permissions</h2>
                   </div>
                   <div className="text-gray-600  mt-2 text-lg text-center ">
-                    <p>Customize your orders to improve efficiency</p>
+                    <p>Manage your users in the system</p>
                   </div>
                 </div>
                 <div className="cursor-pointer bg-white ml-3 hover:shadow py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">

@@ -20,6 +20,8 @@ const CreateOffer = () => {
   const [offers, setOffers] = React.useState<OfferItem[]>([]);
   const [queryParams] = useSearchParams();
   const supplierId = queryParams.get("supplierId");
+  const [offerError, setOfferError] = React.useState<string>("");
+
   const handleItemChange = (index: number, update: OfferItem) => {
     const item = offers[index];
     console.log({ original: offers });
@@ -53,7 +55,13 @@ const CreateOffer = () => {
       abortController.abort();
     };
   }, [id]);
-
+  const validateOfferUnitPrice = (value: number) => {
+    if (value <= 0) {
+      setOfferError("Offer unit price must be greater than zero");
+    } else {
+      setOfferError("");
+    }
+  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log(supplierId, "suplier");
     e.preventDefault();
@@ -112,16 +120,14 @@ const CreateOffer = () => {
                     <th className="px-4 py-3">Quantity</th>
                     <th className="px-4 py-3">Unit Price</th>
                     <th className="px-4 py-3">Total Price</th>
-                    {request?.approvalStatus === "PENDING" && (
-                      <th className="px-4 py-3">Offer Unit Price</th>
-                    )}
+                    <th className="px-4 py-3">Offer Unit Price</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y dark:divide-gray-500">
                   {request?.items.map((item, idx) => (
                     <tr
                       key={idx}
-                      className="bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
+                      className="bg-gray-50 hover:bg-gray-100  text-gray-700 dark:text-gray-400"
                     >
                       <td className="px-4 py-3">
                         <div className="flex items-center text-sm">
@@ -137,21 +143,28 @@ const CreateOffer = () => {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm">{item.totalPrice}</td>
-                      {request.approvalStatus === "PENDING" && (
-                        <td className="px-4 py-3 text-sm">
-                          <input
-                            type="number"
-                            value={offers[idx]?.offerUnitPrice || ""}
-                            onChange={(e) => {
-                              handleItemChange(idx, {
-                                ...offers[idx],
-                                offerUnitPrice: Number(e.target.value),
-                              });
-                            }}
-                            className="px-2 py-1 w-full border rounded-md"
-                          />
-                        </td>
-                      )}
+                      {/* {request.approvalStatus === "PENDING" || request.approvalStatus === "ISSUED" && ( */}
+                      <td className="px-4 py-3 text-sm">
+                        <input
+                          type="number"
+                          value={offers[idx]?.offerUnitPrice || ""}
+                          onChange={(e) => {
+                            const value = Number(e.target.value);
+                            handleItemChange(idx, {
+                              ...offers[idx],
+                              offerUnitPrice: value,
+                            });
+                            validateOfferUnitPrice(value); // Inject the validation method here
+                          }}
+                          className="px-2 py-1 w-full border rounded-md"
+                        />
+                        {offerError && (
+                          <div className="text-red-500 text-sm mt-2">
+                            {offerError}
+                          </div>
+                        )}
+                      </td>
+                      {/* )} */}
                     </tr>
                   ))}
                 </tbody>
@@ -160,17 +173,22 @@ const CreateOffer = () => {
           </div>
         </div>
         <div>
-          {request?.approvalStatus === "PENDING" && (
-            <button
-              disabled={isLoading}
-              type="submit"
-              className={`bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none ${
-                isLoading ? "bg-opacity-45 bg-red-900 cursor-not-allowed" : ""
-              }`}
-            >
-              {isLoading ? "Submitting..." : "Make Offer"}
-            </button>
-          )}
+          {/* {request?.approvalStatus === "PENDING" || request?.approvalStatus === "ISSUED" && ( */}
+          <button
+            disabled={
+              isLoading ||
+              request?.itemDetails.some(
+                (it) => it.quoteStatus === "SUPPLIER_HAS_OFFERED"
+              )
+            }
+            type="submit"
+            className={`bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none ${
+              isLoading ? "bg-opacity-45 bg-red-900 cursor-not-allowed" : ""
+            }`}
+          >
+            {isLoading ? "Submitting..." : "Make Offer"}
+          </button>
+          {/* )} */}
         </div>
       </form>
     </div>
